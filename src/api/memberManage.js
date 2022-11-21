@@ -38,3 +38,24 @@ export const putInfoChange = async (changeData) => {
   return data;
 }
 
+// 친구 관련
+export const getSearchFriend = async (nickname) => {
+  const {data} = await axiosIns.get(`/users/${nickname}`);
+  return data;
+}
+export const getFriendList = async () => {
+  const {data} = await axiosIns.get("/friends");
+  return data;
+}
+export const postAddFriend = async (nickname) => {
+  const {data} = await axiosIns.post(`/friend`, nickname);
+  return data;
+}
+export const getFriendGroup = async () => {
+  const {data} = await axiosIns.get("/group");
+  return data;
+}
+export const deleteFriend = async (friendId) => {
+  const data = await axiosIns.delete(`/friend/${friendId}`);
+  return data;
+}

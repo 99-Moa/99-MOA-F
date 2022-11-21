@@ -30,11 +30,7 @@ const ToLogIn = () => {
   };
 
   // 카카오 소셜로그인 로직
-  // env파일 적용하기
-  // 파일구조 깔끔하게(아래 2줄 따른데다 처리 가능)
-  const REDIRECT_URI = "http://localhost:8080/kakao"
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${null}&redirect_uri=${REDIRECT_URI}&response_type=code`
-
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`
   const onKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL
   }
