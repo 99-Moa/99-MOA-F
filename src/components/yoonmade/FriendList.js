@@ -23,8 +23,9 @@ const FriendList = ({ goBack,friendList }) => {
     setFilterFriendList(filterList);
     setFriendName(value);
   };
-  const onDeleteFriend = (nickname) => {
-    mutate(nickname);
+  const onDeleteFriend = (id) => {
+    mutate(id);
+    setFilterFriendList(filterFriendList.filter((friendInfo) => friendInfo.id !== id))
   };
 
 
@@ -36,6 +37,12 @@ const FriendList = ({ goBack,friendList }) => {
       </FirendListHeader>
       <FriendInputWrapper>
         <FriendInput value={friendName} onChange={onChangeFriendInput} />
+        <SearchBtn>
+            <Svg aria-label="검색" color="#8e8e8e" fill="#8e8e8e" height="16" role="img" viewBox="0 0 24 24" width="16">
+              <path d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+              <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="16.511" x2="22" y1="16.511" y2="22"></line>
+            </Svg>
+          </SearchBtn>
       </FriendInputWrapper>
       <FriendListBox>
         {filterFriendList.length >= 1 || friendName
@@ -43,9 +50,9 @@ const FriendList = ({ goBack,friendList }) => {
               <FriendWrapper>
                 <FriendImg src={friendInfo.imgUrl} />
                 <FriendName>{friendInfo.friendUsername}</FriendName>
-                <DeleteBtn>
+                <DeleteBtn onClick={() => onDeleteFriend(friendInfo.id)}>
                   <span>삭제</span>
-                </DeleteBtn>
+                </DeleteBtn >
               </FriendWrapper>
             ))
           : friendList?.data.map((friendInfo) => (
@@ -70,6 +77,7 @@ const FriendInputWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  position: relative;
 `;
 
 const FriendInput = styled.input`
@@ -120,8 +128,8 @@ const FriendWrapper = styled.div`
 `;
 
 const FriendImg = styled.img`
-  height: 100%;
-  width: 10%;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
 `;
 
@@ -133,4 +141,22 @@ const DeleteBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Svg = styled.svg`
+  width: 80%;
+  height: 80%;
+`;
+
+const SearchBtn = styled.button`
+  height: 100%;
+  width: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 10%;
 `;
