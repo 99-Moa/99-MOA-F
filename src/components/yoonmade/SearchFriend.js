@@ -11,7 +11,7 @@ const SearchFriend = ({ goBack }) => {
       "https://img.insight.co.kr/static/2020/03/16/700/txyrzifi14lg6auqmo10.jpg",
   });
 
-  const { mutate: searchMutate } = useMutation(getSearchFriend, {
+  const { mutate: searchMutate } = useMutation(getMyFriend, {
     onSuccess: ({success,data,error}) => {
       if (success) {
         setUserInfo(data);
@@ -21,7 +21,7 @@ const SearchFriend = ({ goBack }) => {
     },
   });
 
-  const { mutate: addMutate } = useMutation(postAddFriend, {
+  const { mutate: addMutate } = useMutation(postPlusFriend, {
     onSuccess: ({success,error}) => {
       if(success){
         alert("친구추가 완료!");
