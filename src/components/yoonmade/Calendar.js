@@ -36,23 +36,22 @@ const Calendar = ({setIsChoiceGroup, schedulesData}) => {
 
     const dayArr = ["일","월","화","수","목","금","토"]
 
-
     const yearElm = React.createElement("div",null,`${date.date.year}`)
     const monthElm = React.createElement("div",null,`${date.date.month+1}`)
-    const yeaerMonth = React.createElement("div",null,`${date.date.year}년 ${date.date.month+1}월`)
+    const yearMonth = React.createElement("div",{key:1},`${date.date.year}년 ${date.date.month+1}월`)
     let todayElm, dateBox, dayElm
     
     
 
     if(date.date.year === year && date.date.month +1 === month){
-      todayElm = React.createElement("div",null,`${today}`)
+      todayElm = React.createElement("div",{key:2},`${today}`)
       // dayElm = React.createElement("div",null,`${dayArr[day]}`)
-      dateBox = React.createElement("div",null,[yeaerMonth,todayElm])
+      dateBox = React.createElement("div",null,[yearMonth,todayElm])
       return dateBox
     } else {
-      todayElm = React.createElement("div",null,1)
+      todayElm = React.createElement("div",{key:2},1)
       // dayElm = React.createElement("div",null,`${dayArr[date.date.marker.getDay()]}`)
-      dateBox = React.createElement("div",null,[yeaerMonth,todayElm])
+      dateBox = React.createElement("div",null,[yearMonth,todayElm])
       return dateBox
     }
 
