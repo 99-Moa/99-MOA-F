@@ -9,8 +9,8 @@ export const postSignUp = async (userData) => {
   const {data} = await axiosIns.post("/signup", userData);
   return data;
 };
-export const postLogOut = async (userData) => {
-  const {data} = await axiosIns.post("/signout", userData); // api 명세서에 딜리트와 포스트가 있다 물어보자
+export const postLogOut = async () => {
+  const {data} = await axiosIns.post("/signout"); 
   return data;
 };
 export const kakaoLogin = async (code) => {
@@ -38,17 +38,17 @@ export const putInfoChange = async (changeData) => {
   return data;
 }
 
-// 친구 관련
-export const getSearchFriend = async (nickname) => {
-  const {data} = await axiosIns.get(`/users/${nickname}`);
-  return data;
-}
-export const getFriendList = async () => {
+// 친구 목록 조회, 친구 찾기, 친구 추가, 친구 삭제, 그룹
+export const getMyFriends = async () => {
   const {data} = await axiosIns.get("/friends");
   return data;
 }
-export const postAddFriend = async (nickname) => {
-  const {data} = await axiosIns.post(`/friend`, nickname);
+export const getMyFriend = async (userName) => {
+  const {data} = await axiosIns.get(`/users/${userName}`);
+  return data;
+}
+export const postPlusFriend = async (userName) => {
+  const {data} = await axiosIns.post(`/friend`, userName);
   return data;
 }
 export const getFriendGroup = async () => {

@@ -23,3 +23,9 @@ export const reviseSchedule = async (scheduleId) => {
   const {data} = await axiosIns.put(`/schedule/${scheduleId}`);
   return data;
 }
+
+// 그룹만들기
+export const postMakeGroup = async (groupData) => {
+  const {data} = await axiosIns.post(`/group`, groupData);
+  return data;
+}

@@ -25,7 +25,7 @@ const Triangle = styled.div`
   height: 0px;
   width: 0px;
   border: 10px solid transparent;
-  border-bottom-color: #81ecec;
+  border-bottom-color: #ecf0f1;
 `;
 const UpperProfileDiv = styled.div`
   height: 100%;
@@ -33,6 +33,6 @@ const UpperProfileDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #81ecec;
+  background-color: #ecf0f1;
   border-radius: 10px;
 `;
