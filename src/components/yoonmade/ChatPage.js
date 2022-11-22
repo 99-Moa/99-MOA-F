@@ -31,24 +31,24 @@ const ChatPage = () => {
                   y1="12"
                   x2="21"
                   y2="12"
-                  stroke-width="2"
-                  stroke-linecap="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                 ></line>
                 <line
                   x1="3"
                   y1="6"
                   x2="21"
                   y2="6"
-                  stroke-width="2"
-                  stroke-linecap="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                 ></line>
                 <line
                   x1="3"
                   y1="18"
                   x2="21"
                   y2="18"
-                  stroke-width="2"
-                  stroke-linecap="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                 ></line>
               </Svg>
             </ChatIconWrapper>
