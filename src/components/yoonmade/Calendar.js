@@ -2,6 +2,7 @@ import FullCalendar from "@fullcalendar/react";
 import styled from "styled-components";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import React from "react";
 
 const Calendar = ({setIsChoiceGroup, schedulesData}) => {
   const onDateClick = (e) => {
@@ -26,6 +27,36 @@ const Calendar = ({setIsChoiceGroup, schedulesData}) => {
       return false;
     }
   };
+  const setTitleFormat = (date) => {
+    const newD = new Date()
+    const year = newD.getFullYear()
+    const month = newD.getMonth() + 1
+    const today = newD.getDate()
+    const day = newD.getDay()
+
+    const dayArr = ["일","월","화","수","목","금","토"]
+
+
+    const yearElm = React.createElement("div",null,`${date.date.year}`)
+    const monthElm = React.createElement("div",null,`${date.date.month+1}`)
+    const yeaerMonth = React.createElement("div",null,`${date.date.year}년 ${date.date.month+1}월`)
+    let todayElm, dateBox, dayElm
+    
+    
+
+    if(date.date.year === year && date.date.month +1 === month){
+      todayElm = React.createElement("div",null,`${today}`)
+      // dayElm = React.createElement("div",null,`${dayArr[day]}`)
+      dateBox = React.createElement("div",null,[yeaerMonth,todayElm])
+      return dateBox
+    } else {
+      todayElm = React.createElement("div",null,1)
+      // dayElm = React.createElement("div",null,`${dayArr[date.date.marker.getDay()]}`)
+      dateBox = React.createElement("div",null,[yeaerMonth,todayElm])
+      return dateBox
+    }
+
+}
   return (
     <Wrapper>
       <FullCalendar
@@ -45,6 +76,7 @@ const Calendar = ({setIsChoiceGroup, schedulesData}) => {
             click: onAddEvent,
           },
         }}
+        titleFormat={setTitleFormat}
         height="90%"
         locale="kr"
         dayMaxEvents={true}
@@ -67,6 +99,16 @@ const Wrapper = styled.div`
   height: 75%;
   width: 40%;
   margin-top: 5%;
+  font-size: 80%;
+
+  .fc-myCustomButton-button,
+  .fc-today-button {
+    height: 1vh;
+    width: 3vw;
+    font-size: .5vw;
+  }
+
+
 
   .fc th {
     height: 40px;
@@ -103,11 +145,10 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
 
+
     .fc-today-button {
-      padding: 0px 15px;
       background-color: white;
       color: black;
-      font-size: 15px;
       text-align: center;
 
       &:focus {
@@ -117,15 +158,13 @@ const Wrapper = styled.div`
     }
 
     .fc-myCustomButton-button {
-      padding: 0px 15px;
-      border-color: rgba(255, 69, 79);
-      background-color: rgba(255, 69, 79);
+      border-color: #ff4545;
+      background-color: #ff4545;
       color: white;
-      font-size: 15px;
       text-align: center;
 
       &:focus {
-        background-color: rgba(255, 69, 79);
+        background-color: #ff4545;
         color: white;
       }
     }
@@ -133,8 +172,9 @@ const Wrapper = styled.div`
 
   .fc-button-group {
     display: flex;
-    gap: 5px;
+    gap: 2%;
   }
+  
 
   .fc-direction-ltr .fc-button-group > .fc-button:not(:first-child),
   .fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
@@ -169,6 +209,11 @@ const Wrapper = styled.div`
   }
 
   .fc .fc-toolbar-title {
-    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 1vw;
+    line-height: 1.2vw;
   }
 `;
