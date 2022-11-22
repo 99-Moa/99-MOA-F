@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import MyProfile from "./MyProfile";
 import Alarm from "./Alarm";
-import EditMyProfile from "./EditMyProfile";
 import alarmImg from "../../../../img/Icon_Alarm.png";
 import groupImg from "../../../../img/Icon_Group.png"
-import defaultImg from "../../../../img/Icon_Profile.png"
 import logoImg from "../../../../img/Logo_Main.png"
 import { useMutation } from "react-query";
 import { postPlusFriend } from "../../../../api/memberManage";
@@ -22,6 +20,9 @@ const NavBar = ({infoData, setIsEditProfile}) => {
   const { mutate } = useMutation(postPlusFriend, {
     onSuccess: (res) => {
       console.log("성공", res)
+    },
+    onError: (err) => {
+      console.log(err)
     }
   })
   const toMain = () => {
