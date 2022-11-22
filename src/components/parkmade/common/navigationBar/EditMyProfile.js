@@ -20,6 +20,7 @@ const EditMyProfile = ({info, setIsEditProfile}) => {
     },
     onError: (err) => {
       alert("지쟈스");
+      // alert("내용을 입력해주세요");
     }
   });
   const { mutate:checkNickname} = useMutation(postNickDupChecker, {
@@ -57,22 +58,16 @@ const EditMyProfile = ({info, setIsEditProfile}) => {
       if (data.img[0]) {
         formData.append("file", data.img[0]);
       };
-      if (!data.img[0]) {
-        formData.append("file", "");
-      };
     } ;
     if (!data.nickname) {
       formData.append("userName", "");
       if (data.img[0]) {
         formData.append("file", data.img[0]);
       };
-      if (!data.img[0]) {
-        formData.append("file", "");
-      };
     };
     if (window.confirm("수정하시겠습니까?")) {
       changeInfo(formData);
-    }
+    };
   };
   useEffect(() => {
     document.addEventListener('mousedown', clickModalOutside);
