@@ -1,19 +1,22 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import styled from "styled-components";
 import { postNickDupChecker, putInfoChange } from "../../../../api/memberManage";
-import pePe from "../../../../img/pePe.png"
+import pePe from "../../../../img/pePe.png";
+import camera from "../../../../img/camera.png"
 
-const EditMyProfile = ({setIsEdit, info}) => {
+const EditMyProfile = ({info, setIsEditProfile}) => {
+  const modalRef = useRef();
   const { register, handleSubmit, setValue, getValues } = useForm();
   const [isChangeImg, setIsChangeImg ] = useState("");
   const [doneDupCheck, setDoneDupCheck] = useState(false);
+  const [myNick, setMyNick] = useState(info.userName);
   const { mutate:changeInfo } = useMutation(putInfoChange, {
     onSuccess: (res) => {
       alert("성공!")
-      setIsEdit(prev=>!prev);
+      // setIsEdit(prev=>!prev);
     },
     onError: (err) => {
       alert("지쟈스");
@@ -23,6 +26,7 @@ const EditMyProfile = ({setIsEdit, info}) => {
     onSuccess: (res) => {
       alert("사용가능합니다.");
       setDoneDupCheck(true);
+      setMyNick(getValues("nickname"));
     },
     onError: (err) => {
       alert("사용불가능합니다.");
@@ -33,7 +37,7 @@ const EditMyProfile = ({setIsEdit, info}) => {
     (getValues("nickname")) ? checkNickname({"userName":getValues("nickname")}) : alert("닉네임을 입력해주세요.")
   };
   const cancel = () => {
-    setIsEdit(prev=>!prev);
+    setIsEditProfile(false);
   };
   const getImgFile = (ev) => {
     const newImg = ev.target.files[0];
@@ -69,103 +73,136 @@ const EditMyProfile = ({setIsEdit, info}) => {
     if (window.confirm("수정하시겠습니까?")) {
       changeInfo(formData);
     }
-  }
+  };
+  useEffect(() => {
+    document.addEventListener('mousedown', clickModalOutside);
+    return () => {document.removeEventListener('mousedown', clickModalOutside)};
+  });
+  const clickModalOutside = (ev) => {
+    (setIsEditProfile && !modalRef.current.contains(ev.target)) && setIsEditProfile(false);
+  };
   return (
-    <UpperDiv>
-      <Triangle />
-      <UpperProfileForm onSubmit={handleSubmit(submit)}>
-        <ImgDiv>
-          <Img src={isChangeImg ? isChangeImg : pePe} />
-          <ClickMe whileHover={{scale:1.2}}>
-            click me!
-            <InputImg {...register("img")} onChange={getImgFile} type="file" />
-          </ClickMe>
-        </ImgDiv>
+    <Wrap>
+      <UpperProfileForm ref={modalRef} onSubmit={handleSubmit(submit)}>
+        <UpperImgDiv>
+          <ImgDiv>
+            <Img src={isChangeImg ? isChangeImg : info.imgUrl} />
+            <ClickMe whileHover={{ scale: 1.05 }}>
+              <CameraImg src={camera}/>
+              <InputImg {...register("img")} onChange={getImgFile} type="file" />
+            </ClickMe>
+          </ImgDiv>
+          <NowName>
+            {myNick}
+          </NowName>
+        </UpperImgDiv>
         <ProfileDiv>
           <MyInfoDiv>
             <EditName>
-              <NickNameInput {...register("nickname", {pattern : {  value: /^[-a-zA-Z0-9가-힣]{2,8}$/ }})} placeholder={info.userName} />
-              <EditBtn onClick={dupCheck} whileHover={{scale:1.1}}>
-                중복<br />
-                확인
+              <NickNameInput {...register("nickname", { pattern: { value: /^[-a-zA-Z0-9가-힣]{2,8}$/ } })} placeholder="2~8글자 한글 가능!" />
+              <EditBtn onClick={dupCheck} whileHover={{ scale: 1.1 }}>
+                중복확인
               </EditBtn>
             </EditName>
             <Span>
-              2~8글자 한글 가능!
+              
             </Span>
           </MyInfoDiv>
           <CompleteDeleteDiv>
-            <CompleteBtn whileHover={{scale:1.05}}>
-              수정하기
+            <CompleteBtn whileHover={{ scale: 1.05 }}>
+              수정
             </CompleteBtn>
-            <CancelDiv onClick={cancel} whileHover={{scale:1.05}}>
+            <CancelDiv onClick={cancel} whileHover={{ scale: 1.05 }}>
               취소
             </CancelDiv>
           </CompleteDeleteDiv>
         </ProfileDiv>
       </UpperProfileForm>
-    </UpperDiv>
+    </Wrap>
   );
 }
 export default EditMyProfile;
 
-const UpperDiv = styled(motion.div)`
-  height: 100%;
+const Wrap = styled(motion.div)`
+  position: fixed;
   width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-`;
-const Triangle = styled.div`
-  height: 0px;
-  width: 0px;
-  border: 10px solid transparent;
-  border-bottom-color: #81ecec;
+  left: 0;
+  top: 0;
+  z-index: 10;
 `;
 const UpperProfileForm = styled.form`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #81ecec;
-  border-radius: 10px;
-`;
-const ImgDiv = styled.div`
-  height: 100%;
-  width: 40%;
+  height: 50%;
+  width: 20%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #ecf0f1;
+  border-radius: 10px;
+`;
+const UpperImgDiv = styled.div`
+  height: 60%;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`;
+const ImgDiv = styled.div`
+  width: 140px;
+  height: 140px;
+  margin-top: 15%;
   position: relative;
 `;
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 70px;
+  background-color: gray;
+`;
+const ClickMe = styled(motion.div)`
+  height: 18%;
+  width: 18%;
+  top: 80%;
+  right: 5%;
+  border: 1px solid #AAAFB5;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: #E9EEF2;
+  font-size: 70%;
+`;
+const CameraImg = styled(motion.img)`
+  height: 100%;
+  width: 100%;
+`;
 const InputImg = styled.input`
-  width: 50%;
-  max-height: 90%;
+  width: 100%;
+  max-height: 100%;
   border-radius: 50%;
   position: absolute;
   background-color: red;
   opacity: 0;
 `;
-const Img = styled.img`
-  width: 80%;
-  max-height: 80%;
-  border-radius: 75px;
-  background-color: gray;
-`;
-const ClickMe = styled(motion.div)`
-  height: 15%;
-  width: 80%;
-  font-size: 100%;
+const NowName = styled.div`
+  height: 13%;
+  width: 100%;
   display: flex;
-  padding-top: 1%;
   justify-content: center;
   align-items: center;
+  font-size: 110%;
+  font-weight: 600;
 `;
 const ProfileDiv = styled.div`
-  height: 100%;
-  width: 60%;
+  height: 40%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -192,19 +229,23 @@ const Span = styled.span`
 const NickNameInput = styled.input`
   height: 60%;
   width: 70%;
+  border: 1px solid #AAAFB5;
+  border-radius: 5px;
   display: flex;
   align-items: center;
-  font-size: 100%;
+  font-size: 60%;
   font-weight: 800; 
-  border: transparent;
-  border-radius: 10px;
+  text-indent: 10px;
 `;
 const EditBtn = styled(motion.div)`
-  height: 100%;
-  width: 20%;
+  height: 70%;
+  width: 25%;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #AAAFB5;
+  color: white;
   font-size: 90%;
   font-weight: 600;
   cursor: pointer;
@@ -215,12 +256,12 @@ const CompleteDeleteDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 7%;
+  margin-top: 3%;
   gap: 5%;
 `;
 const CompleteBtn = styled(motion.button)`
-  height: 100%;
-  width: 90%;
+  height: 80%;
+  width: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -228,13 +269,12 @@ const CompleteBtn = styled(motion.button)`
   border-radius: 10px;
   background-color: black;
   color: white;
-  font-size: 110%;
   font-weight: 800;
   cursor: pointer;
 `;
 const CancelDiv = styled(motion.div)`
-  height: 100%;
-  width: 90%;
+  height: 80%;
+  width: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -242,7 +282,7 @@ const CancelDiv = styled(motion.div)`
   border-radius: 10px;
   background-color: black;
   color: white;
-  font-size: 110%;
+  font-size: 80%;
   font-weight: 800;
   cursor: pointer;
 `;
