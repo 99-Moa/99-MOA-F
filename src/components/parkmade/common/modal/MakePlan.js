@@ -11,7 +11,7 @@ import Time from "./Time";
 // 키보드 위아래 버튼으로 가능하게 하자.
 // npm install react-date-range 하자
 // 주소 검색을 select 이용하자
-const MyPlan = () => {
+const MakePlan = () => {
   const { kakao } = window;
   const traceRoadName = useRef();
   const [isSearch, setIsSearch] = useState(false);
@@ -153,7 +153,7 @@ const MyPlan = () => {
   );
 }
 
-export default MyPlan;
+export default MakePlan;
 
 const UpperDiv = styled(motion.div)`
   width: 100%;

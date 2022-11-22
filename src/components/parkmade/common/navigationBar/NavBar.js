@@ -9,17 +9,28 @@ import alarmImg from "../../../../img/Icon_Alarm.png";
 import groupImg from "../../../../img/Icon_Group.png"
 import defaultImg from "../../../../img/Icon_Profile.png"
 import logoImg from "../../../../img/Logo_Main.png"
+import { useMutation } from "react-query";
+import { postPlusFriend } from "../../../../api/memberManage";
 
-const NavBar = ({infoData}) => {
+const NavBar = ({infoData, setIsEditProfile}) => {
   const navigate = useNavigate();
   const [myInfo, setMyInfo] = useState(false);
   const [alarm, setAlarm] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+
+  // 임시로 친구추가 해보려고 만든거임 삭제해야도맨ㅇ
+  const { mutate } = useMutation(postPlusFriend, {
+    onSuccess: (res) => {
+      console.log("성공", res)
+    }
+  })
   const toMain = () => {
     navigate("/main")
   };
   const toMyFriends = () => {
     // navigate("/myFriends")
+    // 친구추가 테스트용 나중에 삭제하자
+    mutate({"userName": "박박박박박테스트"})
   };
   const showAlarm = () => {
     // 알람 확인하기
@@ -28,7 +39,6 @@ const NavBar = ({infoData}) => {
   };
   const modalProfile = () => {
     setAlarm(false);
-    setIsEdit(false);
     setMyInfo(prev=>!prev);
   }
   return (
@@ -58,7 +68,7 @@ const NavBar = ({infoData}) => {
                 initial={{scale: 0}}
                 animate={{ scale: myInfo ? 1 : 0, opacity: myInfo ? 1 : 0}}
               >
-                {isEdit ? <EditMyProfile setIsEdit={setIsEdit} info={infoData.data}/> : <MyProfile setMyInfo={setMyInfo} setIsEdit={setIsEdit} info={infoData.data}/>}
+                <MyProfile setMyInfo={setMyInfo}  info={infoData.data} setIsEditProfile={setIsEditProfile}/>
               </ProfileWrap>
           </EleImgDiv>
         </NavUpperDiv>
