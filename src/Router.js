@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
+import ChatPage from "./components/yoonmade/ChatPage";
 import KakaoRedirectHandler from "./components/yoonmade/KakaoRedirectHandler";
 import MyFriendsComponent from "./components/yoonmade/MyFriendsComponents"
 import ChatRoom from "./pages/ChatRoom";
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path:"mfc",
         element: <MyFriendsComponent />
+      },
+      {
+        path:"chatP",
+        element: <ChatPage />
       }
     ]
   }
