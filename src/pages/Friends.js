@@ -150,28 +150,39 @@ const Wrap = styled(motion.div)`
   align-items: center;
   gap: 3%;
 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  @media all and (min-width: 1024px) {
+    font-size: 15px;
+  }
+  @media all and (min-width: 2000px) {
+    font-size: 20px;
+  }
+
   * {
     box-sizing: border-box;
   }
 `;
 
 const GroupContainer = styled(motion.div)`
-  height: 70vh;
-  width: 30%;
+  height: 70%;
+  width: 60%;
   display: flex;
   flex-direction: column;
 `;
 
 const SerachContainer = styled(motion.div)`
-  width: 30%;
+  height: 70%;
+  width: 60%;
   padding: 20px;
   border: 1px solid;
   position: absolute;
 `;
 
 const FriendContainer = styled(motion.div)`
-  height: 70vh;
-  width: 30%;
+  height: 70%;
+  width: 60%;
   padding: 20px;
   border: 1px solid;
   position: absolute;
