@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
-import { getMyFriend, postAddFriend } from "../../api/memberManage";
+import { getMyFriend, postPlusFriend  } from "../../api/memberManage";
 
 const SearchFriend = ({ goBack }) => {
   const [userName, setUserName] = useState("");
