@@ -62,7 +62,7 @@ const NavBar = ({infoData, setIsEditProfile}) => {
             </AlarmWrap>
           </EleImgDiv>
           <EleImgDiv>
-            <NavImg src={defaultImg} onClick={modalProfile}/>
+            <NavImg src={infoData.data.imgUrl} onClick={modalProfile}/>
               <ProfileWrap
                 transition={{ type: "linear" }}
                 initial={{scale: 0}}
@@ -126,6 +126,7 @@ const EleImgDiv = styled.div`
 const NavImg = styled(motion.img)`
   height: 80%;
   width: 80%;
+  border-radius: 50%;
   cursor: pointer;
 `;
 const ProfileWrap = styled(motion.div)`

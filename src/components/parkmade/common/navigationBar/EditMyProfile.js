@@ -15,8 +15,8 @@ const EditMyProfile = ({info, setIsEditProfile}) => {
   const [myNick, setMyNick] = useState(info.userName);
   const { mutate:changeInfo } = useMutation(putInfoChange, {
     onSuccess: (res) => {
-      alert("성공!")
-      // setIsEdit(prev=>!prev);
+      alert("성공!");
+      setValue("nickname", "")
     },
     onError: (err) => {
       alert("지쟈스");
