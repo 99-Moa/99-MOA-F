@@ -100,16 +100,18 @@ const Wrapper = styled.div`
   width: 40%;
   margin-top: 5%;
   font-size: 80%;
-
-  .fc-myCustomButton-button,
+  .fc-myCustomButton-button {
+    height: 1vh;
+    width: 4vw;
+    font-size: .5vw;
+    border-radius: 5px;
+  }
   .fc-today-button {
     height: 1vh;
     width: 3vw;
     font-size: .5vw;
+    border-radius: 5px;
   }
-
-
-
   .fc th {
     height: 40px;
     text-align: left;
@@ -117,15 +119,12 @@ const Wrapper = styled.div`
     vertical-align: middle;
     background-color: rgba(246, 247, 249);
   }
-
   .fc .fc-daygrid-day-top {
     flex-direction: column;
   }
-
   .fc-day-sun {
     color: rgba(255, 119, 119);
   }
-
   .fc .fc-button:not(:disabled),
   .fc .fc-button-primary:disabled {
     height: 30px;
@@ -140,7 +139,6 @@ const Wrapper = styled.div`
       border-color: none;
     }
   }
-
   .fc-toolbar-chunk {
     display: flex;
     align-items: center;
@@ -156,7 +154,6 @@ const Wrapper = styled.div`
         color: black;
       }
     }
-
     .fc-myCustomButton-button {
       border-color: #ff4545;
       background-color: #ff4545;
@@ -169,13 +166,10 @@ const Wrapper = styled.div`
       }
     }
   }
-
   .fc-button-group {
     display: flex;
     gap: 2%;
   }
-  
-
   .fc-direction-ltr .fc-button-group > .fc-button:not(:first-child),
   .fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
     height: 30px;
@@ -198,16 +192,13 @@ const Wrapper = styled.div`
       box-shadow: none;
     }
   }
-
   .fc .fc-button .fc-icon {
     font-size: 20px;
     font-weight: bold;
   }
-
   .fc-next-button {
     border-radius: 50%;
   }
-
   .fc .fc-toolbar-title {
     display: flex;
     flex-direction: column;
