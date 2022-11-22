@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getFriendGroup, getFriendList } from "../../api/memberManage";
+import { getFriendGroup, getMyFriends } from "../../api/memberManage";
 import Loading from "../parkmade/common/loading/Loading";
 import FriendList from "./FriendList";
 import GroupList from "./GroupList";
@@ -52,7 +52,7 @@ const MyFriendsConponents = () => {
   );
   const { isLoading: friendLoading, data: friendList } = useQuery(
     ["friendList"],
-    getFriendList
+    getMyFriends
   );
 
   const showSearchCom = () => {
