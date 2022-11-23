@@ -19,7 +19,7 @@ const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
       location: "서울역, 서울특별시 용산구 한강대로 405",
     },
     {
-      groupId: 1,
+      groupId: 2,
       groupName: "11월 나들이 오두방정 모임",
       userNum: 5,
       userImg: [
@@ -34,7 +34,7 @@ const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
       location: "서울역, 서울특별시 용산구 한강대로 405",
     },
     {
-      groupId: 1,
+      groupId: 3,
       groupName: "11월 나들이 오두방정 모임",
       userNum: 4,
       userImg: [
@@ -48,7 +48,7 @@ const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
       location: "서울역, 서울특별시 용산구 한강대로 405",
     },
     {
-      groupId: 1,
+      groupId: 4,
       groupName: "11월 나들이 오두방정 모임",
       userNum: 6,
       userImg: [
@@ -74,7 +74,7 @@ const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
       </Header>
       <Body>
         {gData.map((group) => (
-          <GroupInfo group={group} />
+          <GroupInfo group={group} key={group.groupId} />
         ))}
       </Body>
     </>

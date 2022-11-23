@@ -15,7 +15,6 @@ const FriendList = ({ goBack, friendList }) => {
     },
   });
 
-  // 로직
   const onChangeFriendInput = (e) => {
     const value = e.target.value;
     const filterList = friendList.data.filter(({ friendUsername }) => {
@@ -26,7 +25,8 @@ const FriendList = ({ goBack, friendList }) => {
     setFriendName(value);
   };
   const onDeleteFriend = (id) => {
-    mutate(id);
+    const rst = window.confirm("삭제하시겠습니까?");
+    if (rst) mutate(id);
     setFilterFriendList(
       filterFriendList.filter((friendInfo) => friendInfo.id !== id)
     );
@@ -62,7 +62,7 @@ const FriendList = ({ goBack, friendList }) => {
         <BodyMain>
           {filterFriendList.length >= 1 || friendName
             ? filterFriendList.map((friendInfo) => (
-                <UserWrapper>
+                <UserWrapper key={friendInfo.id}>
                   <ImgAndName>
                     <img src={friendInfo.imgUrl} alt="userImg" />
                     <span>{friendInfo.friendUsername}</span>
@@ -80,7 +80,7 @@ const FriendList = ({ goBack, friendList }) => {
                 </UserWrapper>
               ))
             : friendList?.data.map((friendInfo) => (
-                <UserWrapper>
+                <UserWrapper key={friendInfo.id}>
                   <ImgAndName>
                     <img src={friendInfo.imgUrl} alt="userImg" />
                     <span>{friendInfo.friendUsername}</span>

@@ -73,7 +73,7 @@ const GroupInfo = ({ group }) => {
           <ImgWrapper>
             {group.userImg.map((img, i) => {
               if (i > 3) return;
-              return <Img src={img} />;
+              return <Img src={img} key={i} />;
             })}
             <CountCircle className="countCircle">
               {isHovering && group.userNum > 4

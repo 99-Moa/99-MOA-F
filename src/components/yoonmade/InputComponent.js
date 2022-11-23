@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { defaultColor } from "./styles";
 
 const InputComponent = ({ placeholder, ...rest }) => {
-  console.log(rest);
   return (
     <InputWrapper>
       <Input placeholder={placeholder} {...rest} />
