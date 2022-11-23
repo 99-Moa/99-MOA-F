@@ -181,6 +181,5 @@ const SerachContainer = styled(motion.div)`
 const FriendContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
-  border: 1px solid;
   position: absolute;
 `;
