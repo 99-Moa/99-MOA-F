@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
 import { deleteFriend } from "../../api/memberManage";
+import FriendInfo from "./FriendInfo";
 import InputComponent from "./InputComponent";
 import { defaultColor } from "./styles";
 
@@ -62,40 +63,18 @@ const FriendList = ({ goBack, friendList }) => {
         <BodyMain>
           {filterFriendList.length >= 1 || friendName
             ? filterFriendList.map((friendInfo) => (
-                <UserWrapper key={friendInfo.id}>
-                  <ImgAndName>
-                    <img src={friendInfo.imgUrl} alt="userImg" />
-                    <span>{friendInfo.friendUsername}</span>
-                  </ImgAndName>
-                  <span>{friendInfo.userId}</span>
-                  <DeleteWrapper>
-                    <span className="text">삭제</span>
-                    <span
-                      className="btn"
-                      onClick={() => onDeleteFriend(friendInfo.id)}
-                    >
-                      ⊖
-                    </span>
-                  </DeleteWrapper>
-                </UserWrapper>
+                <FriendInfo
+                  friendInfo={friendInfo}
+                  onDeleteFriend={onDeleteFriend}
+                  key={friendInfo.id}
+                />
               ))
             : friendList?.data.map((friendInfo) => (
-                <UserWrapper key={friendInfo.id}>
-                  <ImgAndName>
-                    <img src={friendInfo.imgUrl} alt="userImg" />
-                    <span>{friendInfo.friendUsername}</span>
-                  </ImgAndName>
-                  <span>{friendInfo.userId}</span>
-                  <DeleteWrapper>
-                    <span className="text">삭제</span>
-                    <span
-                      className="btn"
-                      onClick={() => onDeleteFriend(friendInfo.id)}
-                    >
-                      ⊖
-                    </span>
-                  </DeleteWrapper>
-                </UserWrapper>
+                <FriendInfo
+                  friendInfo={friendInfo}
+                  onDeleteFriend={onDeleteFriend}
+                  key={friendInfo.id}
+                />
               ))}
         </BodyMain>
       </Body>
@@ -153,46 +132,4 @@ const BodyMain = styled.div`
   height: 95%;
   padding: 0 2em;
   user-select: none;
-`;
-
-const UserWrapper = styled.div`
-  height: 10%;
-  display: grid;
-  grid-template-columns: 30% 50% 20%;
-  align-items: center;
-  font-weight: 300;
-`;
-
-const ImgAndName = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1em;
-
-  img {
-    height: 3em;
-    width: 3em;
-    border-radius: 50%;
-  }
-`;
-
-const DeleteWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.3em;
-
-  &:hover {
-    color: ${defaultColor.red};
-  }
-
-  .text {
-    font-size: 0.8em;
-  }
-
-  .btn {
-    padding-bottom: 0.1em;
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-  }
 `;

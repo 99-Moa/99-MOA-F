@@ -10,8 +10,6 @@ const SearchFriend = ({ goBack }) => {
   const [userName, setUserName] = useState("");
   const [userInfo, setUserInfo] = useState();
 
-  //TODO: userInfo에 userId도 받아오기
-
   const { mutate: searchMutate } = useMutation(getMyFriend, {
     onSuccess: ({ success, data, error }) => {
       if (success) {
@@ -39,7 +37,7 @@ const SearchFriend = ({ goBack }) => {
   };
 
   const onSearchFriend = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.type === "click") {
       if (!userName.trim()) {
         alert("친구이름을 입력해주세요!");
         return;
@@ -75,6 +73,7 @@ const SearchFriend = ({ goBack }) => {
           value={userName}
           onChange={onChangeSerachInput}
           onKeyPress={onSearchFriend}
+          iconClick={onSearchFriend}
         />
       </Header>
       <Body>
@@ -143,6 +142,7 @@ const FriendWrapper = styled.div`
     width: 10em;
     border-radius: 50%;
     margin-bottom: 1em;
+    object-fit: cover;
   }
 
   .userName {

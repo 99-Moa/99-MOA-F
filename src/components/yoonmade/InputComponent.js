@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { defaultColor } from "./styles";
 
-const InputComponent = ({ placeholder, ...rest }) => {
+const InputComponent = ({ placeholder, iconClick, ...rest }) => {
   return (
     <InputWrapper>
       <Input placeholder={placeholder} {...rest} />
-      <div>
+      <div onClick={iconClick}>
         <svg aria-label="검색" role="img" viewBox="0 0 24 24">
           <path
             d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z"

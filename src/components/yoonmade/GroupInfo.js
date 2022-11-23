@@ -226,6 +226,7 @@ const Img = styled.img`
   position: absolute;
   bottom: 0;
   transition: 0.3s ease-in-out;
+  object-fit: cover;
 `;
 
 const CountCircle = styled.div`
