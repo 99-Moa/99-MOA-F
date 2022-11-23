@@ -175,15 +175,12 @@ const GroupContainer = styled(motion.div)`
 const SerachContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
-  padding: 20px;
-  border: 1px solid;
   position: absolute;
 `;
 
 const FriendContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
-  padding: 20px;
   border: 1px solid;
   position: absolute;
 `;

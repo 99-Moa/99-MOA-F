@@ -1,5 +1,5 @@
 import InputComponent from "./InputComponent";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import GroupInfo from "./GroupInfo";
 import { defaultColor } from "./styles";
 
@@ -101,39 +101,6 @@ const Button = styled.div`
   align-items: center;
   font-size: 0.8em;
   user-select: none;
-`;
-
-const InputWrapper = styled.div`
-  height: 100%;
-  width: 20em;
-  border-radius: 0.2em;
-  display: flex;
-  background-color: ${defaultColor.lightGrey};
-  overflow: hidden;
-
-  div {
-    margin-right: 0.8em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg {
-      height: 1em;
-      width: 1em;
-      right: 0;
-    }
-  }
-`;
-
-const Input = styled.input`
-  height: 100%;
-  width: 100%;
-  padding: 0 1em;
-  border: 1px solid ${defaultColor.lightGrey};
-  background-color: ${defaultColor.lightGrey};
-  font-size: 0.8em;
-  color: ${defaultColor.black};
-  outline-style: none;
 `;
 
 const Body = styled.div`

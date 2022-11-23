@@ -37,7 +37,7 @@ export default InputComponent;
 
 const InputWrapper = styled.div`
   height: 100%;
-  width: 20em;
+  width: 18em;
   border-radius: 0.2em;
   display: flex;
   background-color: ${defaultColor.lightGrey};
