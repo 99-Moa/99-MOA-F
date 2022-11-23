@@ -10,6 +10,8 @@ const SearchFriend = ({ goBack }) => {
   const [userName, setUserName] = useState("");
   const [userInfo, setUserInfo] = useState();
 
+  //TODO: userInfo에 userId도 받아오기
+
   const { mutate: searchMutate } = useMutation(getMyFriend, {
     onSuccess: ({ success, data, error }) => {
       if (success) {
@@ -90,21 +92,6 @@ const SearchFriend = ({ goBack }) => {
           </NotFriendWrapper>
         )}
       </Body>
-      {/* <FriendSearchHeader>
-        <button onClick={goBack}>뒤로</button>
-        <h1>친구 검색</h1>
-      </FriendSearchHeader>
-      <FriendSearchBody>
-        <SearchInputWrapper>
-          <FriendSearchInput onChange={onChangeSerachInput} value={userName} />
-          <SearchBtn onClick={onSearchFriend}>검색하기</SearchBtn>
-        </SearchInputWrapper>
-        <SearchRstProfileWrapper>
-          <SearchRstImg src={userInfo.imgUrl} />
-          <SerachRstNickName>{userInfo.friendUsername}</SerachRstNickName>
-          <SearchRstBtn onClick={onAddFriend}>친구추가</SearchRstBtn>
-        </SearchRstProfileWrapper>
-      </FriendSearchBody> */}
     </>
   );
 };
