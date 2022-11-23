@@ -82,7 +82,7 @@ const SearchFriend = ({ goBack }) => {
           <FriendWrapper>
             <img src={userInfo.imgUrl} alt="userImg" />
             <span className="userName">{userInfo.friendUsername}</span>
-            <span className="userId">ABCD123</span>
+            <span className="userId">{userInfo.userId}</span>
             <div onClick={onAddFriend}>친구추가</div>
           </FriendWrapper>
         ) : (
@@ -180,70 +180,3 @@ const NotFriendWrapper = styled.div`
     color: ${defaultColor.darkGrey};
   }
 `;
-
-// const FriendSearchHeader = styled.div`
-//   width: 100%;
-//   display: flex;
-//   height: 50px;
-//   border: 1px solid black;
-//   justify-content: center;
-//   align-items: center;
-
-//   h1 {
-//     font-size: 20px;
-//     position: absolute;
-//   }
-
-//   button {
-//     margin-right: auto;
-//   }
-// `;
-
-// const FriendSearchBody = styled.div`
-//   height: 50vh;
-//   border: 1px solid black;
-//   margin-top: 20px;
-//   overflow: auto;
-//   padding: 5px;
-// `;
-
-// const SearchInputWrapper = styled.div`
-//   margin-top: 20px;
-//   display: flex;
-//   justify-content: center;
-//   gap: 20px;
-// `;
-
-// const FriendSearchInput = styled.input`
-//   width: 80%;
-//   padding: 2%;
-//   text-align: center;
-//   font-size: 20px;
-// `;
-
-// const SearchBtn = styled.div`
-//   border: 1px solid black;
-//   display: flex;
-//   align-items: center;
-// `;
-
-// const SearchRstProfileWrapper = styled.div`
-//   margin-top: 20%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const SearchRstImg = styled.img`
-//   height: 30%;
-//   width: 30%;
-//   border-radius: 50%;
-// `;
-
-// const SerachRstNickName = styled.h3``;
-
-// const SearchRstBtn = styled.div`
-//   padding: 2%;
-//   border: 1px solid black;
-// `;
