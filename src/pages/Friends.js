@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { getFriendGroup, getMyFriends, getMyInfo } from "../api/memberManage";
 import Loading from "../components/parkmade/common/loading/Loading";
@@ -46,6 +47,7 @@ const Friends = () => {
   const [showFriend, setShowFriend] = useState(false);
   const [showSearch, setShowSerach] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
+  const { alarmState, profileState } = useSelector((state) => state.modalState);
 
   const { isLoading: infoLoading, data: infoData } = useQuery(
     ["myInfo"],
@@ -117,6 +119,7 @@ const Friends = () => {
                   initial="invisible"
                   animate="visible"
                   exit="exit"
+                  isModal={profileState || alarmState}
                   key="2"
                 >
                   <FriendList goBack={goBack} friendList={friendList} />
@@ -129,6 +132,7 @@ const Friends = () => {
                   initial="invisible"
                   animate="visible"
                   exit="exit"
+                  isModal={profileState || alarmState}
                   key="2"
                 >
                   <SearchFriend goBack={goBack} />
@@ -177,10 +181,12 @@ const SerachContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
+  ${(props) => props.isModal && "z-index:-1"}
 `;
 
 const FriendContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
+  ${(props) => props.isModal && "z-index:-1"}
 `;
