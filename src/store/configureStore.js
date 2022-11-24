@@ -5,7 +5,7 @@ import planId from "./modules/parkmade/planId";
 const store = configureStore({
   reducer: {
     modalState: modalState.reducer,
-    planId:planId.reducer,
+    planId: planId.reducer,
   },
 });
 
