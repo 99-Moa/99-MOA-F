@@ -1,4 +1,4 @@
-## 아키택처
+## 아키텍처
 
 ![아키텍처](https://user-images.githubusercontent.com/105584331/203726303-e5241b95-0940-484a-adff-22e78ea8b388.png)
 

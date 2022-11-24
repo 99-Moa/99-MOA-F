@@ -172,7 +172,8 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
           </UpperDetailDiv>
         </ToDoDiv>
         :
-        null
+        <ToDoDiv>
+        </ToDoDiv>
       }
     </>
   );

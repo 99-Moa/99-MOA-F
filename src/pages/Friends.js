@@ -99,7 +99,7 @@ const Friends = () => {
                   <GroupList
                     showSearchCom={showSearchCom}
                     showFriendCom={showFriendCom}
-                    friendGroup={friendGroup}
+                    friendGroup={friendGroup.data}
                   />
                 </GroupContainer>
               )}

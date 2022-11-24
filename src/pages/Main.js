@@ -31,7 +31,7 @@ const Main = () => {
           </Portal>
           <Wrap>
             <Calendar setIsChoiceGroup={setIsChoiceGroup} schedulesData={schedulesData.data}/>
-            {schedulesData.data.length && <ToDos schedulesData={schedulesData.data} />}
+            {schedulesData.data.length ? <ToDos schedulesData={schedulesData.data}/> : null}
           </Wrap>
         </>
       } 
