@@ -6,31 +6,30 @@ import styled from "styled-components";
 import { postSchedule } from "../../../../api/schedulesManage";
 import Time from "./Time";
 
-
-// 리액트 훅 폼 적용 하고 뮤테이트 적용하자
-// 키보드 위아래 버튼으로 가능하게 하자.
-// npm install react-date-range 하자
-// 주소 검색을 select 이용하자
-const MakePlan = () => {
+const MakePlan = ({setIsChoiceGroup}) => {
   const { kakao } = window;
   const traceRoadName = useRef();
   const [isSearch, setIsSearch] = useState(false);
+  const [isWriting, setIsWriting] = useState(false)
   const [place, setPlace] = useState("");
   const [places, setPlaces] = useState([]);
-  const [roadName, setRoadName] = useState("");  // 나중에 벡으로 데이터 도로명주소 보내기용
-  const { register, handleSubmit, setValue, getValues } = useForm();
+  const [roadName, setRoadName] = useState(""); 
+  const { register, handleSubmit, setValue } = useForm();
   const { mutate:saveMyPlan } = useMutation(postSchedule, {
     onSuccess: (res) => {
-
+      alert("계획 작성 완료");
+      setIsChoiceGroup(false);
     }
   });
 
   const searchPlace = (ev) => {
     !isSearch && setIsSearch(true);
     setPlace(ev.target.value);
+    setIsWriting(true)
     if (ev.key === "Enter") {
       !roadName && setRoadName(traceRoadName.current?.children[0]?.children[1]?.innerText);
       setIsSearch(false);
+      setIsWriting(false);
     }
   };
   const saveRoadName = (ev) => {
@@ -38,11 +37,26 @@ const MakePlan = () => {
     setPlace(ev.currentTarget?.children[0]?.innerText);
     setRoadName(ev.currentTarget?.children[1]?.innerText);
     setIsSearch(false);
+    setIsWriting(false);
   };
   const submitPlan = (data) => {
-    // 필수항목 조건 정해지면 바뀌어야함.
-    if (data.title && data.place) {
-      // saveMyPlan({})
+    const today = new Date();
+    if (!isWriting) {
+      if (data.title && data.place && data.dateStart && data.dateEnd && data.startTime && data.endTime) {
+        if (data.dateStart > data.dateEnd) {
+          alert("시작일은 종요일보다 늦을 수 없습니다.");
+          return;
+        }
+        if (data.dateStart === data.dateEnd && data.startTime > data.endTime) {
+          alert("시작시간이 종료시간보다 늦을 수 없습니다.");
+          return;
+        }
+        if (data.dateStart < today) {
+          alert("시작일이 현재보다 늦을 수 없습니다.");
+          return;
+        }
+        saveMyPlan({"title": data.title, "startDate": data.dateStart, "endDate": data.dateEnd, "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea})
+      }
     }
   }
   
@@ -103,18 +117,40 @@ const MakePlan = () => {
       <Form onSubmit={handleSubmit(submitPlan)}>
         <TitleInput {...register("title")} placeholder="제목을 입력해주세요" />
         <DateDiv>
-          <DateSelector type="date" {...register("date")}/>
-          <TimeDiv>
-            <TimeSelect {...register("startTime")}>
-              <TimeOption>시작시간</TimeOption>
-              <Time />
-            </TimeSelect>
-            <Wave>~</Wave>
-            <TimeSelect {...register("endTime")}>
-              <TimeOption>끝나는시간</TimeOption>
-              <Time />
-            </TimeSelect>
-          </TimeDiv>
+          <UpperDayDiv>
+            <DayDiv>
+              <DaySpan>
+                시작일
+              </DaySpan>
+              <DateSelector type="date" {...register("dateStart")} />
+            </DayDiv>
+            <DayDiv>
+              <DaySpan>
+                종료일
+              </DaySpan>
+              <DateSelector type="date" {...register("dateEnd")} />
+            </DayDiv>
+          </UpperDayDiv>
+          <UpperTimeDiv>
+            <TimeDiv>
+              <DaySpan>
+                시작시간
+              </DaySpan>
+              <TimeSelect {...register("startTime")}>
+                <TimeOption>시작시간</TimeOption>
+                <Time />
+              </TimeSelect>
+            </TimeDiv>
+            <TimeDiv>
+              <DaySpan>
+                종료시간
+              </DaySpan>
+              <TimeSelect {...register("endTime")}>
+                <TimeOption>끝나는시간</TimeOption>
+                <Time />
+              </TimeSelect>
+            </TimeDiv>
+          </UpperTimeDiv>
         </DateDiv>
         <SearchPlaceDiv>
           <PlaceInput {...register("place")} placeholder="장소를 입력해주세요." onKeyUp={searchPlace} />
@@ -130,7 +166,8 @@ const MakePlan = () => {
                 {places.map((prop, index) => (
                   <List key={index} onClick={saveRoadName}>
                     <PlaceName>{prop.place_name}</PlaceName>
-                    <PlaceRoadName>{prop.address_name}</PlaceRoadName>
+                    <PlaceRoadName>{prop.road_address_name}</PlaceRoadName>
+                    {console.log(prop)}
                   </List>
                 ))}
               </Lists>
@@ -180,30 +217,51 @@ const TitleInput = styled.input`
 `;
 const DateDiv = styled.div`
   width: 90%;
-  height: 4%;
+  height: 6%;
   margin: 1% 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
+const UpperDayDiv = styled.div`
+  height: 100%;
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+`;
+const DayDiv = styled.div`
+  height: 100%;
+  width: 47.5%;
+  display: flex;
+  flex-direction: column;
+`;
+const DaySpan = styled.span`
+  font-size: 80%;
+  font-weight: 900;
+`;
 const DateSelector = styled.input`
   height: 100%;
-  width: 40%;
+  width: 100%;
   border: 1px solid;
   border-radius: 10px;
   background-color: transparent;
-  font-size: 200%;
+  font-size: 100%;
+`;
+const UpperTimeDiv = styled.div`
+  height: 100%;
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
 `;
 const TimeDiv = styled.div`
   height: 100%;
-  width: 50%;
+  width: 47.5%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 `;
 const TimeSelect = styled.select`
   height: 100%;
-  width: 40%;
+  width: 100%;
   border: 1px solid;
   border-radius: 10px;
   background-color: white;
@@ -214,15 +272,6 @@ const TimeOption = styled.option`
   border: 1px solid;
   border-radius: 10px;
   background-color: white;
-`;
-const Wave = styled.div`
-  height: 100%;
-  width: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 100%;
-  font-weight: 700;
 `;
 const SearchPlaceDiv = styled.div`
   width: 90%;
@@ -329,7 +378,7 @@ const MapDiv = styled.div`
 `;
 const MemoDiv = styled.div`
   width: 90%;
-  height: 20%;
+  height: 15%;
   border: 1px solid;
   border-radius: 10px;
   margin: 1% 0px;
@@ -344,7 +393,6 @@ const MemoTextArea = styled.textarea`
   outline: none;
   border: none;
 `;
-
 const DoneDiv = styled.div`
   width: 90%;
   height: 5%;

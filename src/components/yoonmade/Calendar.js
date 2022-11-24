@@ -7,14 +7,9 @@ import { defaultColor } from "./styles";
 
 const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
   const onDateClick = (e) => {
-    console.log(e);
     const date = e.dateStr;
-    console.log("특정 날짜 클릭시 작동되는 함수", date);
   };
-  const onEventClick = (e) => {
-    console.log(e.event._instance.range);
-    console.log("이벤트를 눌렀을때 동작하는 함수");
-  };
+  const onEventClick = (e) => {};
   const onAddEvent = () => {
     setIsChoiceGroup((prev) => !prev);
   };
@@ -29,35 +24,23 @@ const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
     }
   };
   const setTitleFormat = (date) => {
-    const newD = new Date();
-    const year = newD.getFullYear();
-    const month = newD.getMonth() + 1;
-    const today = newD.getDate();
-    const day = newD.getDay();
+    const newD = new Date()
+    const year = newD.getFullYear()
+    const month = newD.getMonth() + 1
+    const today = newD.getDate()
+    const yearMonth = React.createElement("div",{key:1},`${date.date.year}년 ${date.date.month+1}월`)
+    let todayElm, dateBox
 
-    const dayArr = ["일", "월", "화", "수", "목", "금", "토"];
-
-    const yearElm = React.createElement("div", null, `${date.date.year}`);
-    const monthElm = React.createElement("div", null, `${date.date.month + 1}`);
-    const yearMonth = React.createElement(
-      "div",
-      { key: 1 },
-      `${date.date.year}년 ${date.date.month + 1}월`
-    );
-    let todayElm, dateBox, dayElm;
-
-    if (date.date.year === year && date.date.month + 1 === month) {
-      todayElm = React.createElement("div", { key: 2 }, `${today}`);
-      // dayElm = React.createElement("div",null,`${dayArr[day]}`)
-      dateBox = React.createElement("div", null, [yearMonth, todayElm]);
-      return dateBox;
+    if(date.date.year === year && date.date.month +1 === month){
+      todayElm = React.createElement("div",{key:2},`${today}`)
+      dateBox = React.createElement("div",null,[yearMonth,todayElm])
+      return dateBox
     } else {
-      todayElm = React.createElement("div", { key: 2 }, 1);
-      // dayElm = React.createElement("div",null,`${dayArr[date.date.marker.getDay()]}`)
-      dateBox = React.createElement("div", null, [yearMonth, todayElm]);
-      return dateBox;
+      todayElm = React.createElement("div",{key:2},1)
+      dateBox = React.createElement("div",null,[yearMonth,todayElm])
+      return dateBox
     }
-  };
+}
   return (
     <Wrapper>
       <FullCalendar
@@ -81,11 +64,14 @@ const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
         height="90%"
         locale="kr"
         dayMaxEvents={true}
-        events={[
-          { title: "종일이벤트", date: "2022-11-08" },
-          { title: "시간이벤트", start: "2022-11-08T12:30:00", allDay: false },
-          { title: "장기이벤트", start: "2022-11-08", end: "2022-11-20" },
-        ]}
+        events={
+          schedulesData.map((prop) => {
+            if (prop.startDate === prop.endDate) {
+              return {"title":prop.title, "start":prop.startDate}
+            }
+            return {"title":prop.title, "start":prop.startDate, "end":prop.endDate}
+          })
+        }
         eventColor="rgba(1,140,255)"
         eventClick={onEventClick}
         dateClick={onDateClick}
@@ -107,7 +93,6 @@ const Wrapper = styled.div`
   @media all and (min-width: 2000px) {
     font-size: 15px;
   }
-
   .fc th {
     height: 2.5em;
     text-align: left;
@@ -115,16 +100,13 @@ const Wrapper = styled.div`
     vertical-align: middle;
     background-color: ${defaultColor.lightGrey};
   }
-
   .fc .fc-daygrid-day-top {
     flex-direction: column;
     font-size: 0.9em;
   }
-
   .fc-day-sun {
     color: rgba(255, 119, 119);
   }
-
   .fc .fc-button:not(:disabled),
   .fc .fc-button-primary:disabled {
     padding: 0.3em 1em;
@@ -140,7 +122,6 @@ const Wrapper = styled.div`
       border-color: none;
     }
   }
-
   .fc-toolbar-chunk {
     display: flex;
     align-items: center;
@@ -156,7 +137,6 @@ const Wrapper = styled.div`
         color: black;
       }
     }
-
     .fc-myCustomButton-button {
       border-color: ${defaultColor.red};
       background-color: ${defaultColor.red};
@@ -169,11 +149,9 @@ const Wrapper = styled.div`
       }
     }
   }
-
   .fc-button-group {
     display: flex;
   }
-
   .fc-direction-ltr .fc-button-group > .fc-button:not(:first-child),
   .fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
     height: 100%;
@@ -195,7 +173,6 @@ const Wrapper = styled.div`
       box-shadow: none;
     }
   }
-
   .fc .fc-button .fc-icon {
     padding: 0.8em;
     display: flex;
@@ -204,7 +181,9 @@ const Wrapper = styled.div`
     font-size: 2em;
     font-weight: bold;
   }
-
+  .fc-next-button {
+    border-radius: 50%;
+  }
   .fc .fc-toolbar-title {
     display: flex;
     flex-direction: column;

@@ -44,7 +44,6 @@ const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
         isAlone ?
           (<Alone ref={modalRef} layoutId="transition">
             <MakePlan setIsChoiceGroup={setIsChoiceGroup}/>
-            {/* <InputDatePicker /> */}
           </Alone>)
           :
           (<Group ref={modalRef} layoutId="transition">

@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import MyProfile from "./MyProfile";
 import Alarm from "./Alarm";
-import EditMyProfile from "./EditMyProfile";
 import alarmImg from "../../../../img/Icon_Alarm.png";
 import groupImg from "../../../../img/Icon_Group.png"
-import defaultImg from "../../../../img/Icon_Profile.png"
 import logoImg from "../../../../img/Logo_Main.png"
 import { useMutation } from "react-query";
 import { postPlusFriend } from "../../../../api/memberManage";
@@ -27,15 +25,16 @@ const NavBar = ({infoData, setIsEditProfile}) => {
   const { mutate } = useMutation(postPlusFriend, {
     onSuccess: (res) => {
       console.log("성공", res)
+    },
+    onError: (err) => {
+      console.log(err)
     }
   })
   const toMain = () => {
     navigate("/main")
   };
   const toMyFriends = () => {
-    // navigate("/myFriends")
-    // 친구추가 테스트용 나중에 삭제하자
-    mutate({"userName": "박박박박박테스트"})
+    navigate("/myFriends")
   };
   const showAlarm = () => {
     // 알람 확인하기
@@ -74,7 +73,7 @@ const NavBar = ({infoData, setIsEditProfile}) => {
             </AlarmWrap>
           </EleImgDiv>
           <EleImgDiv>
-            <NavImg src={defaultImg} onClick={modalProfile}/>
+            <NavImg src={infoData.data.imgUrl} onClick={modalProfile}/>
               <ProfileWrap
                 transition={{ type: "linear" }}
                 initial={{scale: 0}}
@@ -138,6 +137,7 @@ const EleImgDiv = styled.div`
 const NavImg = styled(motion.img)`
   height: 80%;
   width: 80%;
+  border-radius: 50%;
   cursor: pointer;
 `;
 const ProfileWrap = styled(motion.div)`
