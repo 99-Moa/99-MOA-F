@@ -4,6 +4,7 @@ import GroupInfo from "./GroupInfo";
 import { defaultColor } from "./styles";
 
 const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
+  console.log(friendGroup);
   const gData = [
     {
       groupId: 1,
