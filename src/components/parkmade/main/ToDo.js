@@ -1,15 +1,43 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { deleteSchedule, getDetailSchedule } from "../../../api/schedulesManage";
+import dot from "../../../img/dot.png"
 
 
-// 메인에서 리액트 쿼리로 데이터 프랍으로서 다받아와야함 디테일까지 
-// 이니셜로 다시해보자
+// 모임장소 이름과 도로명주소 변경해야함, 지도 적용  제대로 안됬음
 const ToDo = ({prop, traceScroll, index, setExtend}) => {
   const navigate = useNavigate();
+  const deleteRef = useRef();
   const { kakao } = window;
   const [openDetail, setOpenDetail] = useState(false);
+  const [getDetailData, setGetDetailData] = useState({});
+  const [isDeleteOrRevise, setIsDeleteOrRevise] = useState(false);
+  const { mutate:detailPlan } = useMutation(getDetailSchedule, {
+    onSuccess: (res) => {
+      setGetDetailData(res.data);
+    }
+  });
+  const { mutate:deletePlan } = useMutation(deleteSchedule, {
+    onSuccess: (res) => {
+      alert("삭제완료");
+    }
+  })
+
+  const toChat = () => {
+    // navigate("/채팅방")
+  }
+  const openDR = () => {
+    setIsDeleteOrRevise(prev=>!prev);
+  }
+  const deleteThis = () => {
+    deletePlan(prop.id)
+  }
+  const reviseThis = () => {
+    // 수정하기 뮤테이트 쓰기
+  }
   const open =  () => {
     setExtend(prev=>!prev)
     setOpenDetail(prev=>!prev);
@@ -17,85 +45,140 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
     !openDetail && setTimeout(() => {traceScroll.current.scrollBy({top: (traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.24)*index, behavior: 'smooth'})}, 1)
     openDetail && traceScroll.current.scrollBy({top: -(traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.24)*index, behavior: 'smooth'})
   };
-  const toChat = () => {
-    // navigate("/채팅방")
-  }
-  
-  useEffect(() => { 
-    const container = document.querySelector('.kakao-map'); 
-    const options = {center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), level: 5}; 
-    const map = new kakao.maps.Map(container, options);
-    const geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch(`서울 강남구 강남대로 지하 396`, (result, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-        const marker = new kakao.maps.Marker({
-          map: map,
-          position: coords
-        });
 
-        map.setCenter(coords);
-      }
-    });  
-  }, [/*벡엔드로 부터 받은 주소*/])
+  useEffect(() => {
+    detailPlan(prop.id);
+    const container = document.querySelector('.kakao-map'); 
+    if (container && Object.keys(getDetailData).length) {
+      const options = { center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), level: 5 };
+      const map = new kakao.maps.Map(container, options);
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(getDetailData.locationRoadName, (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          const marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+          });
+
+          map.setCenter(coords);
+        }
+      });  
+    }
+  }, [getDetailData.location])
+  // useEffect(() => {
+  //   detailPlan(prop.id);
+  //   const infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+  //   const container = document.querySelector('.kakao-map');
+  //   if (container && Object.keys(getDetailData).length) {
+  //     const options = { center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), level: 2 };
+  //     const map = new kakao.maps.Map(container, options);
+  //     const ps = new kakao.maps.services.Places();
+  //     const displayMarker = (place) => {
+  //       let marker = new kakao.maps.Marker({
+  //         map: map,
+  //         position: new kakao.maps.LatLng(place.y, place.x),
+  //       });
+  //       kakao.maps.event.addListener(marker, 'click', () => {
+  //         infoWindow.setContent('<div style="padding:5px; font-size:12px; margin:auto">' + place.place_name + '</div>');
+  //         infoWindow.open(map, marker);
+  //       });
+  //     };
+  //     ps.keywordSearch(getDetailData.location, (data, status, pagination) => {
+  //       if (status === kakao.maps.services.Status.OK) {
+  //         const bounds = new kakao.maps.LatLngBounds();
+  //         data.map((prop) => { displayMarker(prop); bounds.extend(new kakao.maps.LatLng(prop.y, prop.x)); });
+  //         map.setBounds(bounds);
+  //       }
+  //     });
+  //   }
+  // }, [getDetailData.location]);
   return (
-    <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index}>
-      <UpperSummaryDiv onClick={open} variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"}>
-        <SummaryDiv>
-          <WrapSummary>
-            <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
-              {"11일 나들이 오두방정 모임"}
-            </SumContent>
-            <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
-              {"11월 10일 PM 7:00"}
-            </Date>
-          </WrapSummary>
-        </SummaryDiv>
-      </UpperSummaryDiv>
-      <UpperDetailDiv variants={clickVariants} animate={openDetail ? "detailSec" : "detailFir"}>
-        <FirDetailDiv>
-          <Attend>
-            참석자
-          </Attend>
-          <Attendees>
-            {/* 아래 내용 맵으로 돌리는거다 */}
-            <AttendeesDiv>
-              <AttendeesImg />
-            </AttendeesDiv>
-            <AttendeesDiv>
-              <AttendeesImg />
-            </AttendeesDiv>
-          </Attendees>
-        </FirDetailDiv>
-        <SecDetailDiv>
-          <BigSpan>
-            모임 장소
-          </BigSpan><br/>
-          <SmallSpanOne>
-            {"강남역"}
-          </SmallSpanOne><br/>
-          <SmallSpanTwo>
-            {"서울 강남구 강남대로 지하 396"}
-          </SmallSpanTwo>
-          <MapDiv className="kakao-map" />
-        </SecDetailDiv>
-        <ThirdDetailDiv>
-          <BigSpan>
-            세부 내용
-          </BigSpan>
-          <Content>
-            {prop}
-          </Content>
-        </ThirdDetailDiv>
-        <UpperChatRoom onClick={toChat}>
-          그룹채팅
-        </UpperChatRoom>
-      </UpperDetailDiv>
-    </ToDoDiv>
+    <>
+      {Object.keys(getDetailData).length ? 
+        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index}>
+          <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"}>
+            <SummaryDiv>
+              <WrapSummary  onClick={open}>
+                <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
+                  {getDetailData.title}
+                </SumContent>
+                <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
+                  {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
+                </Date>
+              </WrapSummary>
+              <OptionDiv>
+                <OptionImg ref={deleteRef} src={dot} variants={dotVariant} animate={{rotateZ: isDeleteOrRevise ? 90 : 0}} onClick={openDR}/>
+                <DeleteOrRevise transition={{ type: "linear" }}  initial={{scaleX:0}} animate={{ scaleX: isDeleteOrRevise ? 1 : 0, duration:0.5 }}>
+                  <Choice whileHover={{scale:1.1}} onClick={deleteThis}>
+                    삭제
+                  </Choice>
+                  <Choice whileHover={{scale:1.1}} onClick={reviseThis}>
+                    수정
+                  </Choice>
+                </DeleteOrRevise>
+              </OptionDiv>
+            </SummaryDiv>
+          </UpperSummaryDiv>
+          <UpperDetailDiv variants={clickVariants} animate={openDetail ? "detailSec" : "detailFir"}>
+            <FirDetailDiv>
+              <Attend>
+                참석자
+              </Attend>
+              <Attendees>
+                {getDetailData.users?.map((prop) =>
+                  <AttendeesDiv key={prop.id}>
+                    <AttendeesImg src={prop.imgUrl} />
+                  </AttendeesDiv>
+                )}
+              </Attendees>
+            </FirDetailDiv>
+            <SecDetailDiv>
+              <BigSpan>
+                모임 장소
+              </BigSpan><br />
+              <SmallSpanOne>
+                {getDetailData.location}
+              </SmallSpanOne><br />
+              <SmallSpanTwo>
+                {getDetailData.locationRoadName}
+              </SmallSpanTwo>
+              <MapDiv className="kakao-map" />
+            </SecDetailDiv>
+            {(getDetailData.users?.length === 1) ?  
+              <ThirdDetailDivAlone>
+                <BigSpan>
+                  세부 내용
+                </BigSpan>
+                <Content>
+                  {getDetailData.content}
+              </Content>
+              </ThirdDetailDivAlone>
+              :
+              <>
+                <ThirdDetailDivGroup>
+                  <BigSpan>
+                    세부 내용
+                  </BigSpan>
+                  <Content>
+                    {getDetailData.content}
+                  </Content>
+                </ThirdDetailDivGroup>
+                <UpperChatRoom onClick={toChat}>
+                  그룹채팅
+                </UpperChatRoom>
+              </>
+            }
+          </UpperDetailDiv>
+        </ToDoDiv>
+        :
+        null
+      }
+    </>
   );
 }
 
-export default ToDo;
+export default React.memo(ToDo);
 
 const ToDoDiv = styled(motion.div)`
   width: 99%;
@@ -117,10 +200,51 @@ const SummaryDiv = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
+  justify-content: space-between;
   padding-left: 3%;
   align-items: center;
 `;
+const OptionDiv = styled.div`
+  margin-right: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+const OptionImg = styled(motion.img)`
+  height: 50%;
+  width: 70%;
+`;
+const DeleteOrRevise = styled(motion.div)`
+  height: 300%;
+  width: 400%;
+  top: -100%;
+  right: 100%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  transform-origin: right center;
+  gap: 10%;
+`;
+const Choice = styled(motion.div)`
+  height: 40%;
+  width: 40%;
+  border: 1px solid #AAAFB5;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #E9EEF2;
+  font-size: 50%;
+  cursor: pointer;
+`;
+
 const WrapSummary = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -214,7 +338,15 @@ const MapDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const ThirdDetailDiv = styled.div`
+
+const ThirdDetailDivAlone = styled.div`
+  height: 30%;
+  width: 85%;
+  padding: 0 3%;
+  margin-bottom: 3%;
+`;
+
+const ThirdDetailDivGroup = styled.div`
   height: 20%;
   width: 85%;
   padding: 0% 3%;
@@ -273,7 +405,7 @@ const clickVariants = {
     height : "10%",
     color : "white",
     backgroundColor : "#00a8ff",
-    borderRadius : "8px",
+    borderRadius : "5px",
     transition : {
       duration : 0.7,
       delay : 0.7
@@ -295,13 +427,20 @@ const clickVariants = {
     height : "0%",
     display: "none",
     transition : {
-      duration : 0.5
+      duration : 0.5,
     }
   },
   detailSec : {
     height : "90%",
     transition : {
       duration : 0.5,
+      
     }
+  }
+}
+
+const dotVariant = {
+  ani: {
+    rotateZ:90
   }
 }

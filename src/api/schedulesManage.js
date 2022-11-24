@@ -10,9 +10,13 @@ export const getDetailSchedule = async (scheduleId) => {
   return data;
 }
 
-// 일정 만들기, 일정삭제, 일정 수정
+// 일정 만들기(개인), 일정 만들기(그룹), 일정삭제, 일정 수정
 export const postSchedule = async (planData) => {
   const {data} = await axiosIns.post(`/schedule`, planData);
+  return data;
+}
+export const postScheduleGroup = async (planData) => {
+  const {data} = await axiosIns.post(`/schedule/${planData[0]}`, planData[1]);
   return data;
 }
 export const deleteSchedule = async (scheduleId) => {

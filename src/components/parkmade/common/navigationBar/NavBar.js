@@ -29,9 +29,7 @@ const NavBar = ({infoData, setIsEditProfile}) => {
     navigate("/main")
   };
   const toMyFriends = () => {
-    // navigate("/myFriends")
-    // 친구추가 테스트용 나중에 삭제하자
-    mutate({"userName": "박박박박박테스트"})
+    navigate("/myFriends")
   };
   const showAlarm = () => {
     // 알람 확인하기
