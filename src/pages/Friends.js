@@ -49,18 +49,9 @@ const Friends = () => {
   const [isEditProfile, setIsEditProfile] = useState(false);
   const { alarmState, profileState } = useSelector((state) => state.modalState);
 
-  const { isLoading: infoLoading, data: infoData } = useQuery(
-    ["myInfo"],
-    getMyInfo
-  );
-  const { isLoading: groupLoading, data: friendGroup } = useQuery(
-    ["friendGroup"],
-    getFriendGroup
-  );
-  const { isLoading: friendLoading, data: friendList } = useQuery(
-    ["friendList"],
-    getMyFriends
-  );
+  const { isLoading: infoLoading, data: infoData } = useQuery(["myInfo"], getMyInfo);
+  const { isLoading: groupLoading, data: friendGroup } = useQuery(["friendGroup"], getFriendGroup);
+  const { isLoading: friendLoading, data: friendList } = useQuery(["friendList"], getMyFriends);
 
   const showSearchCom = () => {
     setBack(false);
