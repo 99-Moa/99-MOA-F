@@ -4,15 +4,18 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 
 
-const CountDay = ({}) => {
+const CountDay = ({firstDate, firstTime, setUpToDatePlan}) => {
   const [day, setDay] = useState();
   const [hour, setHour] = useState();
   const [minute, setMinute] = useState();
   const [sec, setSec] = useState();
   const getDDay = (targetDate) => {
-    const fisToDo = dayjs(`2022-11-26 00:00`);
+    const fisToDo = dayjs(`${firstDate} ${firstTime}`);
     const now = dayjs();
     const diff = fisToDo.diff(now);
+    if (!diff) {
+      setUpToDatePlan(prev=>!prev);
+    }
     setDay(Math.floor(diff / (1000*60*60*24)));
     setHour(Math.floor((diff / (1000*60*60)) % 24));
     setMinute(Math.floor((diff / (1000*60)) % 60));
