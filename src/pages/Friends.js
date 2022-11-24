@@ -72,7 +72,7 @@ const Friends = () => {
   };
   return (
     <>
-      {infoLoading || groupLoading || friendLoading ? (
+      {(infoLoading || groupLoading || friendLoading) ? (
         <Loading />
       ) : (
         <>
