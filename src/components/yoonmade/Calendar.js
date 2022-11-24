@@ -3,14 +3,15 @@ import styled from "styled-components";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import React from "react";
+import { defaultColor } from "./styles";
 
-const Calendar = ({setIsChoiceGroup, schedulesData}) => {
+const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
   const onDateClick = (e) => {
     const date = e.dateStr;
   };
   const onEventClick = (e) => {};
   const onAddEvent = () => {
-    setIsChoiceGroup(prev=>!prev);
+    setIsChoiceGroup((prev) => !prev);
   };
   const onSelectAllow = (selectionInfo) => {
     let startDate = selectionInfo.start;
@@ -85,35 +86,31 @@ const Wrapper = styled.div`
   height: 75%;
   width: 40%;
   margin-top: 5%;
-  font-size: 80%;
-  .fc-myCustomButton-button {
-    height: 1vh;
-    width: 4vw;
-    font-size: .5vw;
-    border-radius: 5px;
+
+  @media all and (min-width: 1024px) {
+    font-size: 11px;
   }
-  .fc-today-button {
-    height: 1vh;
-    width: 3vw;
-    font-size: .5vw;
-    border-radius: 5px;
+  @media all and (min-width: 2000px) {
+    font-size: 15px;
   }
   .fc th {
-    height: 40px;
+    height: 2.5em;
     text-align: left;
     font-weight: 400;
     vertical-align: middle;
-    background-color: rgba(246, 247, 249);
+    background-color: ${defaultColor.lightGrey};
   }
   .fc .fc-daygrid-day-top {
     flex-direction: column;
+    font-size: 0.9em;
   }
   .fc-day-sun {
     color: rgba(255, 119, 119);
   }
   .fc .fc-button:not(:disabled),
   .fc .fc-button-primary:disabled {
-    height: 30px;
+    padding: 0.3em 1em;
+    font-size: 0.8em;
     opacity: 1;
 
     &:focus {
@@ -129,11 +126,11 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
 
-
     .fc-today-button {
-      background-color: white;
-      color: black;
+      border: 1px solid ${defaultColor.darkGrey};
       text-align: center;
+      color: black;
+      background-color: white;
 
       &:focus {
         background-color: white;
@@ -141,25 +138,23 @@ const Wrapper = styled.div`
       }
     }
     .fc-myCustomButton-button {
-      border-color: #ff4545;
-      background-color: #ff4545;
+      border-color: ${defaultColor.red};
+      background-color: ${defaultColor.red};
       color: white;
       text-align: center;
 
       &:focus {
-        background-color: #ff4545;
+        background-color: ${defaultColor.red};
         color: white;
       }
     }
   }
   .fc-button-group {
     display: flex;
-    gap: 2%;
   }
   .fc-direction-ltr .fc-button-group > .fc-button:not(:first-child),
   .fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
-    height: 30px;
-    width: 30px;
+    height: 100%;
     border-radius: 50%;
     border: 1px solid white;
     background-color: white;
@@ -167,7 +162,7 @@ const Wrapper = styled.div`
     padding: 0px;
 
     &:hover {
-      background-color: rgba(233, 238, 242);
+      background-color: ${defaultColor.lightGrey};
     }
 
     &:active {
@@ -179,7 +174,11 @@ const Wrapper = styled.div`
     }
   }
   .fc .fc-button .fc-icon {
-    font-size: 20px;
+    padding: 0.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
     font-weight: bold;
   }
   .fc-next-button {
@@ -190,7 +189,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    font-size: 1vw;
-    line-height: 1.2vw;
+    font-size: 1.4em;
+    line-height: 1.2em;
   }
 `;

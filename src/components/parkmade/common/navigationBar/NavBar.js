@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyProfile from "./MyProfile";
 import Alarm from "./Alarm";
 import alarmImg from "../../../../img/Icon_Alarm.png";
@@ -9,12 +9,17 @@ import groupImg from "../../../../img/Icon_Group.png"
 import logoImg from "../../../../img/Logo_Main.png"
 import { useMutation } from "react-query";
 import { postPlusFriend } from "../../../../api/memberManage";
+import { useDispatch } from "react-redux";
+import { getAlarmState, getProfileState } from "../../../../store/modules/yoonmade/modalState";
 
 const NavBar = ({infoData, setIsEditProfile}) => {
   const navigate = useNavigate();
   const [myInfo, setMyInfo] = useState(false);
   const [alarm, setAlarm] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+
+  // alarm, myInfo state값 얻기위한 dispatch 입니다.
+  const dispatch = useDispatch()
 
   // 임시로 친구추가 해보려고 만든거임 삭제해야도맨ㅇ
   const { mutate } = useMutation(postPlusFriend, {
@@ -35,11 +40,18 @@ const NavBar = ({infoData, setIsEditProfile}) => {
     // 알람 확인하기
     setMyInfo(false);
     setAlarm(prev=>!prev);
+
   };
   const modalProfile = () => {
     setAlarm(false);
     setMyInfo(prev=>!prev);
   }
+
+  useEffect(() => {
+    dispatch(getProfileState(myInfo))
+    dispatch(getAlarmState(alarm))
+  },[myInfo,alarm,dispatch]) // 모달 상태 dispatch
+
   return (
     <Upper>
       <Wrap>

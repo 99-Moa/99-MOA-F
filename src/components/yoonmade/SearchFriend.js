@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
-import { getMyFriend, postPlusFriend  } from "../../api/memberManage";
+import { getMyFriend, postPlusFriend } from "../../api/memberManage";
+import InputComponent from "./InputComponent";
+import { defaultColor } from "./styles";
+import emoji from "../../img/Sunglasses_emoji.png";
 
 const SearchFriend = ({ goBack }) => {
   const [userName, setUserName] = useState("");
-  const [userInfo, setUserInfo] = useState({
-    friendUsername: "닉네임",
-    imgUrl:
-      "https://img.insight.co.kr/static/2020/03/16/700/txyrzifi14lg6auqmo10.jpg",
-  });
+  const [userInfo, setUserInfo] = useState();
 
   const { mutate: searchMutate } = useMutation(getMyFriend, {
-    onSuccess: ({success,data,error}) => {
+    onSuccess: ({ success, data, error }) => {
       if (success) {
         setUserInfo(data);
       } else {
@@ -22,123 +21,162 @@ const SearchFriend = ({ goBack }) => {
   });
 
   const { mutate: addMutate } = useMutation(postPlusFriend, {
-    onSuccess: ({success,error}) => {
-      if(success){
+    onSuccess: ({ success, error }) => {
+      if (success) {
         alert("친구추가 완료!");
-        goBack()
+        goBack();
       } else {
-        alert(error.detail)
+        alert(error.detail);
       }
     },
   });
 
-  // 로직
   const onChangeSerachInput = (e) => {
     const value = e.target.value;
     setUserName(value);
   };
 
-  const onSearchFriend = () => {
-    if (!userName.trim()) {
-      alert("친구이름을 입력해주세요!");
-      return;
+  const onSearchFriend = (e) => {
+    if (e.key === "Enter" || e.type === "click") {
+      if (!userName.trim()) {
+        alert("친구이름을 입력해주세요!");
+        return;
+      }
+      searchMutate(userName);
     }
-    searchMutate(userName);
   };
 
   const onAddFriend = () => {
     const user = {
-      userName:userInfo.friendUsername
-    }
+      userName: userInfo.friendUsername,
+    };
     addMutate(user);
   };
 
   return (
     <>
-      <FriendSearchHeader>
-        <button onClick={goBack}>뒤로</button>
-        <h1>친구 검색</h1>
-      </FriendSearchHeader>
-      <FriendSearchBody>
-        <SearchInputWrapper>
-          <FriendSearchInput onChange={onChangeSerachInput} value={userName} />
-          <SearchBtn onClick={onSearchFriend}>검색하기</SearchBtn>
-        </SearchInputWrapper>
-        <SearchRstProfileWrapper>
-          <SearchRstImg src={userInfo.imgUrl} />
-          <SerachRstNickName>{userInfo.friendUsername}</SerachRstNickName>
-          <SearchRstBtn onClick={onAddFriend}>친구추가</SearchRstBtn>
-        </SearchRstProfileWrapper>
-      </FriendSearchBody>
+      <Header>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 0 24 24"
+          width="24px"
+          fill="#000000"
+          onClick={goBack}
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        </svg>
+        <span>친구검색</span>
+        <InputComponent
+          placeholder="닉네임"
+          value={userName}
+          onChange={onChangeSerachInput}
+          onKeyPress={onSearchFriend}
+          iconClick={onSearchFriend}
+        />
+      </Header>
+      <Body>
+        {userInfo ? (
+          <FriendWrapper>
+            <img src={userInfo.imgUrl} alt="userImg" />
+            <span className="userName">{userInfo.friendUsername}</span>
+            <span className="userId">{userInfo.userId}</span>
+            <div onClick={onAddFriend}>친구추가</div>
+          </FriendWrapper>
+        ) : (
+          <NotFriendWrapper>
+            <img src={emoji} alt="emoji" />
+            <span>새로운 친구를 등록해주세요.</span>
+          </NotFriendWrapper>
+        )}
+      </Body>
     </>
   );
 };
 
 export default SearchFriend;
 
-const FriendSearchHeader = styled.div`
+const Header = styled.div`
+  height: 5%;
   width: 100%;
+  margin-bottom: 1em;
   display: flex;
-  height: 50px;
-  border: 1px solid black;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  gap: 0.8em;
+  position: relative;
 
-  h1 {
-    font-size: 20px;
+  svg {
+    height: 100%;
+  }
+
+  span {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
     position: absolute;
-  }
-
-  button {
-    margin-right: auto;
+    left: 47%;
+    right: 53%;
   }
 `;
 
-const FriendSearchBody = styled.div`
-  height: 50vh;
-  border: 1px solid black;
-  margin-top: 20px;
-  overflow: auto;
-  padding: 5px;
-`;
-
-const SearchInputWrapper = styled.div`
-  margin-top: 20px;
+const Body = styled.div`
+  height: 100%;
   display: flex;
   justify-content: center;
-  gap: 20px;
-`;
-
-const FriendSearchInput = styled.input`
-  width: 80%;
-  padding: 2%;
-  text-align: center;
-  font-size: 20px;
-`;
-
-const SearchBtn = styled.div`
-  border: 1px solid black;
-  display: flex;
   align-items: center;
+  border: 1px solid ${defaultColor.lightGrey};
 `;
 
-const SearchRstProfileWrapper = styled.div`
-  margin-top: 20%;
+const FriendWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  user-select: none;
+
+  img {
+    height: 10em;
+    width: 10em;
+    border-radius: 50%;
+    margin-bottom: 1em;
+    object-fit: cover;
+  }
+
+  .userName {
+    font-size: 1.2em;
+  }
+
+  .userId {
+    font-size: 0.8em;
+    color: ${defaultColor.darkGrey};
+  }
+
+  div {
+    padding: 0.2em 0.7em;
+    margin-top: 0.8em;
+    border-radius: 0.3em;
+    background-color: ${defaultColor.red};
+    color: white;
+  }
 `;
 
-const SearchRstImg = styled.img`
-  height: 30%;
-  width: 30%;
-  border-radius: 50%;
-`;
+const NotFriendWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2em;
 
-const SerachRstNickName = styled.h3``;
-
-const SearchRstBtn = styled.div`
-  padding: 2%;
-  border: 1px solid black;
+  img {
+    height: 2em;
+    width: 2em;
+    opacity: 0.4;
+  }
+  span {
+    font-size: 1.3em;
+    font-weight: 400;
+    color: ${defaultColor.darkGrey};
+  }
 `;
