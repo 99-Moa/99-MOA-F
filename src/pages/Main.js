@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -32,6 +33,7 @@ const Main = () => {
           <Wrap>
             <Calendar setIsChoiceGroup={setIsChoiceGroup} schedulesData={schedulesData.data}/>
             {schedulesData.data.length ? <ToDos schedulesData={schedulesData.data}/> : null}
+            {console.log(dayjs("2022-11-24")-dayjs())}
           </Wrap>
         </>
       } 

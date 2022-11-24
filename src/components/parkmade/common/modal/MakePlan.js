@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import styled from "styled-components";
 import { postSchedule } from "../../../../api/schedulesManage";
 import Time from "./Time";
+import dayjs from "dayjs";
 
 const MakePlan = ({setIsChoiceGroup}) => {
   const { kakao } = window;
@@ -40,7 +41,7 @@ const MakePlan = ({setIsChoiceGroup}) => {
     setIsWriting(false);
   };
   const submitPlan = (data) => {
-    const today = new Date();
+    const today = dayjs();
     if (!isWriting) {
       if (data.title && data.place && data.dateStart && data.dateEnd && data.startTime && data.endTime) {
         if (data.dateStart > data.dateEnd) {
@@ -51,8 +52,8 @@ const MakePlan = ({setIsChoiceGroup}) => {
           alert("시작시간이 종료시간보다 늦을 수 없습니다.");
           return;
         }
-        if (data.dateStart < today) {
-          alert("시작일이 현재보다 늦을 수 없습니다.");
+        if ((dayjs(`${data.dateStart} ${data.startTime}`) - dayjs()) < 0) {
+          alert("시작일(시간)이 현재보다 늦을 수 없습니다.");
           return;
         }
         saveMyPlan({"title": data.title, "startDate": data.dateStart, "endDate": data.dateEnd, "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea})
