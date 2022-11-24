@@ -168,7 +168,6 @@ const MakePlan = ({setIsChoiceGroup}) => {
                   <List key={index} onClick={saveRoadName}>
                     <PlaceName>{prop.place_name}</PlaceName>
                     <PlaceRoadName>{prop.road_address_name}</PlaceRoadName>
-                    {console.log(prop)}
                   </List>
                 ))}
               </Lists>
