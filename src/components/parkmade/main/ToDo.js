@@ -113,9 +113,6 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
                   <Choice whileHover={{scale:1.1}} onClick={deleteThis}>
                     삭제
                   </Choice>
-                  <Choice whileHover={{scale:1.1}} onClick={reviseThis}>
-                    수정
-                  </Choice>
                 </DeleteOrRevise>
               </OptionDiv>
             </SummaryDiv>

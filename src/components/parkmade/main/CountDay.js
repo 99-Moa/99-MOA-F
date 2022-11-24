@@ -36,10 +36,10 @@ const CountDay = ({firstDate, firstTime, setUpToDatePlan}) => {
             <TimesDiv>
               <TimeNumDiv>
                 <NumDiv>
-                  {(day > 9) ? day.toString()[0] : "-"}
+                  {(day > 9) ? day.toString()[0] : "0"}
                 </NumDiv>
                 <NumDiv>
-                  {(day > 9) ? day.toString()[1] : day !== 0 ? day.toString()[0] : "-"}
+                  {(day > 9) ? day.toString()[1] : day !== 0 ? day.toString()[0] : "0"}
                 </NumDiv>
               </TimeNumDiv>
               <TimeStrDiv>
@@ -54,10 +54,10 @@ const CountDay = ({firstDate, firstTime, setUpToDatePlan}) => {
             <TimesDiv>
               <TimeNumDiv>
                 <NumDiv>
-                  {(hour > 9) ? hour.toString()[0] : "-"}
+                  {(hour > 9) ? hour.toString()[0] : "0"}
                 </NumDiv>
                 <NumDiv>
-                  {(hour > 9) ? hour.toString()[1] : hour !== 0 ? hour.toString()[0] : "-"}
+                  {(hour > 9) ? hour.toString()[1] : hour !== 0 ? hour.toString()[0] : "0"}
                 </NumDiv>
               </TimeNumDiv>
               <TimeStrDiv>
@@ -72,10 +72,10 @@ const CountDay = ({firstDate, firstTime, setUpToDatePlan}) => {
             <TimesDiv>
               <TimeNumDiv>
                 <NumDiv>
-                  {(minute > 9) ? minute.toString()[0] : "-"}
+                  {(minute > 9) ? minute.toString()[0] : "0"}
                 </NumDiv>
                 <NumDiv>
-                  {(minute > 9) ? minute.toString()[1] : minute !== 0 ? minute.toString()[0] : "-"}
+                  {(minute > 9) ? minute.toString()[1] : minute !== 0 ? minute.toString()[0] : "0"}
                 </NumDiv>
               </TimeNumDiv>
               <TimeStrDiv>
@@ -90,10 +90,10 @@ const CountDay = ({firstDate, firstTime, setUpToDatePlan}) => {
             <TimesDiv>
               <TimeNumDiv>
                 <NumDiv>
-                  {(sec > 9) ? sec.toString()[0] : "-"}
+                  {(sec > 9) ? sec.toString()[0] : "0"}
                 </NumDiv>
                 <NumDiv>
-                  {(sec > 9) ? sec.toString()[1] : sec !== 0 ? sec.toString()[0] : "-"}
+                  {(sec > 9) ? sec.toString()[1] : sec !== 0 ? sec.toString()[0] : "0"}
                 </NumDiv>
               </TimeNumDiv>
               <TimeStrDiv>
