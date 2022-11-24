@@ -71,7 +71,7 @@ const GroupInfo = ({ group }) => {
         </TextInfo>
         <ImgInfo>
           <ImgWrapper>
-            {group.userImg.map((img, i) => {
+            {group?.imgUrls?.map((img, i) => {
               if (i > 3) return;
               return <Img src={img} key={i} />;
             })}
@@ -82,6 +82,11 @@ const GroupInfo = ({ group }) => {
             </CountCircle>
           </ImgWrapper>
         </ImgInfo>
+        {(!group?.date || !group?.time || !group?.location) && (
+          <NullBox>
+            <span>채팅으로 시작하기!!</span>
+          </NullBox>
+        )}
       </InfoBody>
     </GroupInfoBox>
   );
@@ -153,6 +158,7 @@ const InfoBody = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  position: relative;
 `;
 
 const TextInfo = styled.div`
@@ -242,4 +248,15 @@ const CountCircle = styled.div`
   bottom: 0;
   opacity: 1;
   transition: 0.3s ease-in-out;
+`;
+
+const NullBox = styled.div`
+  height: 100%;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 1em;
+  background-color: white;
+  position: absolute;
 `;
