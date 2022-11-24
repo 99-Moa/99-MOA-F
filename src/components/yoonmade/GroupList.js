@@ -5,6 +5,7 @@ import { defaultColor } from "./styles";
 import emoji from "../../img/Sunglasses_emoji.png";
 
 const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
+  console.log(friendGroup)
   const gData = [
     {
       groupId: 1,
@@ -73,7 +74,7 @@ const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
         <Button onClick={showSearchCom}>친구추가</Button>
         <InputComponent placeholder="그룹 검색" />
       </Header>
-      {!friendGroup.data.length ? (
+      {!friendGroup.data?.length ? (
         <NotGropuWrapper>
           <img src={emoji} alt="emoji" />
           <span>새로운 그룹을 등록해주세요.</span>
