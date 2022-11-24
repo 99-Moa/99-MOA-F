@@ -48,7 +48,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
 
   useEffect(() => {
     detailPlan(prop.id);
-    const container = document.querySelector('.kakao-map'); 
+    const container = document.querySelector(`.kakao-map${prop.id}`); 
     if (container && Object.keys(getDetailData).length) {
       const options = { center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), level: 5 };
       const map = new kakao.maps.Map(container, options);
@@ -143,7 +143,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
               <SmallSpanTwo>
                 {getDetailData.locationRoadName}
               </SmallSpanTwo>
-              <MapDiv className="kakao-map" />
+              <MapDiv className={`kakao-map${prop.id}`} />
             </SecDetailDiv>
             {(getDetailData.users?.length === 1) ?  
               <ThirdDetailDivAlone>
