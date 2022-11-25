@@ -8,7 +8,6 @@ import alarmImg from "../../../../img/Icon_Alarm.png";
 import groupImg from "../../../../img/Icon_Group.png"
 import logoImg from "../../../../img/Logo_Main.png"
 import { useMutation } from "react-query";
-import { postPlusFriend } from "../../../../api/memberManage";
 import { useDispatch } from "react-redux";
 import { getAlarmState, getProfileState } from "../../../../store/modules/yoonmade/modalState";
 
@@ -21,15 +20,6 @@ const NavBar = ({infoData, setIsEditProfile}) => {
   // alarm, myInfo state값 얻기위한 dispatch 입니다.
   const dispatch = useDispatch()
 
-  // 임시로 친구추가 해보려고 만든거임 삭제해야도맨ㅇ
-  const { mutate } = useMutation(postPlusFriend, {
-    onSuccess: (res) => {
-      console.log("성공", res)
-    },
-    onError: (err) => {
-      console.log(err)
-    }
-  })
   const toMain = () => {
     navigate("/main")
   };

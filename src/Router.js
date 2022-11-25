@@ -23,21 +23,25 @@ const router = createBrowserRouter([
       },
       {
         path: "main",
-        element: <Main />
+        element: <Main />,
+        errorElement: <LogIn />
       },
       {
         path: "myFriends",
-        element: <Friends />
+        element: <Friends />,
+        errorElement: <LogIn />
       },
       {
         path: "chatroom",
-        element: <ChatRoom />
+        element: <ChatRoom />,
+        errorElement: <LogIn />
       },
       {
         path: "kakao",
         element: <KakaoRedirectHandler />
       },
       {
+        // 연습페이지
         path:"chatP",
         element: <ChatPage />
       }
