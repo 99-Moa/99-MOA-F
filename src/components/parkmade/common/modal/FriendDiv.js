@@ -53,7 +53,7 @@ const ImgDiv = styled.div`
 `;
 const Img = styled.img`
   max-width: 100%;
-  height: 90%;
+  max-height: 90%;
   border-radius: 50%;
   display: flex;
   justify-content: center;

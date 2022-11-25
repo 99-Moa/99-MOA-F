@@ -4,6 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import React from "react";
 import { defaultColor } from "./styles";
+import dayjs from "dayjs";
 
 const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
   const onDateClick = (e) => {
@@ -69,7 +70,7 @@ const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
             if (prop.startDate === prop.endDate) {
               return {"title":prop.title, "start":prop.startDate}
             }
-            return {"title":prop.title, "start":prop.startDate, "end":prop.endDate}
+            return {"title":prop.title, "start":prop.startDate, "end":dayjs(prop.endDate).add(1, "day").format("YYYY-MM-DD")}
           })
         }
         eventColor="rgba(1,140,255)"
@@ -80,7 +81,7 @@ const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
   );
 };
 
-export default Calendar;
+export default React.memo(Calendar);
 
 const Wrapper = styled.div`
   height: 75%;

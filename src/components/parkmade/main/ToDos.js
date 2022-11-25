@@ -9,7 +9,6 @@ const ToDos = ({schedulesData}) => {
   const [extend, setExtend] = useState(false);
   const [upToDatePlan, setUpToDatePlan] = useState(false);
   const sortPlan = (schedulesData.sort((a,b) => (new Date(`${a.startDate} ${a.startTime}`) - new Date(`${b.startDate} ${b.startTime}`)))).filter(prop=> new Date(`${prop.startDate} ${prop.startTime}`) > new Date());
-  console.log("d-day카운트 토글 :", upToDatePlan);
   return (
     <Wrap variants={WrapVariant} animate="start">
       <DDayDiv>
