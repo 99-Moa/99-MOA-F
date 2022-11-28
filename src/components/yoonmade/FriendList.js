@@ -62,14 +62,16 @@ const FriendList = ({ goBack, friendList }) => {
         </BodyHeader>
         <BodyMain>
           {filterFriendList.length >= 1 || friendName
-            ? filterFriendList.map((friendInfo) => (
+            ? // 유저가 input창에 검색중일때
+              filterFriendList.map((friendInfo) => (
                 <FriendInfo
                   friendInfo={friendInfo}
                   onDeleteFriend={onDeleteFriend}
                   key={friendInfo.id}
                 />
               ))
-            : friendList?.data.map((friendInfo) => (
+            : // 유저가 검색중이지 않을때
+              friendList?.data.map((friendInfo) => (
                 <FriendInfo
                   friendInfo={friendInfo}
                   onDeleteFriend={onDeleteFriend}
