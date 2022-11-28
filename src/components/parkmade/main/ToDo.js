@@ -65,34 +65,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
         }
       });  
     }
-  }, [getDetailData.location])
-  // useEffect(() => {
-  //   detailPlan(prop.id);
-  //   const infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-  //   const container = document.querySelector('.kakao-map');
-  //   if (container && Object.keys(getDetailData).length) {
-  //     const options = { center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), level: 2 };
-  //     const map = new kakao.maps.Map(container, options);
-  //     const ps = new kakao.maps.services.Places();
-  //     const displayMarker = (place) => {
-  //       let marker = new kakao.maps.Marker({
-  //         map: map,
-  //         position: new kakao.maps.LatLng(place.y, place.x),
-  //       });
-  //       kakao.maps.event.addListener(marker, 'click', () => {
-  //         infoWindow.setContent('<div style="padding:5px; font-size:12px; margin:auto">' + place.place_name + '</div>');
-  //         infoWindow.open(map, marker);
-  //       });
-  //     };
-  //     ps.keywordSearch(getDetailData.location, (data, status, pagination) => {
-  //       if (status === kakao.maps.services.Status.OK) {
-  //         const bounds = new kakao.maps.LatLngBounds();
-  //         data.map((prop) => { displayMarker(prop); bounds.extend(new kakao.maps.LatLng(prop.y, prop.x)); });
-  //         map.setBounds(bounds);
-  //       }
-  //     });
-  //   }
-  // }, [getDetailData.location]);
+  }, [getDetailData.location]);
   return (
     <>
       {Object.keys(getDetailData).length ? 
@@ -216,7 +189,7 @@ const OptionImg = styled(motion.img)`
 `;
 const DeleteOrRevise = styled(motion.div)`
   height: 300%;
-  width: 400%;
+  width: 200%;
   top: -100%;
   right: 100%;
   border-radius: 10px;
@@ -229,7 +202,7 @@ const DeleteOrRevise = styled(motion.div)`
 `;
 const Choice = styled(motion.div)`
   height: 40%;
-  width: 40%;
+  width: 90%;
   border: 1px solid #AAAFB5;
   border-radius: 10px;
   display: flex;

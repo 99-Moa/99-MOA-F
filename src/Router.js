@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import ChatPage from "./components/yoonmade/ChatPage";
 import KakaoRedirectHandler from "./components/yoonmade/KakaoRedirectHandler";
 import ChatRoom from "./pages/ChatRoom";
 import Friends from "./pages/Friends";
@@ -40,11 +39,6 @@ const router = createBrowserRouter([
         path: "kakao",
         element: <KakaoRedirectHandler />
       },
-      {
-        // 연습페이지
-        path:"chatP",
-        element: <ChatPage />
-      }
     ]
   }
 ]);

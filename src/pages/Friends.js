@@ -12,35 +12,6 @@ import FriendList from "../components/yoonmade/FriendList";
 import GroupList from "../components/yoonmade/GroupList";
 import SearchFriend from "../components/yoonmade/SearchFriend";
 
-const SLIDE_X = window.innerWidth / 6;
-const box = {
-  invisible: ({ back: isBack, firstRender }) => {
-    if (firstRender) {
-      return {
-        x: 0,
-        opacity: 1,
-        scale: 1,
-      };
-    } else return { x: isBack ? -SLIDE_X : SLIDE_X, opacity: 0, scale: 1 };
-  },
-  visible: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  exit: ({ back: isBack }) => ({
-    x: isBack ? SLIDE_X : -SLIDE_X,
-    opacity: 0,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-    },
-  }),
-};
-
 const Friends = () => {
   const [back, setBack] = useState(true);
   const [firstRender, setFirstRender] = useState(true);
@@ -49,9 +20,9 @@ const Friends = () => {
   const [isEditProfile, setIsEditProfile] = useState(false);
   const { alarmState, profileState } = useSelector((state) => state.modalState);
 
-  const { isLoading: infoLoading, data: infoData } = useQuery(["myInfo"], getMyInfo);
-  const { isLoading: groupLoading, data: friendGroup } = useQuery(["friendGroup"], getFriendGroup);
-  const { isLoading: friendLoading, data: friendList } = useQuery(["friendList"], getMyFriends);
+  const { isLoading:infoLoading, data:infoData } = useQuery(["myInfo"], getMyInfo);
+  const { isLoading:groupLoading, data:friendGroup } = useQuery(["friendGroup"], getFriendGroup);
+  const { isLoading:friendLoading, data:friendList } = useQuery(["friendList"], getMyFriends);
 
   const showSearchCom = () => {
     setBack(false);
@@ -183,3 +154,32 @@ const FriendContainer = styled(motion.div)`
   z-index: ${prop => prop.ismodal ? "-1" : 0};
   /* ${(props) => props.ismodal && "z-index:-1"} */
 `;
+
+const SLIDE_X = window.innerWidth / 6;
+const box = {
+  invisible: ({ back: isBack, firstRender }) => {
+    if (firstRender) {
+      return {
+        x: 0,
+        opacity: 1,
+        scale: 1,
+      };
+    } else return { x: isBack ? -SLIDE_X : SLIDE_X, opacity: 0, scale: 1 };
+  },
+  visible: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+  exit: ({ back: isBack }) => ({
+    x: isBack ? SLIDE_X : -SLIDE_X,
+    opacity: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+    },
+  }),
+};
