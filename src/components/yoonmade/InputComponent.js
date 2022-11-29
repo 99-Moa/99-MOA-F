@@ -52,6 +52,7 @@ const InputWrapper = styled.div`
       height: 1em;
       width: 1em;
       right: 0;
+      cursor: pointer;
     }
   }
 `;

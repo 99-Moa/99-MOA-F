@@ -1,9 +1,11 @@
 import { useState } from "react";
 import styled, { css } from "styled-components";
+import MakePlan from "../parkmade/common/modal/MakePlan";
 
 const ChatPage = () => {
   const [userBoxView, setUserBoxView] = useState(false);
-  const [planBoxView, setPlanBoxView] = useState(false);
+  const [planBoxView, setPlanBoxView] = useState(true);
+
   return (
     <Layout>
       <Container>
@@ -84,7 +86,9 @@ const ChatPage = () => {
           </ChatBoxBody>
         </ChatBox>
         <UserBox view={userBoxView}></UserBox>
-        <PlanBox view={planBoxView}></PlanBox>
+        <PlanBox view={planBoxView}>
+          <MakePlan />
+        </PlanBox>
       </Container>
     </Layout>
   );
@@ -112,7 +116,8 @@ const Layout = styled.div`
 
 const Container = styled.div`
   height: 70%;
-  width: 70%;
+  width: 60%;
+  margin-top: 5%;
   border: 1px solid gray;
   border-radius: 5px;
   display: flex;
@@ -131,7 +136,8 @@ const ChatBox = styled.div`
     }
     if (planBoxView) {
       return css`
-        width: 70%;
+        width: 55%;
+        opacity: 1;
       `;
     }
     if (userBoxView) {
@@ -246,14 +252,18 @@ const UserBox = styled.div`
 const PlanBox = styled.div`
   height: 100%;
   width: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-left: 1px solid rgba(160, 160, 160, 0);
-
+  opacity: 0;
   transition: 0.5s ease-in-out;
 
   ${(props) =>
     props.view &&
     css`
-      width: 30%;
+      width: 45%;
+      opacity: 1;
       border-left: 1px solid rgba(160, 160, 160, 1);
     `}
 `;

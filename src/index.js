@@ -12,5 +12,3 @@ root.render(
     <RouterProvider router={router} />
   </QueryClientProvider>
 );
-
-// 이파일은 수정 ㄴㄴ 해주세요!
