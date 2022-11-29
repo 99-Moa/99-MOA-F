@@ -6,8 +6,10 @@ import styled from "styled-components";
 import { postSchedule } from "../../../../api/schedulesManage";
 import Time from "./Time";
 import dayjs from "dayjs";
+import { useLocation, useParams } from "react-router-dom";
 
 const MakePlan = ({setIsChoiceGroup}) => {
+  const {pathname} = useLocation();
   const { kakao } = window;
   const traceRoadName = useRef();
   const [isSearch, setIsSearch] = useState(false);
@@ -22,7 +24,6 @@ const MakePlan = ({setIsChoiceGroup}) => {
       setIsChoiceGroup(false);
     }
   });
-
   const searchPlace = (ev) => {
     !isSearch && setIsSearch(true);
     setPlace(ev.target.value);
@@ -182,7 +183,7 @@ const MakePlan = ({setIsChoiceGroup}) => {
         </MemoDiv>
         <DoneDiv>
           <DoneBtn>
-            작성
+            {pathname.includes("chatroom") ? "저장" : "작성"}
           </DoneBtn>
         </DoneDiv>
       </Form>
@@ -201,6 +202,7 @@ const Form = styled.form`
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 `;
 const TitleInput = styled.input`

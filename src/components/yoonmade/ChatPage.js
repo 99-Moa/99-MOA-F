@@ -5,6 +5,7 @@ import MakePlan from "../parkmade/common/modal/MakePlan";
 const ChatPage = () => {
   const [userBoxView, setUserBoxView] = useState(false);
   const [planBoxView, setPlanBoxView] = useState(true);
+
   return (
     <Layout>
       <Container>
@@ -251,6 +252,9 @@ const UserBox = styled.div`
 const PlanBox = styled.div`
   height: 100%;
   width: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-left: 1px solid rgba(160, 160, 160, 0);
   opacity: 0;
   transition: 0.5s ease-in-out;

@@ -14,9 +14,14 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
   const { kakao } = window;
   const [openDetail, setOpenDetail] = useState(false);
   const [getDetailData, setGetDetailData] = useState({});
-  const [isDeleteOrRevise, setIsDeleteOrRevise] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isPersonalPlan, setIsPersonalPlan] = useState(false); // 하는중
+
   const { mutate:detailPlan } = useMutation(getDetailSchedule, {
     onSuccess: (res) => {
+      if (res.data.users.length === 1) {
+        setIsPersonalPlan(true);
+      }
       setGetDetailData(res.data);
     }
   });
@@ -30,7 +35,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
     // navigate("/채팅방")
   }
   const openDR = () => {
-    setIsDeleteOrRevise(prev=>!prev);
+    setIsDelete(prev=>!prev);
   }
   const deleteThis = () => {
     deletePlan(prop.id)
@@ -69,8 +74,8 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
   return (
     <>
       {Object.keys(getDetailData).length ? 
-        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index}>
-          <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"}>
+        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index} $isPersonalPlan={isPersonalPlan}>
+          <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
                 <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
@@ -81,12 +86,12 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
                 </Date>
               </WrapSummary>
               <OptionDiv>
-                <OptionImg ref={deleteRef} src={dot} variants={dotVariant} animate={{rotateZ: isDeleteOrRevise ? 90 : 0}} onClick={openDR}/>
-                <DeleteOrRevise transition={{ type: "linear" }}  initial={{scaleX:0}} animate={{ scaleX: isDeleteOrRevise ? 1 : 0, duration:0.5 }}>
+                <OptionImg ref={deleteRef} src={dot} variants={dotVariant} animate={{rotateZ: isDelete ? 90 : 0}} onClick={openDR}/>
+                <Delete transition={{ type: "linear" }}  initial={{scaleX:0}} animate={{ scaleX: isDelete ? 1 : 0, duration:0.5 }}>
                   <Choice whileHover={{scale:1.1}} onClick={deleteThis}>
                     삭제
                   </Choice>
-                </DeleteOrRevise>
+                </Delete>
               </OptionDiv>
             </SummaryDiv>
           </UpperSummaryDiv>
@@ -122,7 +127,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
                 </BigSpan>
                 <Content>
                   {getDetailData.content}
-              </Content>
+                </Content>
               </ThirdDetailDivAlone>
               :
               <>
@@ -154,12 +159,12 @@ export default React.memo(ToDo);
 const ToDoDiv = styled(motion.div)`
   width: 99%;
   height: 10%;
+  border: 1px solid ${prop => prop.$isPersonalPlan ? "#FF4545" : "#0984e3"};
+  border-radius: 8px;
   align-items: center;
   overflow: hidden;
   margin: 0px 0px 4% 0px;
-  border: 1px solid #0984e3;
-  border-radius: 8px;
-  background-color: ${prop => (prop.index === 0 && !prop.openDetail) && "#00a8ff"};
+  background-color: ${prop => (prop.index === 0) && "#00a8ff"};
 `;
 const UpperSummaryDiv = styled(motion.div)`
   width: 100%;
@@ -187,7 +192,7 @@ const OptionImg = styled(motion.img)`
   height: 50%;
   width: 70%;
 `;
-const DeleteOrRevise = styled(motion.div)`
+const Delete = styled(motion.div)`
   height: 300%;
   width: 200%;
   top: -100%;
@@ -211,6 +216,7 @@ const Choice = styled(motion.div)`
   align-items: center;
   background-color: #E9EEF2;
   font-size: 50%;
+  color: black;
   cursor: pointer;
 `;
 
@@ -372,16 +378,16 @@ const clickVariants = {
       duration : 0.7,
     }
   },
-  sumSec : {
+  sumSec : (isPersonalPlan) => ({
     height : "10%",
     color : "white",
-    backgroundColor : "#00a8ff",
+    backgroundColor : isPersonalPlan ? "#FF4545" : "#00a8ff",
     borderRadius : "5px",
     transition : {
       duration : 0.7,
       delay : 0.7
     }
-  },
+  }),
   colorFir : {
     transition : {
       duration : 0.7,

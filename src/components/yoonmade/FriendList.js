@@ -97,6 +97,7 @@ const Header = styled.div`
   svg {
     height: 100%;
     pointer-events: visible;
+    cursor: pointer;
   }
 
   span {
@@ -108,6 +109,7 @@ const Header = styled.div`
     position: absolute;
     left: 47%;
     right: 53%;
+    user-select: none;
   }
 `;
 
