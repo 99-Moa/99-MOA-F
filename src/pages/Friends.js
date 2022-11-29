@@ -23,7 +23,7 @@ const Friends = () => {
   const { isLoading:infoLoading, data:infoData } = useQuery(["myInfo"], getMyInfo);
   const { isLoading:groupLoading, data:friendGroup } = useQuery(["friendGroup"], getFriendGroup);
   const { isLoading:friendLoading, data:friendList } = useQuery(["friendList"], getMyFriends);
-
+  
   const showSearchCom = () => {
     setBack(false);
     setFirstRender(false);
@@ -43,7 +43,7 @@ const Friends = () => {
   };
   return (
     <>
-      {(infoLoading || groupLoading || friendLoading) ? (
+      {infoLoading || groupLoading || friendLoading ? (
         <Loading />
       ) : (
         <>
@@ -81,7 +81,7 @@ const Friends = () => {
                   initial="invisible"
                   animate="visible"
                   exit="exit"
-                  ismodal={profileState || alarmState}
+                  $ismodal={profileState || alarmState}
                   key="2"
                 >
                   <FriendList goBack={goBack} friendList={friendList} />
@@ -94,7 +94,7 @@ const Friends = () => {
                   initial="invisible"
                   animate="visible"
                   exit="exit"
-                  ismodal={profileState || alarmState}
+                  $ismodal={profileState || alarmState}
                   key="2"
                 >
                   <SearchFriend goBack={goBack} />
@@ -143,16 +143,14 @@ const SerachContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
-  z-index: ${prop => prop.ismodal ? "-1" : 0};
-  /* ${(props) => props.ismodal && "z-index:-1"} */
+  z-index: ${(prop) => (prop.ismodal ? "-1" : 0)};
 `;
 
 const FriendContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
-  z-index: ${prop => prop.ismodal ? "-1" : 0};
-  /* ${(props) => props.ismodal && "z-index:-1"} */
+  z-index: ${(prop) => (prop.ismodal ? "-1" : 0)};
 `;
 
 const SLIDE_X = window.innerWidth / 6;
