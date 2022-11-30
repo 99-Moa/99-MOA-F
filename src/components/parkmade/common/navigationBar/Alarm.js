@@ -1,7 +1,21 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Alarm = () => {
+  const [subscribe, setSubscribe] = useState(false);
+  const [alarmList, setAlarmList] = useState([]);
+  let evSource;
+
+  // useEffect(() => {
+  //   if (!subscribe) {
+  //     evSource = new EventSource();
+  //     evSource.onmessage = (ev) => {
+
+  //     }
+  //   }
+
+  // }, [])
   return (
     <UpperDiv>
       <Triangle />
