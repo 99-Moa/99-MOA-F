@@ -11,6 +11,7 @@ const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
   const modalRef = useRef();
   const [isFirStep, setIsFirStep] = useState(true);
   const [isAlone, setIsAlone] = useState(true);
+
   const nextStepAlone = (ev) => {
     setIsFirStep(false);
     setIsAlone(true);
@@ -31,11 +32,11 @@ const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
     <Wrap>
       {isFirStep ?
         (<UpperDiv ref={modalRef} layoutId="transition">
-          <ChoiceBtn onClick={nextStepAlone} bgColor={"#FF4545"} variants={showVariants} initial="init" animate="start" whileHover="hover">
+          <ChoiceBtn onClick={nextStepAlone} $bgColor={"#FF4545"} variants={showVariants} initial="init" animate="start" whileHover="hover">
             <IconImg src={alone}/>
             개인
           </ChoiceBtn>
-          <ChoiceBtn onClick={nextStepGroup} bgColor={"#008CFF"} variants={showVariants} initial="init" animate="start" whileHover="hover">
+          <ChoiceBtn onClick={nextStepGroup} $bgColor={"#008CFF"} variants={showVariants} initial="init" animate="start" whileHover="hover">
             <IconImg src={group}/>
             그룹
           </ChoiceBtn>
@@ -87,7 +88,7 @@ const ChoiceBtn = styled(motion.button)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${prop => prop.bgColor};
+  background-color: ${prop => prop.$bgColor};
   color: white;
   font-size: 90%;
   gap: 10%;
@@ -105,8 +106,8 @@ const Alone = styled(motion.div)`
   background-color: white;
 `;
 const Group = styled(motion.div)`
-  width: 35%;
-  height: 85%;
+  width: 25%;
+  height: 65%;
   border: 1px solid;
   border-radius: 15px;
   background-color: white;

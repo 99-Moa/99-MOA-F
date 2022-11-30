@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getMyFriends, getMyInfo } from "../api/memberManage";
 import { getSchedules } from "../api/schedulesManage";
@@ -15,6 +16,7 @@ import Calendar from "../components/yoonmade/Calendar";
 
 // 이곳에서 main페이지에 나타나는 모든 데이터 관련(모달창 제외) 서버통신이 이루어집니다.
 const Main = () => {
+  // const isChoiceGroup = useSelector(state => state.choiceGroup.value);
   const [isChoiceGroup, setIsChoiceGroup] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const { isLoading:infoLoading, data:infoData } = useQuery(["myInfo"], getMyInfo);
