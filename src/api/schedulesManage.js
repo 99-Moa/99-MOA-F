@@ -23,8 +23,8 @@ export const deleteSchedule = async (scheduleId) => {
   const {data} = await axiosIns.delete(`/schedule/${scheduleId}`);
   return data;
 }
-export const reviseSchedule = async (scheduleId) => {
-  const {data} = await axiosIns.put(`/schedule/${scheduleId}`);
+export const reviseSchedule = async (reviseData) => {
+  const {data} = await axiosIns.put(`/schedule/${reviseData[0]}`, reviseData[1]);
   return data;
 }
 

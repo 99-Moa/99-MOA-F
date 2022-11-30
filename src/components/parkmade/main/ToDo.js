@@ -1,17 +1,21 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteSchedule, getDetailSchedule } from "../../../api/schedulesManage";
 import dot from "../../../img/dot.png"
+import { revisePersonalPlan } from "../../../store/modules/parkmade/toggleModal";
 
 
 // 모임장소 이름과 도로명주소 변경해야함, 지도 적용  제대로 안됬음
 const ToDo = ({prop, traceScroll, index, setExtend}) => {
+  const { kakao } = window;
   const navigate = useNavigate();
   const deleteRef = useRef();
-  const { kakao } = window;
+  const dispatch = useDispatch();
+
   const [openDetail, setOpenDetail] = useState(false);
   const [getDetailData, setGetDetailData] = useState({});
   const [isDelete, setIsDelete] = useState(false);
@@ -41,7 +45,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
     deletePlan(prop.id)
   }
   const revisePlan = () => {
-    // 수정하기 뮤테이트 쓰기
+    dispatch(revisePersonalPlan([true, getDetailData, prop.id]))
   }
   const open =  () => {
     setExtend(prev=>!prev)
@@ -70,11 +74,11 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
         }
       });  
     }
-  }, [getDetailData.location]);
+  }, [getDetailData.location, prop]);
   return (
     <>
       {Object.keys(getDetailData).length ? 
-        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index} openDetail={openDetail} $isPersonalPlan={isPersonalPlan}>
+        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index} $isPersonalPlan={isPersonalPlan}>
           <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>

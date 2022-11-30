@@ -5,14 +5,17 @@ import interactionPlugin from "@fullcalendar/interaction";
 import React from "react";
 import { defaultColor } from "./styles";
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import { toggleChoiceGroup } from "../../store/modules/parkmade/toggleModal";
 
-const Calendar = ({ setIsChoiceGroup, schedulesData }) => {
+const Calendar = ({schedulesData }) => {
+  const dispatch = useDispatch();
   const onDateClick = (e) => {
     const date = e.dateStr;
   };
   const onEventClick = (e) => {};
   const onAddEvent = () => {
-    setIsChoiceGroup((prev) => !prev);
+    dispatch(toggleChoiceGroup(true));
   };
   const onSelectAllow = (selectionInfo) => {
     let startDate = selectionInfo.start;
