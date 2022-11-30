@@ -10,18 +10,21 @@ import { postMakeGroup } from "../../../../api/schedulesManage";
 
 
 const MakeGroup = ({myFriendsList, setIsChoiceGroup}) => {
-  // console.log(myFriendsList)
   const { register:searchRegister, handleSubmit:searchHandle, setValue:searchSetValue } = useForm();
   const { register, handleSubmit, setValue } = useForm();
   const [isTargetSearch, setIsTargetSearch] = useState(false);
   const [resultF, setResultF] = useState({});
   const [inviteList, setInviteList] = useState([]);
+  const [groupN, setGroupN] = useState("");
   const { mutate } = useMutation(postMakeGroup, {
     onSuccess: (res) => {
       alert("그룹생성 완료!");
       setIsChoiceGroup(false);
     }
   });
+  const onChange = (ev) => {
+    setGroupN(ev.target.value)
+  }
   const SearchFriends = (formData) => {
     myFriendsList.map(prop=>{
       if (prop.friendUsername === formData.friendsNick) {
@@ -36,15 +39,19 @@ const MakeGroup = ({myFriendsList, setIsChoiceGroup}) => {
     searchSetValue("friendsNick", "");
   };
 
-  const makeGroup = (formData) => {
+  const makeGroup = () => {
     if (!inviteList.length) {
-      alert("친구를 초대해주세요!")
-    } else {
-      mutate({"groupName":formData.groupName, "users":inviteList});
+      return alert("친구를 초대해주세요!")
     }
+    if (!groupN.length) {
+      return alert("그룹이름을 적어주세요!")
+    }
+    mutate({"groupName":groupN, "users":inviteList});
+    
   };
   return (
     <Wrap>
+      <MakeGroupNameInput placeholder="그룹이름을 적어주세요" onChange={onChange}/>
       <FindFriendDiv>
         <SearchPlaceForm onSubmit={searchHandle(SearchFriends)}>
           <PlaceInput {...searchRegister("friendsNick")} placeholder="친구 닉네임 검색"/>
@@ -95,16 +102,12 @@ const MakeGroup = ({myFriendsList, setIsChoiceGroup}) => {
           </FriendsCount>
         </Invite>
         <InviteListDiv>
-          {/* setInviteList를 프랍으로 넘겨서 클릭시 해당닉네임 filter로 삭제 */}
           {inviteList.map((prop, index)=><InvitedFriend key={index} name={prop} inviteList={inviteList} setInviteList={setInviteList}/>)}
         </InviteListDiv>
       </InviteDiv>
-      <MakeGroupForm onSubmit={handleSubmit(makeGroup)}>
-        <MakeGroupNameInput {...register("groupName", {required: true})} placeholder="그룹이름을 적어주세요" />
-        <MakeGroupBtn>
-          그룹 생성
-        </MakeGroupBtn>
-      </MakeGroupForm>
+      <MakeGroupBtn onClick={makeGroup}>
+        그룹 생성
+      </MakeGroupBtn>
     </Wrap>
   );
 };
@@ -118,8 +121,9 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 const FindFriendDiv = styled.div`
-  height: 5%;
+  height: 6%;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -129,12 +133,12 @@ const FindFriendDiv = styled.div`
 const SearchPlaceForm = styled.form`
   width: 100%;
   height: 100%;
-  border: 1px solid;
-  border-radius: 10px;
+  border-radius: 8px;
   margin: 1% 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #E9EEF2;
   position: relative;
 `;
 const PlaceInput = styled.input`
@@ -165,7 +169,7 @@ const Svg = styled.svg`
 `;
 const BackToList = styled.div`
   height: 100%;
-  width: 10%;
+  width: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -175,7 +179,7 @@ const BackBtnImg = styled.img`
 `;
 const ResultFriendDiv = styled.div`
   width: 100%;
-  height: 70%;
+  height: 60%;
   border-bottom: 2px solid #AAAFB5;
   display: flex;
   flex-direction: column;
@@ -235,39 +239,28 @@ const Invite = styled.div`
 const InviteListDiv = styled.div`
   width: 100%;
   height: 75%;
+  margin-top: 1%;
   display: flex;
   align-items: center;
   overflow-x: auto;
   gap:2%;
 `;
-const MakeGroupForm = styled.form`
+const MakeGroupNameInput = styled.input`
   width: 100%;
   height: 7%;
-  margin-top:3%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5%;
-`;
-const MakeGroupNameInput = styled.input`
-  width: 39.5%;
-  height: 90%;
-  border: 1px solid;
-  border-radius: 8px;
-  background-color: #E9EEF2;
+  border: none;
+  border-bottom: 1px solid;
+  margin-bottom: 4%;
   padding-left: 3%;
   font-size: 100%;
-
-  &:focus {
-    border: 1px solid #008cff;
-    outline: none;
-  }
+  outline: none;
 `;
 const MakeGroupBtn = styled.button`
-  width: 42.5%;
-  height: 100%;
-  border-radius: 8px;
-  background-color: #27292D;
+  width: 100%;
+  height: 7%;
+  border: 1px solid #FF4545;
+  border-radius: 5px;
+  background-color: #FF4545;
   font-size: 90%;
   color: white;
   cursor: pointer;

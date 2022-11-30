@@ -40,7 +40,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
   const deleteThis = () => {
     deletePlan(prop.id)
   }
-  const reviseThis = () => {
+  const revisePlan = () => {
     // 수정하기 뮤테이트 쓰기
   }
   const open =  () => {
@@ -74,7 +74,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
   return (
     <>
       {Object.keys(getDetailData).length ? 
-        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index} $isPersonalPlan={isPersonalPlan}>
+        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index} openDetail={openDetail} $isPersonalPlan={isPersonalPlan}>
           <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
@@ -121,27 +121,32 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
               <MapDiv className={`kakao-map${prop.id}`} />
             </SecDetailDiv>
             {(getDetailData.users?.length === 1) ?  
-              <ThirdDetailDivAlone>
-                <BigSpan>
-                  세부 내용
-                </BigSpan>
-                <Content>
-                  {getDetailData.content}
-                </Content>
-              </ThirdDetailDivAlone>
-              :
               <>
-                <ThirdDetailDivGroup>
+                <ThirdDetailDiv>
                   <BigSpan>
                     세부 내용
                   </BigSpan>
                   <Content>
                     {getDetailData.content}
                   </Content>
-                </ThirdDetailDivGroup>
-                <UpperChatRoom onClick={toChat}>
+                </ThirdDetailDiv>
+                <EachEventBtn onClick={revisePlan}>
+                  수정하기
+                </EachEventBtn>
+              </>
+              :
+              <>
+                <ThirdDetailDiv>
+                  <BigSpan>
+                    세부 내용
+                  </BigSpan>
+                  <Content>
+                    {getDetailData.content}
+                  </Content>
+                </ThirdDetailDiv>
+                <EachEventBtn onClick={toChat}>
                   그룹채팅
-                </UpperChatRoom>
+                </EachEventBtn>
               </>
             }
           </UpperDetailDiv>
@@ -315,15 +320,7 @@ const MapDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-const ThirdDetailDivAlone = styled.div`
-  height: 30%;
-  width: 85%;
-  padding: 0 3%;
-  margin-bottom: 3%;
-`;
-
-const ThirdDetailDivGroup = styled.div`
+const ThirdDetailDiv = styled.div`
   height: 20%;
   width: 85%;
   padding: 0% 3%;
@@ -342,7 +339,7 @@ const Content = styled.div`
   overflow-y: auto;
 
 `;
-const UpperChatRoom = styled(motion.div)`
+const EachEventBtn = styled(motion.div)`
   height: 10%;
   width: 80%;
   padding: 0px 3%;
@@ -357,11 +354,11 @@ const UpperChatRoom = styled(motion.div)`
   border-radius: 8px;
   cursor: pointer;
 `;
-
 const clickVariants = {
   open : {
     height : "98%",
     border: "1px solid gray",
+    
     transition : {
       duration : 0.7,
     }
