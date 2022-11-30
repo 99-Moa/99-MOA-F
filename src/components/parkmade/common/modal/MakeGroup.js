@@ -7,11 +7,13 @@ import cancel from "../../../../img/Icon_Group_cancel.png"
 import InvitedFriend from "./InvitedFriend";
 import { useMutation } from "react-query";
 import { postMakeGroup } from "../../../../api/schedulesManage";
+import { useDispatch } from "react-redux";
+import { toggleChoiceGroup } from "../../../../store/modules/parkmade/toggleModal";
 
 
-const MakeGroup = ({myFriendsList, setIsChoiceGroup}) => {
+const MakeGroup = ({myFriendsList}) => {
+  const dispatch = useDispatch();
   const { register:searchRegister, handleSubmit:searchHandle, setValue:searchSetValue } = useForm();
-  const { register, handleSubmit, setValue } = useForm();
   const [isTargetSearch, setIsTargetSearch] = useState(false);
   const [resultF, setResultF] = useState({});
   const [inviteList, setInviteList] = useState([]);
@@ -19,7 +21,7 @@ const MakeGroup = ({myFriendsList, setIsChoiceGroup}) => {
   const { mutate } = useMutation(postMakeGroup, {
     onSuccess: (res) => {
       alert("그룹생성 완료!");
-      setIsChoiceGroup(false);
+      dispatch(toggleChoiceGroup(false));
     }
   });
   const onChange = (ev) => {

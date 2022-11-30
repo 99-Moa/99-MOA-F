@@ -7,15 +7,13 @@ import Alarm from "./Alarm";
 import alarmImg from "../../../../img/Icon_Alarm.png";
 import groupImg from "../../../../img/Icon_Group.png"
 import logoImg from "../../../../img/Logo_Main.png"
-import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import { getAlarmState, getProfileState } from "../../../../store/modules/yoonmade/modalState";
 
-const NavBar = ({infoData, setIsEditProfile}) => {
+const NavBar = ({infoData}) => {
   const navigate = useNavigate();
   const [myInfo, setMyInfo] = useState(false);
   const [alarm, setAlarm] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
 
   // alarm, myInfo state값 얻기위한 dispatch 입니다.
   const dispatch = useDispatch()
@@ -69,7 +67,7 @@ const NavBar = ({infoData, setIsEditProfile}) => {
                 initial={{scale: 0}}
                 animate={{ scale: myInfo ? 1 : 0, opacity: myInfo ? 1 : 0}}
               >
-                <MyProfile setMyInfo={setMyInfo}  info={infoData.data} setIsEditProfile={setIsEditProfile}/>
+                <MyProfile setMyInfo={setMyInfo}  info={infoData.data}/>
               </ProfileWrap>
           </EleImgDiv>
         </NavUpperDiv>

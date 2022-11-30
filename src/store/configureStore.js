@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import modalState from "./modules/yoonmade/modalState";
-import planId from "./modules/parkmade/planId";
-import choiceGroup from "./modules/parkmade/choiceGroup";
+import toggleModal from "./modules/parkmade/toggleModal";
 
 const store = configureStore({
   reducer: {
     modalState: modalState.reducer,
-    planId: planId.reducer,
-    choiceGroup: choiceGroup.reducer,
+    toggleModal: toggleModal.reducer,
   },
 });
 

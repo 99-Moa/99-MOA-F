@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
 import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { postLogOut } from "../../../../api/memberManage";
 import pePe from "../../../../img/pePe.png"
+import { toggleEditProfile } from "../../../../store/modules/parkmade/toggleModal";
 
 // 상위에서 이미지, 이름 받아와야함
-const MyProfile = ({info, setMyInfo, setIsEditProfile}) => {
+const MyProfile = ({info, setMyInfo}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { mutate } = useMutation(postLogOut, {
     onSuccess: (res) => {
       localStorage.removeItem("access_token");
@@ -19,7 +22,7 @@ const MyProfile = ({info, setMyInfo, setIsEditProfile}) => {
     mutate();
   }
   const editProfile = () => {
-    setIsEditProfile(prev=>!prev);
+    dispatch(toggleEditProfile(true));
     setMyInfo(prev=>!prev)
   }
   return (

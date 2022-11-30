@@ -8,7 +8,9 @@ import { getMyFriends, getMyInfo } from "../api/memberManage";
 import { getSchedules } from "../api/schedulesManage";
 import Loading from "../components/parkmade/common/loading/Loading";
 import ChoicePlan from "../components/parkmade/common/modal/ChoicePlan";
+import MakePlan from "../components/parkmade/common/modal/MakePlan";
 import Portal from "../components/parkmade/common/modal/Portal";
+import RevisePlan from "../components/parkmade/common/modal/RevisePlan";
 import EditMyProfile from "../components/parkmade/common/navigationBar/EditMyProfile";
 import NavBar from "../components/parkmade/common/navigationBar/NavBar";
 import ToDos from "../components/parkmade/main/ToDos";
@@ -16,9 +18,9 @@ import Calendar from "../components/yoonmade/Calendar";
 
 // 이곳에서 main페이지에 나타나는 모든 데이터 관련(모달창 제외) 서버통신이 이루어집니다.
 const Main = () => {
-  // const isChoiceGroup = useSelector(state => state.choiceGroup.value);
-  const [isChoiceGroup, setIsChoiceGroup] = useState(false);
-  const [isEditProfile, setIsEditProfile] = useState(false);
+  const isChoiceGroup = useSelector(state => state.toggleModal.choiceGroup);
+  const isEditProfile = useSelector(state => state.toggleModal.editProfile);
+  const isRevisePlan = useSelector(state => state.toggleModal.revisePersonalPlan[0]);
   const { isLoading:infoLoading, data:infoData } = useQuery(["myInfo"], getMyInfo);
   const { isLoading:schedulesLoading, data:schedulesData } = useQuery(["schedules"], getSchedules);
   const { isLoading:myFriendsLoading, data:myFriendsList } = useQuery(["getMyFriends"], getMyFriends);
@@ -27,13 +29,14 @@ const Main = () => {
       {(infoLoading || schedulesLoading || myFriendsLoading) ? 
         <Loading /> :
         <>
-          <NavBar infoData={infoData} setIsEditProfile={setIsEditProfile}/>
+          <NavBar infoData={infoData}/>
           <Portal>
-            {isChoiceGroup && <ChoicePlan isChoiceGroup={isChoiceGroup} setIsChoiceGroup={setIsChoiceGroup} myFriendsList={myFriendsList.data}/>}
-            {isEditProfile && <EditMyProfile info={infoData.data} setIsEditProfile={setIsEditProfile}/>}
+            {isChoiceGroup && <ChoicePlan myFriendsList={myFriendsList.data}/>}
+            {isEditProfile && <EditMyProfile info={infoData.data}/>}
+            {isRevisePlan && <RevisePlan/>}
           </Portal>
           <Wrap>
-            <Calendar setIsChoiceGroup={setIsChoiceGroup} schedulesData={schedulesData.data}/>
+            <Calendar schedulesData={schedulesData.data}/>
             {schedulesData.data.length ? <ToDos schedulesData={schedulesData.data}/> : null}
           </Wrap>
         </>

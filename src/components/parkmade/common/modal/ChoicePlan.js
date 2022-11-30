@@ -6,17 +6,21 @@ import MakeGroup from "./MakeGroup";
 import MakePlan from "./MakePlan";
 import alone from "../../../../img/aloneImg.png"
 import group from "../../../../img/groupImg.png"
+import { useDispatch, useSelector } from "react-redux";
+import { toggleChoiceGroup } from "../../../../store/modules/parkmade/toggleModal";
 
-const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
+const ChoiceGroup =({myFriendsList}) => {
   const modalRef = useRef();
+  const dispatch = useDispatch();
   const [isFirStep, setIsFirStep] = useState(true);
   const [isAlone, setIsAlone] = useState(true);
+  const isChoiceGroup = useSelector(state => state.toggleModal.choiceGroup);
 
-  const nextStepAlone = (ev) => {
+  const nextStepAlone = () => {
     setIsFirStep(false);
     setIsAlone(true);
   };
-  const nextStepGroup = (ev) => {
+  const nextStepGroup = () => {
     setIsFirStep(false);
     setIsAlone(prev=>!prev);
   };
@@ -26,7 +30,7 @@ const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
     return () => {document.removeEventListener('mousedown', clickModalOutside)};
   });
   const clickModalOutside = (ev) => {
-    (isChoiceGroup && !modalRef.current.contains(ev.target)) && setIsChoiceGroup(false);
+    (isChoiceGroup && !modalRef.current.contains(ev.target)) && dispatch(toggleChoiceGroup(false));
   };
   return (
     <Wrap>
@@ -44,11 +48,11 @@ const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
         :
         isAlone ?
           (<Alone ref={modalRef} layoutId="transition">
-            <MakePlan setIsChoiceGroup={setIsChoiceGroup}/>
+            <MakePlan/>
           </Alone>)
           :
           (<Group ref={modalRef} layoutId="transition">
-            <MakeGroup myFriendsList={myFriendsList} setIsChoiceGroup={setIsChoiceGroup}/>
+            <MakeGroup myFriendsList={myFriendsList}/>
           </Group>)
       }
     </Wrap>

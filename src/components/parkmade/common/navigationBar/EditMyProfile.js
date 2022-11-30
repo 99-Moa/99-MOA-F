@@ -4,11 +4,14 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import styled from "styled-components";
 import { postNickDupChecker, putInfoChange } from "../../../../api/memberManage";
-import pePe from "../../../../img/pePe.png";
 import camera from "../../../../img/camera.png"
+import { useDispatch, useSelector } from "react-redux";
+import { toggleEditProfile } from "../../../../store/modules/parkmade/toggleModal";
 
-const EditMyProfile = ({info, setIsEditProfile}) => {
+const EditMyProfile = ({info}) => {
   const modalRef = useRef();
+  const dispatch = useDispatch();
+  const isEditProfile = useSelector(state => state.toggleModal.editProfile);
   const { register, handleSubmit, setValue, getValues } = useForm();
   const [isChangeImg, setIsChangeImg ] = useState("");
   const [doneDupCheck, setDoneDupCheck] = useState(false);
@@ -38,7 +41,7 @@ const EditMyProfile = ({info, setIsEditProfile}) => {
     (getValues("nickname")) ? checkNickname({"userName":getValues("nickname")}) : alert("닉네임을 입력해주세요.")
   };
   const cancel = () => {
-    setIsEditProfile(false);
+    dispatch(toggleEditProfile(false));
   };
   const getImgFile = (ev) => {
     const newImg = ev.target.files[0];
@@ -74,7 +77,7 @@ const EditMyProfile = ({info, setIsEditProfile}) => {
     return () => {document.removeEventListener('mousedown', clickModalOutside)};
   });
   const clickModalOutside = (ev) => {
-    (setIsEditProfile && !modalRef.current.contains(ev.target)) && setIsEditProfile(false);
+    (isEditProfile && !modalRef.current.contains(ev.target)) && dispatch(toggleEditProfile(false));
   };
   return (
     <Wrap>

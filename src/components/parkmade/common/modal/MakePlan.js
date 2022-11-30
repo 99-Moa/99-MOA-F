@@ -3,27 +3,38 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import styled from "styled-components";
-import { postSchedule } from "../../../../api/schedulesManage";
+import { postSchedule, reviseSchedule } from "../../../../api/schedulesManage";
 import Time from "./Time";
 import dayjs from "dayjs";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { revisePersonalPlan, toggleChoiceGroup } from "../../../../store/modules/parkmade/toggleModal";
 
-const MakePlan = ({setIsChoiceGroup}) => {
-  const {pathname} = useLocation();
+const MakePlan = () => {
   const { kakao } = window;
+  const {pathname} = useLocation();
+  const dispatch = useDispatch();
   const traceRoadName = useRef();
   const [isSearch, setIsSearch] = useState(false);
   const [isWriting, setIsWriting] = useState(false)
   const [place, setPlace] = useState("");
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadName] = useState(""); 
+  const previousData = useSelector(state => state.toggleModal.revisePersonalPlan);
   const { register, handleSubmit, setValue } = useForm();
+
   const { mutate:saveMyPlan } = useMutation(postSchedule, {
-    onSuccess: (res) => {
+    onSuccess: () => {
       alert("계획 작성 완료");
-      setIsChoiceGroup(false);
+      dispatch(toggleChoiceGroup(false));
     }
   });
+  const { mutate:revisePlan } = useMutation(reviseSchedule, {
+    onSuccess: () => {
+      alert("수정완료!");
+      dispatch(revisePersonalPlan([false, {}, null]))
+    }
+  })
   const searchPlace = (ev) => {
     !isSearch && setIsSearch(true);
     setPlace(ev.target.value);
@@ -55,6 +66,10 @@ const MakePlan = ({setIsChoiceGroup}) => {
         }
         if ((dayjs(`${data.dateStart} ${data.startTime}`) - dayjs()) < 0) {
           alert("시작일(시간)이 현재보다 늦을 수 없습니다.");
+          return;
+        }
+        if (Object.keys(previousData[1]).length) {
+          revisePlan([previousData[2], {"title": data.title, "startDate": data.dateStart, "endDate": data.dateEnd, "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea}]);
           return;
         }
         saveMyPlan({"title": data.title, "startDate": data.dateStart, "endDate": data.dateEnd, "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea})
