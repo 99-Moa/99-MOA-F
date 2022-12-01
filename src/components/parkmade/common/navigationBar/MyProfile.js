@@ -26,8 +26,7 @@ const MyProfile = ({info, setMyInfo}) => {
     setMyInfo(prev=>!prev)
   }
   return (
-    <UpperDiv>
-      <Triangle />
+    <UpperDiv initial={{zIndex:10}}>
       <UpperProfileDiv>
         <ImgDiv>
           <Img src={info.imgUrl}/>
@@ -58,21 +57,23 @@ const UpperDiv = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 10;
 `;
 const Triangle = styled.div`
   height: 0px;
   width: 0px;
-  border: 10px solid transparent;
-  border-bottom-color: #ecf0f1;
+  border: 5px solid transparent;
+  border-bottom-color: #AAAFB5;
+  margin-left: 36%;
 `;
-const UpperProfileDiv = styled.div`
+const UpperProfileDiv = styled(motion.div)`
   height: 100%;
   width: 100%;
+  margin-top: 3%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ecf0f1;
+  background-color: white;
+  border: 3px solid #AAAFB5;
   border-radius: 10px;
 `;
 const ImgDiv = styled.div`
