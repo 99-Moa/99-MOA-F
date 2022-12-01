@@ -20,7 +20,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
   const [getDetailData, setGetDetailData] = useState({});
   const [isDelete, setIsDelete] = useState(false);
   const [isPersonalPlan, setIsPersonalPlan] = useState(false); // 하는중
-
+  // console.log(getDetailData?.users?.length)
   const { mutate:detailPlan } = useMutation(getDetailSchedule, {
     onSuccess: (res) => {
       if (res.data.users.length === 1) {
@@ -78,7 +78,7 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
   return (
     <>
       {Object.keys(getDetailData).length ? 
-        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index} $isPersonalPlan={isPersonalPlan}>
+        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} personal={getDetailData?.users?.length} index={index} $isPersonalPlan={isPersonalPlan}>
           <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
@@ -90,8 +90,8 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
                 </Date>
               </WrapSummary>
               <OptionDiv>
-                <OptionImg ref={deleteRef} src={dot} variants={dotVariant} animate={{rotateZ: isDelete ? 90 : 0}} onClick={openDR}/>
-                <Delete transition={{ type: "linear" }}  initial={{scaleX:0}} animate={{ scaleX: isDelete ? 1 : 0, duration:0.5 }}>
+                <OptionImg ref={deleteRef} src={dot} animate={{rotateZ: isDelete ? 90 : 0}} onClick={openDR}/>
+                <Delete transition={{ type: "linear" }}  initial={{scaleX:0}} animate={{scaleX: isDelete ? 1 : 0,}}>
                   <Choice whileHover={{scale:1.1}} onClick={deleteThis}>
                     삭제
                   </Choice>
@@ -173,7 +173,7 @@ const ToDoDiv = styled(motion.div)`
   align-items: center;
   overflow: hidden;
   margin: 0px 0px 4% 0px;
-  background-color: ${prop => (prop.index === 0) && "#00a8ff"};
+  background-color: ${prop => (prop.index === 0) ? ((prop.personal === 1) ? "#FF4545" : "#00a8ff") : "white"};
 `;
 const UpperSummaryDiv = styled(motion.div)`
   width: 100%;
@@ -196,6 +196,7 @@ const OptionDiv = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  z-index: 1;
 `;
 const OptionImg = styled(motion.img)`
   height: 50%;
@@ -210,9 +211,9 @@ const Delete = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
   transform-origin: right center;
   gap: 10%;
+  position: absolute;
 `;
 const Choice = styled(motion.div)`
   height: 40%;
@@ -419,6 +420,6 @@ const clickVariants = {
 
 const dotVariant = {
   ani: {
-    rotateZ:90
+    rotateZ:90,
   }
 }

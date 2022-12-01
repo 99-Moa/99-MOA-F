@@ -71,7 +71,7 @@ const Wrap = styled(motion.div)`
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 10;
+  z-index: 20;
 `;
 const UpperDiv = styled(motion.div)`
   width: 20%;

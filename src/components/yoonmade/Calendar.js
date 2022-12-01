@@ -46,50 +46,58 @@ const Calendar = ({schedulesData }) => {
     }
 }
   return (
-    <Wrapper>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        buttonText={{ today: "오늘" }}
-        headerToolbar={{
-          left: "today prev,next",
-          center: "title",
-          right: "myCustomButton",
-        }}
-        selectable={true}
-        selectAllow={onSelectAllow}
-        customButtons={{
-          myCustomButton: {
-            text: "일정생성",
-            click: onAddEvent,
-          },
-        }}
-        titleFormat={setTitleFormat}
-        height="90%"
-        locale="kr"
-        dayMaxEvents={true}
-        events={
-          schedulesData.map((prop) => {
-            if (prop.startDate === prop.endDate) {
-              return {"title":prop.title, "start":prop.startDate}
-            }
-            return {"title":prop.title, "start":prop.startDate, "end":dayjs(prop.endDate).add(1, "day").format("YYYY-MM-DD")}
-          })
-        }
-        eventColor="rgba(1,140,255)"
-        eventClick={onEventClick}
-        dateClick={onDateClick}
-      />
-    </Wrapper>
+    <Wrap>
+      <UpperDiv>
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          buttonText={{ today: "오늘" }}
+          headerToolbar={{
+            left: "today myCustomButton",
+            center: "title",
+            right: "prev,next",
+          }}
+          selectable={true}
+          selectAllow={onSelectAllow}
+          customButtons={{
+            myCustomButton: {
+              text: "일정생성",
+              click: onAddEvent,
+            },
+          }}
+          titleFormat={setTitleFormat}
+          height="90%"
+          locale="kr"
+          dayMaxEvents={true}
+          events={
+            schedulesData.map((prop) => {
+              if (prop.startDate === prop.endDate) {
+                return { "title": prop.title, "start": prop.startDate }
+              }
+              return { "title": prop.title, "start": prop.startDate, "end": dayjs(prop.endDate).add(1, "day").format("YYYY-MM-DD") }
+            })
+          }
+          eventColor="rgba(1,140,255)"
+          eventClick={onEventClick}
+          dateClick={onDateClick}
+        />
+      </UpperDiv>
+    </Wrap>
   );
 };
 
 export default React.memo(Calendar);
 
-const Wrapper = styled.div`
-  height: 75%;
-  width: 40%;
-  margin-top: 5%;
+const Wrap = styled.div`
+  height: 100%;
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+`;
+const UpperDiv = styled.div`
+  height: 90%;
+  width: 93%;
 
   @media all and (min-width: 1024px) {
     font-size: 11px;
@@ -113,8 +121,10 @@ const Wrapper = styled.div`
   }
   .fc .fc-button:not(:disabled),
   .fc .fc-button-primary:disabled {
+    margin-left: 1em;
+    margin-right: 1em;
     padding: 0.3em 1em;
-    font-size: 0.8em;
+    font-size: 1em;
     opacity: 1;
 
     &:focus {
@@ -142,14 +152,31 @@ const Wrapper = styled.div`
       }
     }
     .fc-myCustomButton-button {
+      width:6%;
+      height:6%;
       border-color: ${defaultColor.red};
+      border-radius: 20px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
       background-color: ${defaultColor.red};
       color: white;
       text-align: center;
+      font-weight: 600;
+      position: absolute;
+      z-index: 2;
+      top:82%;
+      right:29%;
+      transition: all 0.3s ease 0s;
 
       &:focus {
-        background-color: ${defaultColor.red};
-        color: white;
+      background-color: ${defaultColor.red};
+      color: white;
+      }
+
+      &:hover {
+      background-color: ${defaultColor.red};
+      box-shadow: 0px 15px 20px rgba(0,0,0,0.2);
+      color: #fff;
+      transform: translateY(-20%);
       }
     }
   }
