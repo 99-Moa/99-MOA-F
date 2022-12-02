@@ -81,7 +81,7 @@ const Friends = () => {
                   initial="invisible"
                   animate="visible"
                   exit="exit"
-                  ismodal={profileState || alarmState}
+                  $isModal={profileState || alarmState}
                   key="2"
                 >
                   <FriendList goBack={goBack} friendList={friendList} />
@@ -94,7 +94,7 @@ const Friends = () => {
                   initial="invisible"
                   animate="visible"
                   exit="exit"
-                  ismodal={profileState || alarmState}
+                  $isModal={profileState || alarmState}
                   key="2"
                 >
                   <SearchFriend goBack={goBack} />
@@ -143,7 +143,7 @@ const SerachContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
-  z-index: ${prop => prop.ismodal ? "-1" : 0};
+  z-index: ${prop => prop.$isModal ? "-1" : 0};
   /* ${(props) => props.ismodal && "z-index:-1"} */
 `;
 
@@ -151,7 +151,7 @@ const FriendContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
-  z-index: ${prop => prop.ismodal ? "-1" : 0};
+  z-index: ${prop => prop.$isModal ? "-1" : 0};
   /* ${(props) => props.ismodal && "z-index:-1"} */
 `;
 
