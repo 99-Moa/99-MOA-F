@@ -6,7 +6,7 @@ import Alarm from "./Alarm";
 const Alarms = () => {
   const [subscribe, setSubscribe] = useState(false);
   const [alarmList, setAlarmList] = useState([]);
-  
+
   useEffect(() => {
     if (!subscribe) {
       let evSource = new EventSource(`http://18.206.140.108/sub?token=${localStorage.getItem("access_token")}`);
@@ -16,6 +16,10 @@ const Alarms = () => {
       evSource.onmessage = (ev) => {
         setAlarmList(prev => [...prev, JSON.parse(ev.data)])
       }
+      setSubscribe(true);
+      return () => {
+        evSource.close();
+      };
     }
   }, [])
   return (
