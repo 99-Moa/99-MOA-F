@@ -24,10 +24,8 @@ const MakePlan = () => {
   const [place, setPlace] = useState("");
   const [roadName, setRoadName] = useState(""); 
   const previousData = useSelector(state => state.toggleModal.revisePersonalPlan);
-  const { register, handleSubmit, setValue, getValues } = useForm();
   
-  console.log(dayjs(startDate).format("YYYY-MM-DD"))
-
+  const { register, handleSubmit, setValue } = useForm();
   const { mutate:saveMyPlan } = useMutation(postSchedule, {
     onSuccess: () => {
       alert("계획 작성 완료");
@@ -77,6 +75,8 @@ const MakePlan = () => {
           return;
         }
         saveMyPlan({"title": data.title, "startDate": dayjs(startDate).format("YYYY-MM-DD"), "endDate": dayjs(endDate).format("YYYY-MM-DD"), "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea})
+      } else {
+        alert("필수 항목(*)을 작성해 주세요.")
       }
     }
   }
