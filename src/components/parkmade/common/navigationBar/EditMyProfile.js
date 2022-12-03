@@ -131,7 +131,7 @@ const Wrap = styled(motion.div)`
   align-items: center;
   left: 0;
   top: 0;
-  z-index: 10;
+  z-index: 20;
 `;
 const UpperProfileForm = styled.form`
   height: 50%;

@@ -28,15 +28,15 @@ export default ToDos;
 
 const Wrap = styled.div`
   height: 100%;
-  width: 25%;
-  border-left: 1px solid #AAAFB5;
+  width: 20%;
+  
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 const UpperDiv = styled(motion.div)`
   height: 80%;
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

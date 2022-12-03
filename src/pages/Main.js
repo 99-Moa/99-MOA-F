@@ -50,7 +50,7 @@ export default Main;
 const Wrap = styled(motion.div)`
   height: 100vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   position: relative;
   z-index: 1;
 `;
