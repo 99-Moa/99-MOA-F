@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { revisePersonalPlan, toggleChoiceGroup } from "../../../../store/modules/parkmade/toggleModal";
+import InputDatePicker from "./InputDatePicker";
 
 const MakePlan = () => {
   const { kakao } = window;
@@ -17,11 +18,15 @@ const MakePlan = () => {
   const traceRoadName = useRef();
   const [isSearch, setIsSearch] = useState(false);
   const [isWriting, setIsWriting] = useState(false)
-  const [place, setPlace] = useState("");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [places, setPlaces] = useState([]);
+  const [place, setPlace] = useState("");
   const [roadName, setRoadName] = useState(""); 
   const previousData = useSelector(state => state.toggleModal.revisePersonalPlan);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, getValues } = useForm();
+  
+  console.log(dayjs(startDate).format("YYYY-MM-DD"))
 
   const { mutate:saveMyPlan } = useMutation(postSchedule, {
     onSuccess: () => {
@@ -53,26 +58,25 @@ const MakePlan = () => {
     setIsWriting(false);
   };
   const submitPlan = (data) => {
-    const today = dayjs();
     if (!isWriting) {
-      if (data.title && data.place && data.dateStart && data.dateEnd && data.startTime && data.endTime) {
-        if (data.dateStart > data.dateEnd) {
+      if (data.title && data.place && startDate && endDate && data.startTime && data.endTime) {
+        if (dayjs(startDate).format("YYYY-MM-DD") > dayjs(endDate).format("YYYY-MM-DD")) {
           alert("시작일은 종요일보다 늦을 수 없습니다.");
           return;
         }
-        if (data.dateStart === data.dateEnd && data.startTime > data.endTime) {
+        if (dayjs(startDate).format("YYYY-MM-DD") === dayjs(endDate).format("YYYY-MM-DD") && data.startTime > data.endTime) {
           alert("시작시간이 종료시간보다 늦을 수 없습니다.");
           return;
         }
-        if ((dayjs(`${data.dateStart} ${data.startTime}`) - dayjs()) < 0) {
+        if ((dayjs(`${dayjs(startDate).format("YYYY-MM-DD")} ${data.startTime}`) - dayjs()) < 0) {
           alert("시작일(시간)이 현재보다 늦을 수 없습니다.");
           return;
         }
         if (Object.keys(previousData[1]).length) {
-          revisePlan([previousData[2], {"title": data.title, "startDate": data.dateStart, "endDate": data.dateEnd, "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea}]);
+          revisePlan([previousData[2], {"title": data.title, "startDate": dayjs(startDate).format("YYYY-MM-DD"), "endDate": dayjs(endDate).format("YYYY-MM-DD"), "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea}]);
           return;
         }
-        saveMyPlan({"title": data.title, "startDate": data.dateStart, "endDate": data.dateEnd, "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea})
+        saveMyPlan({"title": data.title, "startDate": dayjs(startDate).format("YYYY-MM-DD"), "endDate": dayjs(endDate).format("YYYY-MM-DD"), "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea})
       }
     }
   }
@@ -132,73 +136,81 @@ const MakePlan = () => {
   return (
     <UpperDiv>
       <Form onSubmit={handleSubmit(submitPlan)}>
-        <TitleInput {...register("title")} placeholder="제목을 입력해주세요" />
+        <TitleInput {...register("title")} placeholder="일정 제목*" />
         <DateDiv>
+          <TextDiv>
+            날짜<StarSpan>*</StarSpan>
+          </TextDiv>
           <UpperDayDiv>
-            <DayDiv>
-              <DaySpan>
-                시작일
-              </DaySpan>
-              <DateSelector type="date" {...register("dateStart")} />
-            </DayDiv>
-            <DayDiv>
-              <DaySpan>
-                종료일
-              </DaySpan>
-              <DateSelector type="date" {...register("dateEnd")} />
-            </DayDiv>
+            <InputDatePicker startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}/>
           </UpperDayDiv>
-          <UpperTimeDiv>
-            <TimeDiv>
-              <DaySpan>
-                시작시간
-              </DaySpan>
-              <TimeSelect {...register("startTime")}>
-                <TimeOption>시작시간</TimeOption>
-                <Time />
-              </TimeSelect>
-            </TimeDiv>
-            <TimeDiv>
-              <DaySpan>
-                종료시간
-              </DaySpan>
-              <TimeSelect {...register("endTime")}>
-                <TimeOption>끝나는시간</TimeOption>
-                <Time />
-              </TimeSelect>
-            </TimeDiv>
-          </UpperTimeDiv>
         </DateDiv>
+        <TimesDiv>
+          <TextDiv>
+            시간<StarSpan>*</StarSpan>
+          </TextDiv>
+          <SelectTimeDiv>
+            <TimeDiv>
+              <TimeSelect {...register("startTime")}>
+                <TimeOption disabled selected>시작시간</TimeOption>
+                <Time />
+              </TimeSelect>
+            </TimeDiv>
+            <Dash>-</Dash>
+            <TimeDiv>
+              <TimeSelect {...register("endTime")}>
+                <TimeOption disabled selected>끝나는시간</TimeOption>
+                <Time />
+              </TimeSelect>
+            </TimeDiv>
+          </SelectTimeDiv>
+        </TimesDiv>
         <SearchPlaceDiv>
-          <PlaceInput {...register("place")} placeholder="장소를 입력해주세요." onKeyUp={searchPlace} />
-          <SearchBtn>
-            <Svg aria-label="검색" color="#8e8e8e" fill="#8e8e8e" height="16" role="img" viewBox="0 0 24 24" width="16">
-              <path d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
-              <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="16.511" x2="22" y1="16.511" y2="22"></line>
-            </Svg>
-          </SearchBtn>
-          {isSearch && 
-            <PlacesDiv>
-              <Lists ref={traceRoadName}>
-                {places.map((prop, index) => (
-                  <List key={index} onClick={saveRoadName}>
-                    <PlaceName>{prop.place_name}</PlaceName>
-                    <PlaceRoadName>{prop.road_address_name}</PlaceRoadName>
-                  </List>
-                ))}
-              </Lists>
-              <PageDiv className="page"></PageDiv>
-            </PlacesDiv>
-          }
+          <TextDiv>
+            장소<StarSpan>*</StarSpan>
+          </TextDiv>
+          <SearchDiv>
+            <PlaceInput {...register("place")} placeholder="장소를 입력해주세요." onKeyUp={searchPlace} />
+            <SearchBtn>
+              <Svg aria-label="검색" color="#8e8e8e" fill="#8e8e8e" height="16" role="img" viewBox="0 0 24 24" width="16">
+                <path d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="16.511" x2="22" y1="16.511" y2="22"></line>
+              </Svg>
+            </SearchBtn>
+            {isSearch &&
+              <PlacesDiv>
+                <Lists ref={traceRoadName}>
+                  {places.map((prop, index) => (
+                    <List key={index} onClick={saveRoadName}>
+                      <PlaceName>{prop.place_name}</PlaceName>
+                      <PlaceRoadName>{prop.road_address_name}</PlaceRoadName>
+                    </List>
+                  ))}
+                </Lists>
+                <PageDiv className="page"></PageDiv>
+              </PlacesDiv>
+            }
+          </SearchDiv>
         </SearchPlaceDiv>
-        {roadName && <RoadNameDiv>{roadName}</RoadNameDiv>}
-        <MapDiv className="plan-kakao"></MapDiv>
-        <MemoDiv>
-          <MemoTextArea {...register("textArea")} placeholder="메모가 있나요?" />
-        </MemoDiv>
+        {roadName && 
+          <RoadNameDiv>
+            <RoadName>{roadName}</RoadName>
+          </RoadNameDiv>
+        }
+        <UpperMapDiv>
+          <MapDiv className="plan-kakao"></MapDiv>
+        </UpperMapDiv>
+        <UpperMemoDiv>
+          <TextDiv>
+            메모
+          </TextDiv>
+          <MemoDiv>
+            <MemoTextArea {...register("textArea")} placeholder="메모가 있나요?" />
+          </MemoDiv>
+        </UpperMemoDiv>
         <DoneDiv>
           <DoneBtn>
-            {pathname.includes("chatroom") ? "저장" : "작성"}
+            {pathname.includes("chatroom") ? "저장" : "생성"}
           </DoneBtn>
         </DoneDiv>
       </Form>
@@ -211,6 +223,9 @@ export default MakePlan;
 const UpperDiv = styled(motion.div)`
   width: 100%;
   height: 100%;
+  border: 1px solid;
+  border-radius: 15px;
+  background-color: white;
 `;
 const Form = styled.form`
   width: 100%;
@@ -234,84 +249,88 @@ const TitleInput = styled.input`
 `;
 const DateDiv = styled.div`
   width: 90%;
-  height: 6%;
-  margin: 1% 0px;
+  height: 4%;
+  margin: 2% 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 const UpperDayDiv = styled.div`
   height: 100%;
-  width: 45%;
+  width: 90%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
-const DayDiv = styled.div`
+const Dash = styled.div`
   height: 100%;
-  width: 47.5%;
+  width: 3%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 200%;
+  font-weight: 700;
 `;
-const DaySpan = styled.span`
-  font-size: 80%;
-  font-weight: 900;
-`;
-const DateSelector = styled.input`
-  height: 100%;
-  width: 100%;
-  border: 1px solid;
-  border-radius: 10px;
-  background-color: transparent;
-  font-size: 100%;
-`;
-const UpperTimeDiv = styled.div`
-  height: 100%;
-  width: 45%;
+const TimesDiv = styled.div`
+  width: 90%;
+  height: 4%;
+  margin: 2% 0px;
   display: flex;
+  align-items: center;
+`;
+const SelectTimeDiv = styled.div`
+  height: 100%;
+  width: 90%;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 const TimeDiv = styled.div`
   height: 100%;
-  width: 47.5%;
+  width: 46%;
   display: flex;
   flex-direction: column;
 `;
 const TimeSelect = styled.select`
   height: 100%;
   width: 100%;
-  border: 1px solid;
-  border-radius: 10px;
+  border: 1px solid #AAAFB5;
+  border-radius: 5px;
   background-color: white;
+  outline: none;
 `;
 const TimeOption = styled.option`
   height: 100%;
   width: 40%;
   border: 1px solid;
   border-radius: 10px;
-  background-color: white;
+  display: none;
 `;
 const SearchPlaceDiv = styled.div`
   width: 90%;
   height: 4%;
-  border: 1px solid;
-  border-radius: 10px;
-  margin: 1% 0px;
+  margin: 2% 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  position: relative;
 `;
 const RoadNameDiv = styled.div`
-  width: 89%;
+  width: 90%;
   height: 2%;
-  margin: 0.5%;
+  margin: 0.5% 0;
+  display: flex;
+  align-items: center;
+`;
+const RoadName = styled.div`
+  width: 90%;
+  height: 100%;
+  margin-left: 10%;
   display: flex;
   align-items: center;
   font-size: 90%;
   padding-left: 1%;
 `;
 const PlacesDiv = styled.div`
-  width: 100%;
+  width: 90%;
   max-height: 800%;
   display: flex;
   flex-direction: column;
@@ -358,6 +377,31 @@ const PlaceRoadName = styled.div`
   font-size: 85%;
   font-weight: 300;
 `;
+const TextDiv = styled.div`
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+`;
+const StarSpan = styled.span`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  color: #FF4545;
+`;
+const SearchDiv = styled.div`
+  width: 90%;
+  height: 100%;
+  border: 1px solid #AAAFB5;
+  border-radius: 5px;
+  margin: 1% 0px;
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
 const PlaceInput = styled.input`
   height: 90%;
   width: 85%;
@@ -383,19 +427,32 @@ const Svg = styled.svg`
   width: 80%;
   height: 80%;
 `;
+const UpperMapDiv = styled.div`
+  width: 90%;
+  height: 30%;
+  margin-bottom: 1%;
+  display: flex;
+  justify-content: flex-end;
+`;
 const MapDiv = styled.div`
   width: 90%;
-  height: 45%;
-  border: 1px solid;
+  height: 100%;
   border-radius: 10px;
   margin: 1% 0px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+const UpperMemoDiv = styled.div`
+  width: 90%;
+  height: 20%;
+  margin: 3% 0 0 0;
+  display: flex;
+  align-items: center;
+`;
 const MemoDiv = styled.div`
   width: 90%;
-  height: 15%;
+  height: 100%;
   border: 1px solid;
   border-radius: 10px;
   margin: 1% 0px;
@@ -409,18 +466,23 @@ const MemoTextArea = styled.textarea`
   overflow: auto;
   outline: none;
   border: none;
+  resize: none;
 `;
 const DoneDiv = styled.div`
   width: 90%;
-  height: 5%;
-  margin-top: 2%;
+  height: 6%;
+  margin-top: 4%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 const DoneBtn = styled.button`
   height: 100%;
-  width: 60%;
-  border-radius: 10px;
+  width: 100%;
+  border: 1px solid #FF4545;
+  border-radius: 5px;
+  background-color: #FF4545;
+  color: white;
+  font-size: 110%;
   cursor: pointer;
 `;

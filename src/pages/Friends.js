@@ -143,16 +143,15 @@ const SerachContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
-  z-index: ${(prop) => (prop.ismodal ? "-1" : 0)};
+  z-index: ${prop => prop.$isModal ? "-1" : 0};
 `;
 
 const FriendContainer = styled(motion.div)`
   height: 70%;
   width: 60%;
   position: absolute;
-  z-index: ${(prop) => (prop.ismodal ? "-1" : 0)};
+  z-index: ${prop => prop.$isModal ? "-1" : 0};
 `;
-
 const SLIDE_X = window.innerWidth / 6;
 const box = {
   invisible: ({ back: isBack, firstRender }) => {

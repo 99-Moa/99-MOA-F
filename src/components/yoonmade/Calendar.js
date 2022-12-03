@@ -89,15 +89,16 @@ const Calendar = ({schedulesData }) => {
 export default React.memo(Calendar);
 
 const Wrap = styled.div`
-  height: 100%;
-  width: 75%;
+  height: 95%;
+  width: 70%;
+  margin-top: 2%;
   display: flex;
   justify-content: center;
   align-items: flex-end;
 `;
 const UpperDiv = styled.div`
   height: 90%;
-  width: 93%;
+  width: 100%;
 
   @media all and (min-width: 1024px) {
     font-size: 11px;
@@ -139,6 +140,7 @@ const UpperDiv = styled.div`
   .fc-toolbar-chunk {
     display: flex;
     align-items: center;
+    position: relative;
 
     .fc-today-button {
       border: 1px solid ${defaultColor.darkGrey};
@@ -152,8 +154,8 @@ const UpperDiv = styled.div`
       }
     }
     .fc-myCustomButton-button {
-      width:6%;
-      height:6%;
+      width:180%;
+      height:200%;
       border-color: ${defaultColor.red};
       border-radius: 20px;
       box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
@@ -163,8 +165,8 @@ const UpperDiv = styled.div`
       font-weight: 600;
       position: absolute;
       z-index: 2;
-      top:82%;
-      right:29%;
+      top:2650%;
+      left:1725%;
       transition: all 0.3s ease 0s;
 
       &:focus {

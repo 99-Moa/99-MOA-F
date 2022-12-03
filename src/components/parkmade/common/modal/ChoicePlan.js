@@ -105,9 +105,6 @@ const IconImg = styled(motion.img)`
 const Alone = styled(motion.div)`
   width: 35%;
   height: 90%;
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: white;
 `;
 const Group = styled(motion.div)`
   width: 25%;

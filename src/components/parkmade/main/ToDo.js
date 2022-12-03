@@ -216,17 +216,18 @@ const Delete = styled(motion.div)`
   position: absolute;
 `;
 const Choice = styled(motion.div)`
-  height: 40%;
-  width: 90%;
+  height: 50%;
+  width: 80%;
   border: 1px solid #AAAFB5;
-  border-radius: 10px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #E9EEF2;
-  font-size: 50%;
-  color: black;
+  background-color: white;
+  font-size: 80%;
+  font-weight: 600;
+  color: #FF4545;
   cursor: pointer;
 `;
 
