@@ -56,8 +56,9 @@ const MakePlan = () => {
     setIsWriting(false);
   };
   const submitPlan = (data) => {
+    console.log(data.startTime)
     if (!isWriting) {
-      if (data.title && data.place && startDate && endDate && data.startTime && data.endTime) {
+      if (data.title && data.place && startDate && endDate && (data.startTime !== "시작시간") && (data.endTime !== "끝나는시간")) {
         if (dayjs(startDate).format("YYYY-MM-DD") > dayjs(endDate).format("YYYY-MM-DD")) {
           alert("시작일은 종요일보다 늦을 수 없습니다.");
           return;
@@ -151,15 +152,15 @@ const MakePlan = () => {
           </TextDiv>
           <SelectTimeDiv>
             <TimeDiv>
-              <TimeSelect {...register("startTime")}>
-                <TimeOption disabled selected>시작시간</TimeOption>
+              <TimeSelect defaultValue="시작시간" {...register("startTime")}>
+                <TimeOption disabled value="시작시간">시작시간</TimeOption>
                 <Time />
               </TimeSelect>
             </TimeDiv>
             <Dash>-</Dash>
             <TimeDiv>
-              <TimeSelect {...register("endTime")}>
-                <TimeOption disabled selected>끝나는시간</TimeOption>
+              <TimeSelect defaultValue="끝나는시간" {...register("endTime")}>
+                <TimeOption disabled value="끝나는시간">끝나는시간</TimeOption>
                 <Time />
               </TimeSelect>
             </TimeDiv>
