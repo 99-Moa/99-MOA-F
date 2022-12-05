@@ -1,11 +1,10 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import InputDatePicker from "./InputDatePicker";
 import MakeGroup from "./MakeGroup";
 import MakePlan from "./MakePlan";
-import alone from "../../../../img/aloneImg.png"
-import group from "../../../../img/groupImg.png"
+import alone from "../../../../img/presonal.png"
+import group from "../../../../img/group.png"
 import { useDispatch, useSelector } from "react-redux";
 import { toggleChoiceGroup } from "../../../../store/modules/parkmade/toggleModal";
 
@@ -33,7 +32,7 @@ const ChoiceGroup =({myFriendsList}) => {
     (isChoiceGroup && !modalRef.current.contains(ev.target)) && dispatch(toggleChoiceGroup(false));
   };
   return (
-    <Wrap>
+    <Wrap $isFirStep={isFirStep}>
       {isFirStep ?
         (<UpperDiv ref={modalRef} layoutId="transition">
           <ChoiceBtn onClick={nextStepAlone} $bgColor={"#FF4545"} variants={showVariants} initial="init" animate="start" whileHover="hover">
@@ -64,7 +63,7 @@ export default ChoiceGroup;
 const Wrap = styled(motion.div)`
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: ${prop => prop.$isFirStep ? "rgba(0, 0, 0, 0.4)" : null};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,27 +78,26 @@ const UpperDiv = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: white; */
-  border-radius: 15px;
   gap: 5%;
 `;
 const ChoiceBtn = styled(motion.button)`
-  width: 45%;
-  height: 95%;
+  width: 41%;
+  height: 90%;
   border: none;
-  border-radius: 15%;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: ${prop => prop.$bgColor};
   color: white;
-  font-size: 90%;
-  gap: 10%;
+  font-size: 110%;
+  font-weight: 700;
+  gap: 15%;
   cursor: pointer;
 `;
 const IconImg = styled(motion.img)`
-  height: 50%;
+  height: 20%;
   max-width: 50%;
 `;
 const Alone = styled(motion.div)`
@@ -109,12 +107,11 @@ const Alone = styled(motion.div)`
 const Group = styled(motion.div)`
   width: 25%;
   height: 65%;
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
 `;
 
 const showVariants = {
