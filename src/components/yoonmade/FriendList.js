@@ -40,6 +40,7 @@ const FriendList = ({ friendList }) => {
       </FriendTitle>
       <Header>
         <InputComponent
+          width={"95%"}
           placeholder="닉네임"
           onChange={onChangeFriendInput}
           value={friendName}
@@ -77,9 +78,6 @@ const Container = styled.div`
   border-radius: 2px;
   box-shadow: 0px 0px 10px lightgray;
   background-color: white;
-  position: absolute;
-  top:-13%;
-  right:146%;
 `;
 
 const FriendTitle = styled.div`

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { defaultColor } from "./styles";
 
-const InputComponent = ({ placeholder, iconClick, ...rest }) => {
+const InputComponent = ({ placeholder, iconClick, width, ...rest }) => {
   return (
-    <InputWrapper>
+    <InputWrapper width={width}>
       <Input placeholder={placeholder} {...rest} />
       <div onClick={iconClick}>
         <svg aria-label="검색" role="img" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@ export default InputComponent;
 
 const InputWrapper = styled.div`
   height: 100%;
-  width: 18em;
+  width: ${prop => prop.width};
   border-radius: 0.2em;
   display: flex;
   background-color: ${defaultColor.lightGrey};
