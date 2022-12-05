@@ -36,34 +36,32 @@ const FriendList = ({ friendList }) => {
   return (
     <Container>
       <FriendTitle>
-        <span>친구목록</span>
+        친구목록
       </FriendTitle>
-      <Header>
+      <SearchInputDiv>
         <InputComponent
           width={"95%"}
           placeholder="닉네임"
           onChange={onChangeFriendInput}
           value={friendName}
         />
-      </Header>
+      </SearchInputDiv>
       <Body>
-        <BodyMain>
-          {filterFriendList.length >= 1 || friendName
-            ? filterFriendList.map((friendInfo) => (
+        {(filterFriendList.length >= 1 || friendName) ? 
+          filterFriendList.map((friendInfo) => 
+            <FriendInfo
+              friendInfo={friendInfo}
+              onDeleteFriend={onDeleteFriend}
+              key={friendInfo.id}
+            />)
+            : 
+            friendList?.data.map((friendInfo) => 
               <FriendInfo
                 friendInfo={friendInfo}
                 onDeleteFriend={onDeleteFriend}
                 key={friendInfo.id}
               />
-            ))
-            : friendList?.data.map((friendInfo) => (
-              <FriendInfo
-                friendInfo={friendInfo}
-                onDeleteFriend={onDeleteFriend}
-                key={friendInfo.id}
-              />
-            ))}
-        </BodyMain>
+        )}
       </Body>
     </Container>
   );
@@ -72,50 +70,44 @@ const FriendList = ({ friendList }) => {
 export default FriendList;
 
 const Container = styled.div`
-  width:150%;
-  height:600%;
-  border:1px solid ${defaultColor.lightGrey};
-  border-radius: 2px;
-  box-shadow: 0px 0px 10px lightgray;
+  width:100%;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
   background-color: white;
 `;
 const FriendTitle = styled.div`
-  width:80%;
-  margin:5% 10%;
+  width: 100%;
+  height: 15%;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  span {
-    display: flex;
-    align-items: center;
-    font-size: 120%;
-    font-weight: bold;
-    user-select: none;
-  }
-  `;
-const Header = styled.div`
-  width: 88%;
+  font-size: 120%;
+  font-weight: bold;
+  user-select: none;
+`;
+const SearchInputDiv = styled.div`
+  width: 100%;
   height: 7%;
-  margin:5% 6%;
+  margin-bottom: 6%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 const Body = styled.div`
-  width:88%;
-  height: 71%;
-  margin-left: 4%;
-`;
-const BodyMain = styled.div`
-  height: 100%;
-  padding: 0 5%;
-  user-select: none;
+  width:100%;
+  height: 72%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5%;
   overflow-y:auto;
-  flex-grow: 0;
-  flex-shrink: 0;
 
   ::-webkit-scrollbar {
+    width: 0.7em;
     border-radius: 8px;
     background-color: #E9EEF2;
   }
@@ -127,3 +119,4 @@ const BodyMain = styled.div`
     border-radius: 8px;
   }
 `;
+

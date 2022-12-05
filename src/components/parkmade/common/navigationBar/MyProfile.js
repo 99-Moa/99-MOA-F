@@ -28,7 +28,9 @@ const MyProfile = ({info, setMyInfo}) => {
     <UpperDiv initial={{zIndex:10}}>
       <UpperProfileDiv>
         <ImgDiv>
-          <Img src={info.imgUrl}/>
+          <SquareDiv>
+            <Img src={info.imgUrl} />
+          </SquareDiv>
         </ImgDiv>
         <ProfileDiv>
           <MyInfoDiv>
@@ -82,10 +84,23 @@ const ImgDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const SquareDiv = styled.div`
+  width: 85%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
+`;
 const Img = styled.img`
-  width: 130px;
-  height: 130px;
-  border-radius: 65px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 `;
 const ProfileDiv = styled.div`
   height: 100%;

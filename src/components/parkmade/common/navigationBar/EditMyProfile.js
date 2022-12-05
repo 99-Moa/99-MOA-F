@@ -12,10 +12,11 @@ const EditMyProfile = ({info}) => {
   const modalRef = useRef();
   const dispatch = useDispatch();
   const isEditProfile = useSelector(state => state.toggleModal.editProfile);
-  const { register, handleSubmit, setValue, getValues } = useForm();
   const [isChangeImg, setIsChangeImg ] = useState("");
   const [doneDupCheck, setDoneDupCheck] = useState(false);
   const [myNick, setMyNick] = useState(info.userName);
+  const { register, handleSubmit, setValue, getValues } = useForm();
+
   const { mutate:changeInfo } = useMutation(putInfoChange, {
     onSuccess: (res) => {
       alert("성공!");
@@ -83,12 +84,17 @@ const EditMyProfile = ({info}) => {
     <Wrap>
       <UpperProfileForm ref={modalRef} onSubmit={handleSubmit(submit)}>
         <UpperImgDiv>
+          <EditText>
+            프로필 편집
+          </EditText>
           <ImgDiv>
-            <Img src={isChangeImg ? isChangeImg : info.imgUrl} />
-            <ClickMe whileHover={{ scale: 1.05 }}>
-              <CameraImg src={camera}/>
-              <InputImg {...register("img")} onChange={getImgFile} type="file" />
-            </ClickMe>
+            <SquareDiv>
+              <Img src={isChangeImg ? isChangeImg : info.imgUrl} />
+              <ClickMe whileHover={{ scale: 1.05 }}>
+                <CameraImg src={camera} />
+                <InputImg {...register("img")} onChange={getImgFile} type="file" />
+              </ClickMe>
+            </SquareDiv>
           </ImgDiv>
           <NowName>
             {myNick}
@@ -102,17 +108,14 @@ const EditMyProfile = ({info}) => {
                 중복확인
               </EditBtn>
             </EditName>
-            <Span>
-              
-            </Span>
           </MyInfoDiv>
           <CompleteDeleteDiv>
             <CompleteBtn whileHover={{ scale: 1.05 }}>
-              수정
+              저장
             </CompleteBtn>
-            <CancelDiv onClick={cancel} whileHover={{ scale: 1.05 }}>
+            {/* <CancelDiv onClick={cancel} whileHover={{ scale: 1.05 }}>
               취소
-            </CancelDiv>
+            </CancelDiv> */}
           </CompleteDeleteDiv>
         </ProfileDiv>
       </UpperProfileForm>
@@ -125,7 +128,6 @@ const Wrap = styled(motion.div)`
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,28 +142,53 @@ const UpperProfileForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ecf0f1;
-  border-radius: 10px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
 `;
 const UpperImgDiv = styled.div`
   height: 60%;
   width: 95%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 `;
+const EditText = styled.div`
+  width: 100%;
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  font-size: 150%;
+  font-weight: 700;
+`;
 const ImgDiv = styled.div`
-  width: 140px;
-  height: 140px;
-  margin-top: 15%;
+  width: 100%;
+  height: 65%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+`;
+const SquareDiv = styled.div`
+  width: 40%;
+  margin-bottom: 3%;
   position: relative;
+
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
 `;
 const Img = styled.img`
   width: 100%;
   height: 100%;
-  border-radius: 70px;
-  background-color: gray;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 `;
 const ClickMe = styled(motion.div)`
   height: 18%;
@@ -190,8 +217,8 @@ const InputImg = styled.input`
   opacity: 0;
 `;
 const NowName = styled.div`
-  height: 13%;
   width: 100%;
+  height: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -220,14 +247,10 @@ const EditName = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-const Span = styled.span`
-  font-size: 70%;
-  margin-left: 3%;
-`;
 const NickNameInput = styled.input`
   height: 60%;
-  width: 70%;
-  border: 1px solid #AAAFB5;
+  width: 71%;
+  border: 1px solid #E9EEF2;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -238,7 +261,7 @@ const NickNameInput = styled.input`
 const EditBtn = styled(motion.div)`
   height: 70%;
   width: 25%;
-  border-radius: 10px;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -251,36 +274,33 @@ const EditBtn = styled(motion.div)`
 const CompleteDeleteDiv = styled.div`
   height: 20%;
   width: 90%;
+  margin-bottom: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3%;
-  gap: 5%;
 `;
 const CompleteBtn = styled(motion.button)`
   height: 80%;
-  width: 20%;
+  width: 17%;
+  border: 1px solid #AAAFB5;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3%;
-  border-radius: 10px;
-  background-color: black;
-  color: white;
+  background-color: white;
   font-weight: 800;
   cursor: pointer;
 `;
 const CancelDiv = styled(motion.div)`
   height: 80%;
   width: 20%;
+  margin-top: 3%;
+  border: 1px solid #AAAFB5;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3%;
-  border-radius: 10px;
-  background-color: black;
-  color: white;
-  font-size: 80%;
+  background-color: white;
   font-weight: 800;
   cursor: pointer;
 `;
