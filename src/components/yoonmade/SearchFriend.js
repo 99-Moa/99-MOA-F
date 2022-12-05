@@ -85,7 +85,7 @@ const SearchFriend = ({ goBack }) => {
 };
 
 export default SearchFriend;
-
+//ss
 const Container = styled.div`
   width:150%;
   height:600%;
@@ -98,7 +98,6 @@ const Container = styled.div`
   box-shadow: 0px 0px 10px lightgray;
   background-color: white;
   overflow: hidden;
-  
 `;
 
 const SearchTitle = styled.div`
