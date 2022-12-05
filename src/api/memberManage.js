@@ -59,3 +59,7 @@ export const deleteFriend = async (friendId) => {
   const data = await axiosIns.delete(`/friend/${friendId}`);
   return data;
 }
+export const getGroupDetail = async (groupId) => {
+  const {data} = await axiosIns.get(`/group/${groupId}`)
+  return data
+}

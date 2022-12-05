@@ -1,89 +1,198 @@
-import { useState } from "react";
+import { Client } from "@stomp/stompjs";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
 import styled, { css } from "styled-components";
+import { defaultColor } from "./styles";
+
+import ChatSection from "./ChatSection";
+import OnlineCheckSection from "./OnlineCheckSection";
+import { useQuery } from "react-query";
+import { getGroupDetail } from "../../api/memberManage";
+
+// eslint-disable-next-line no-extend-native
+Date.prototype.amPm = function () {
+  let h;
+  const hour = this.getHours();
+  const min = this.getMinutes();
+  if (this.getHours() < 12) {
+    h = `오전${hour}:${min}`;
+  } else {
+    h = `오후${hour - 12}:${min}`;
+  }
+
+  return h;
+};
 
 const ChatPage = () => {
+  const MY_TOKEN = localStorage.getItem("access_token");
+
+  const location = useLocation();
+  const { groupId } = useParams();
+  const { chatRoomId } = location.state;
+
   const [userBoxView, setUserBoxView] = useState(false);
   const [planBoxView, setPlanBoxView] = useState(false);
+  const [allMessage, setAllmessage] = useState([]);
+  const [onlineUser, setOnlineUser] = useState([]);
+
+  // 리액트쿼리
+  const {
+    isLoading: detailLoading,
+    data: detailData,
+    refetch: detailRefetch,
+  } = useQuery(["groupDetail"], () => getGroupDetail(groupId));
+
+  // utils
+  const stompSendFn = (des, body) => {
+    client.current.publish({
+      destination: des,
+      headers: {},
+      body: JSON.stringify(body),
+    });
+  };
+
+  // callbackHandler
+  const messageCallbackHandler = (message) => {
+    const msgData = JSON.parse(message.body);
+    const date = new Date(Date.parse(msgData.time));
+    const amPm = date.amPm();
+
+    // 서버에서 받은 메세지 데이터를 배열로 담기위해 새로운 객체에 다시 담아준다.
+    const newData = {
+      message: [msgData.message],
+      sender: msgData.sender,
+      time: amPm,
+      token: msgData.token,
+    };
+
+    setAllmessage((prev) => {
+      if (
+        // 내가보낸 메세지가 아니면서, 메세지가 1개이상, 직전의 메세지와 현재 메세지의 sender가 같을경우
+        msgData.token !== MY_TOKEN &&
+        prev.length >= 1 &&
+        msgData.sender === prev[prev.length - 1].sender &&
+        amPm === prev[prev.length - 1].time
+      ) {
+        // 직전의 메세지 배열에 새로운 메세지를 push 해준다.
+        prev[prev.length - 1].message.push(msgData.message);
+        return [...prev];
+      } else {
+        return [...prev, newData];
+      }
+    });
+  };
+
+  const userCallbackHandler = (message) => {
+    setOnlineUser(JSON.parse(message.body));
+  };
+
+  const planCallbackHandler = (message) => {
+    console.log(JSON.parse(message.body));
+    detailRefetch();
+  };
+
+  const onlineCheckHandelr = () => {
+    detailRefetch();
+  };
+
+  // stomp
+  const client = useRef(
+    new Client({
+      brokerURL: "ws://18.206.140.108/chatroom",
+      debug: function (str) {
+        console.log(str);
+      },
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+    })
+  );
+
+  useEffect(() => {
+    client.current.activate();
+    return () => {
+      // 유저가 나갈때마다 실행
+      stompSendFn("/app/user", {
+        status: "LEAVE",
+        token: MY_TOKEN,
+        chatRoomId,
+        message: "소켓연결종료",
+      });
+      client.current.deactivate();
+    };
+  }, []);
+
+  // 브라우저에서 웹소켓 지원 안할시 sockJS로 연결
+  // client.current.webSocketFactory = () => {
+  //   return new SockJS("http://18.206.140.108/chatroom");
+  // };
+
+  // 일정수정 더미데이터
+  const plan = {
+    chatRoomId,
+    startDate: "2022-11-04",
+    endDate: "2022-11-04",
+    title: "제목입니다",
+    startTime: "09:33",
+    endTime: "13:00",
+    location: "광주광역시",
+    locationRoadName: "사암로",
+    content: "야무지게 고기먹기",
+  };
+
+  //채팅 로직
+  client.current.onConnect = () => {
+    console.log("소켓 연결완료✅");
+
+    // 채팅관련 구독
+    client.current.subscribe(
+      `/topic/${chatRoomId}/message`,
+      messageCallbackHandler
+    );
+    // user상태관련 구독
+    client.current.subscribe(`/topic/${chatRoomId}/user`, userCallbackHandler);
+    // 일정관리관련 구독
+    client.current.subscribe(`/topic/${chatRoomId}/plan`, planCallbackHandler);
+
+    client.current.subscribe(
+      `/topic/${chatRoomId}/onlineCheck`,
+      onlineCheckHandelr
+    );
+
+    // 유저가 입장할때마다 실행(소켓연결)
+    stompSendFn("/app/user", {
+      status: "JOIN",
+      token: MY_TOKEN,
+      chatRoomId,
+      message: "소켓연결됨",
+    });
+  };
+
   return (
     <Layout>
       <Container>
         <ChatBox userBoxView={userBoxView} planBoxView={planBoxView}>
-          <ChatBoxHeader>
-            <ChatTitle>일정 제목</ChatTitle>
-            <ChatIconWrapper>
-              <Svg
-                onClick={() => setUserBoxView((prev) => !prev)}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <path fill="none" d="M0 0h24v24H0V0z" />
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v1c0 .55.45 1 1 1h14c.55 0 1-.45 1-1v-1c0-2.66-5.33-4-8-4z" />
-              </Svg>
-              <Svg
-                onClick={() => setPlanBoxView((prev) => !prev)}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
-                <line
-                  x1="3"
-                  y1="12"
-                  x2="21"
-                  y2="12"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                ></line>
-                <line
-                  x1="3"
-                  y1="6"
-                  x2="21"
-                  y2="6"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                ></line>
-                <line
-                  x1="3"
-                  y1="18"
-                  x2="21"
-                  y2="18"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                ></line>
-              </Svg>
-            </ChatIconWrapper>
-          </ChatBoxHeader>
-          <ChatBoxBody>
-            <ChattingArea>
-              <ChattingBox>
-                <ChattingUserImgWrapper>
-                  <img src="http://www.urbanbrush.net/web/wp-content/uploads/edd/2020/02/urbanbrush-20200227023608426223.jpg" />
-                </ChattingUserImgWrapper>
-                <ChattingMainWrapper>
-                  <span>윤상민</span>
-                  <div>
-                    ㅇㄴㄹㄹㅇㄴㅇㄹㅇㄴㄹㄴㅇㄹㅇㄴㄹㄹㅇㄴㅇㄹㄴㅇㄹㅇㄴㅇㄹ
-                  </div>
-                </ChattingMainWrapper>
-                <ChattingTimeWrapper>
-                  <span>오후3:12</span>
-                </ChattingTimeWrapper>
-              </ChattingBox>
-              <MyChattingBox>
-                <ChattingMainWrapper>
-                  <div>
-                    ㅇㄴㄹㄹㅇㄴㅇㄹㅇㄴㄹㄴㅇㄹㅇㄴㄹㄹㅇㄴㅇㄹㄴㅇㄹㅇㄴㄹㄹㅇㄴㅇㄹㅇㄴㄹㄴㅇㄹㅇㄴㄹㄹㅇㄴㅇㄹㄴㅇㄹ
-                  </div>
-                </ChattingMainWrapper>
-                <ChattingTimeWrapper>
-                  <span>오후3:12</span>
-                </ChattingTimeWrapper>
-              </MyChattingBox>
-            </ChattingArea>
-            <ChatInput />
-          </ChatBoxBody>
+          <ChatSection
+            data={detailData?.data}
+            setUserBoxView={setUserBoxView}
+            userBoxView={userBoxView}
+            setPlanBoxView={setPlanBoxView}
+            planBoxView={planBoxView}
+            allMessage={allMessage}
+            stompSendFn={stompSendFn}
+            chatRoomId={chatRoomId}
+            MY_TOKEN={MY_TOKEN}
+          />
         </ChatBox>
-        <UserBox view={userBoxView}></UserBox>
+        <UserBox view={userBoxView}>
+          {userBoxView && (
+            <OnlineCheckSection
+              onlineUser={onlineUser}
+              userInfoList={detailData?.data?.userInfoList}
+            />
+          )}
+        </UserBox>
         <PlanBox view={planBoxView}></PlanBox>
       </Container>
     </Layout>
@@ -111,10 +220,9 @@ const Layout = styled.div`
 `;
 
 const Container = styled.div`
-  height: 70%;
-  width: 70%;
-  border: 1px solid gray;
-  border-radius: 5px;
+  height: 80%;
+  width: 100%;
+  border: 1px solid ${defaultColor.lightGrey};
   display: flex;
 `;
 
@@ -142,96 +250,12 @@ const ChatBox = styled.div`
   }}
 `;
 
-const ChatBoxHeader = styled.div`
-  height: 9%;
-  padding: 1%;
-  border-bottom: 1px solid gray;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ChatTitle = styled.span`
-  font-size: 1em;
-`;
-
-const ChatIconWrapper = styled.div`
-  width: fit-content;
-  display: flex;
-  gap: 0.5em;
-`;
-
-const Svg = styled.svg`
-  height: 1.5em;
-  width: 1.5em;
-  cursor: pointer;
-`;
-
-const ChatBoxBody = styled.div`
-  height: 91%;
-  padding: 2%;
-`;
-
-const ChattingArea = styled.div`
-  height: 93%;
-`;
-
-const ChattingBox = styled.div`
-  height: fit-content;
-  display: flex;
-`;
-
-const ChattingUserImgWrapper = styled.div`
-  width: fit-content;
-  height: fit-content;
-
-  img {
-    height: 3em;
-    width: 3em;
-    border-radius: 50%;
-  }
-`;
-
-const MyChattingBox = styled.div`
-  margin-top: 2%;
-  display: flex;
-  flex-direction: row-reverse;
-`;
-
-const ChattingMainWrapper = styled.div`
-  max-width: 60%;
-  margin-left: 1%;
-  margin-top: 5px;
-
-  div {
-    padding: 0.5em;
-    border: 1px solid;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-`;
-
-const ChattingTimeWrapper = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
-
-  span {
-    white-space: nowrap;
-    font-size: 0.8em;
-  }
-`;
-
-const ChatInput = styled.textarea`
-  height: 7%;
-  width: 100%;
-  border: 1px solid gray;
-  resize: none;
-`;
-
 const UserBox = styled.div`
   height: 100%;
   width: 0%;
-  border-left: 1px solid rgba(160, 160, 160, 0);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid ${defaultColor.lightGrey};
 
   transition: 0.5s ease-in-out;
 
@@ -239,14 +263,14 @@ const UserBox = styled.div`
     props.view &&
     css`
       width: 15%;
-      border-left: 1px solid rgba(160, 160, 160, 1);
+      border-left: 1px solid ${defaultColor.lightGrey};
     `}
 `;
 
 const PlanBox = styled.div`
   height: 100%;
   width: 0%;
-  border-left: 1px solid rgba(160, 160, 160, 0);
+  border-left: 1px solid ${defaultColor.lightGrey};
 
   transition: 0.5s ease-in-out;
 
@@ -254,6 +278,6 @@ const PlanBox = styled.div`
     props.view &&
     css`
       width: 30%;
-      border-left: 1px solid rgba(160, 160, 160, 1);
+      border-left: 1px solid ${defaultColor.lightGrey};
     `}
 `;

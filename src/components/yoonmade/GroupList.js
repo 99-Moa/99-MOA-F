@@ -4,6 +4,7 @@ import GroupInfo from "./GroupInfo";
 import { defaultColor } from "./styles";
 import emoji from "../../img/Sunglasses_emoji.png";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
   const [groupName, setGroupName] = useState("");

@@ -62,6 +62,8 @@ const Friends = () => {
     getMyFriends
   );
 
+  console.log(friendGroup);
+
   const showSearchCom = () => {
     setBack(false);
     setFirstRender(false);

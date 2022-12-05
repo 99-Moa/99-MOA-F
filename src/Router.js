@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         // 연습페이지
-        path:"chatP",
+        path:"chatP/:groupId",
         element: <ChatPage />
       }
     ]
