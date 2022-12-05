@@ -21,6 +21,7 @@ const Main = () => {
   const isChoiceGroup = useSelector(state => state.toggleModal.choiceGroup);
   const isEditProfile = useSelector(state => state.toggleModal.editProfile);
   const isRevisePlan = useSelector(state => state.toggleModal.revisePersonalPlan[0]);
+  
   const { isLoading:infoLoading, data:infoData } = useQuery(["myInfo"], getMyInfo);
   const { isLoading:schedulesLoading, data:schedulesData } = useQuery(["schedules"], getSchedules);
   const { isLoading:myFriendsLoading, data:myFriendsList } = useQuery(["getMyFriends"], getMyFriends);

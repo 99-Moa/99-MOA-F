@@ -59,6 +59,7 @@ const SearchFriend = ({ goBack }) => {
         <InputComponent
           placeholder="닉네임"
           value={userName}
+          width={"95%"}
           onChange={onChangeSerachInput}
           onKeyPress={onSearchFriend}
           iconClick={onSearchFriend}
@@ -97,9 +98,6 @@ const Container = styled.div`
   box-shadow: 0px 0px 10px lightgray;
   background-color: white;
   overflow: hidden;
-  position: absolute;
-  top:-13%;
-  right:136%;
 `;
 
 const SearchTitle = styled.div`
