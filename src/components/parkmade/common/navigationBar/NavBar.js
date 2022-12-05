@@ -12,11 +12,9 @@ import { getAlarmState, getProfileState } from "../../../../store/modules/yoonma
 
 const NavBar = ({infoData}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [myInfo, setMyInfo] = useState(false);
   const [alarm, setAlarm] = useState(false);
-
-  // alarm, myInfo state값 얻기위한 dispatch 입니다.
-  const dispatch = useDispatch()
 
   const toMain = () => {
     navigate("/main")
@@ -25,7 +23,6 @@ const NavBar = ({infoData}) => {
     navigate("/myFriends")
   };
   const showAlarm = () => {
-    // 알람 확인하기
     setMyInfo(false);
     setAlarm(prev=>!prev);
 
@@ -33,13 +30,11 @@ const NavBar = ({infoData}) => {
   const modalProfile = () => {
     setAlarm(false);
     setMyInfo(prev=>!prev);
-  }
-
+  };
   useEffect(() => {
     dispatch(getProfileState(myInfo))
     dispatch(getAlarmState(alarm))
-  },[myInfo,alarm,dispatch]) // 모달 상태 dispatch
-
+  },[myInfo,alarm,dispatch]);
   return (
     <Upper>
       <Wrap>

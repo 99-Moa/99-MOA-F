@@ -8,19 +8,16 @@ import { deleteSchedule, getDetailSchedule } from "../../../api/schedulesManage"
 import dot from "../../../img/dot.png"
 import { revisePersonalPlan } from "../../../store/modules/parkmade/toggleModal";
 
-
-// 모임장소 이름과 도로명주소 변경해야함, 지도 적용  제대로 안됬음
 const ToDo = ({prop, traceScroll, index, setExtend}) => {
   const { kakao } = window;
   const navigate = useNavigate();
-  const deleteRef = useRef();
   const dispatch = useDispatch();
-
+  const deleteRef = useRef();
   const [openDetail, setOpenDetail] = useState(false);
   const [getDetailData, setGetDetailData] = useState({});
   const [isDelete, setIsDelete] = useState(false);
-  const [isPersonalPlan, setIsPersonalPlan] = useState(false); // 하는중
-  // console.log(getDetailData?.users?.length)
+  const [isPersonalPlan, setIsPersonalPlan] = useState(false); 
+
   const { mutate:detailPlan } = useMutation(getDetailSchedule, {
     onSuccess: (res) => {
       if (res.data.users.length === 1) {
@@ -37,22 +34,22 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
 
   const toChat = () => {
     // navigate("/채팅방")
-  }
+  };
   const openDR = () => {
     setIsDelete(prev=>!prev);
-  }
+  };
   const deleteThis = () => {
     deletePlan(prop.id)
-  }
+  };
   const revisePlan = () => {
     dispatch(revisePersonalPlan([true, getDetailData, prop.id]))
-  }
+  };
   const open =  () => {
     setExtend(prev=>!prev)
     setOpenDetail(prev=>!prev);
     !openDetail && traceScroll.current.scrollBy({top: -traceScroll.current.scrollTop})
-    !openDetail && setTimeout(() => {traceScroll.current.scrollBy({top: (traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.24)*index, behavior: 'smooth'})}, 1)
-    openDetail && traceScroll.current.scrollBy({top: -(traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.24)*index, behavior: 'smooth'})
+    !openDetail && setTimeout(() => {traceScroll.current.scrollBy({top: (traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.21)*index, behavior: 'smooth'})}, 1)
+    openDetail && traceScroll.current.scrollBy({top: -(traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.21)*index, behavior: 'smooth'})
   };
 
   useEffect(() => {
@@ -82,10 +79,10 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
           <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
-                <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
+                <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
                   {getDetailData.title}
                 </SumContent>
-                <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
+                <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
                   {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
                 </Date>
               </WrapSummary>
@@ -243,7 +240,9 @@ const Date = styled(motion.div)`
   display: flex;
   align-items: center;
   font-size: 20px;
-  color: ${prop => (prop.index === 0) && "white"};
+  color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"};
+  transition-property: color;
+  transition-delay: 0.7s;
 `;
 const SumContent = styled(motion.div)`
   height: 30%;
@@ -251,7 +250,9 @@ const SumContent = styled(motion.div)`
   display: flex;
   align-items: center;
   font-size: 13px;
-  color: ${prop => (prop.index === 0) && "white"};
+  color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"}; //
+  transition-property: color;
+  transition-delay: 0.7s;
 `;
 const UpperDetailDiv = styled(motion.div)`
   width: 100%;
@@ -337,8 +338,8 @@ const Content = styled.div`
   margin-top: 2%;
   padding: 1%;
   background-color: white;
-  border: 1px solid gray;
-  border-radius: 8px;
+  border: 1px solid #E9EEF2;
+  border-radius: 4px;
   display: flex;
   word-break: break-all;
   align-items: center;
@@ -363,8 +364,7 @@ const EachEventBtn = styled(motion.div)`
 const clickVariants = {
   open : {
     height : "98%",
-    border: "1px solid gray",
-    
+    border: "1px solid #E9EEF2",
     transition : {
       duration : 0.7,
     }
@@ -383,7 +383,6 @@ const clickVariants = {
   },
   sumSec : (isPersonalPlan) => ({
     height : "10%",
-    color : "white",
     backgroundColor : isPersonalPlan ? "#FF4545" : "#00a8ff",
     borderRadius : "5px",
     transition : {
@@ -397,7 +396,6 @@ const clickVariants = {
     }
   },
   colorSec : {
-    color : "white",
     transition : {
       duration : 0.7,
       delay : 0.7
@@ -416,11 +414,5 @@ const clickVariants = {
       duration : 0.5,
       
     }
-  }
-}
-
-const dotVariant = {
-  ani: {
-    rotateZ:90,
   }
 }

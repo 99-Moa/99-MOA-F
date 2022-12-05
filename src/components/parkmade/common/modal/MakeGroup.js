@@ -9,10 +9,12 @@ import { useMutation } from "react-query";
 import { postMakeGroup } from "../../../../api/schedulesManage";
 import { useDispatch } from "react-redux";
 import { toggleChoiceGroup } from "../../../../store/modules/parkmade/toggleModal";
+import { useNavigate } from "react-router-dom";
 
 
 const MakeGroup = ({myFriendsList}) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { register:searchRegister, handleSubmit:searchHandle, setValue:searchSetValue } = useForm();
   const [isTargetSearch, setIsTargetSearch] = useState(false);
   const [resultF, setResultF] = useState({});
@@ -22,6 +24,7 @@ const MakeGroup = ({myFriendsList}) => {
     onSuccess: (res) => {
       alert("그룹생성 완료!");
       dispatch(toggleChoiceGroup(false));
+      navigate("/myFriends");
     }
   });
   const onChange = (ev) => {

@@ -43,7 +43,7 @@ const MakePlan = () => {
     setPlace(ev.target.value);
     setIsWriting(true)
     if (ev.key === "Enter") {
-      !roadName && setRoadName(traceRoadName.current?.children[0]?.children[1]?.innerText);
+      setRoadName(traceRoadName.current?.children[0]?.children[1]?.innerText);
       setIsSearch(false);
       setIsWriting(false);
     }
@@ -56,7 +56,6 @@ const MakePlan = () => {
     setIsWriting(false);
   };
   const submitPlan = (data) => {
-    console.log(data.startTime)
     if (!isWriting) {
       if (data.title && data.place && startDate && endDate && (data.startTime !== "시작시간") && (data.endTime !== "끝나는시간")) {
         if (dayjs(startDate).format("YYYY-MM-DD") > dayjs(endDate).format("YYYY-MM-DD")) {
@@ -183,8 +182,8 @@ const MakePlan = () => {
                 <Lists ref={traceRoadName}>
                   {places.map((prop, index) => (
                     <List key={index} onClick={saveRoadName}>
-                      <PlaceName>{prop.place_name}</PlaceName>
-                      <PlaceRoadName>{prop.road_address_name}</PlaceRoadName>
+                      <PlaceSpan>{prop.place_name}</PlaceSpan>
+                      <PlaceRoadNameSpan>{prop.road_address_name ? prop.road_address_name : prop.address_name}</PlaceRoadNameSpan>
                     </List>
                   ))}
                 </Lists>
@@ -193,10 +192,12 @@ const MakePlan = () => {
             }
           </SearchDiv>
         </SearchPlaceDiv>
-        {roadName && 
+        {roadName ? 
           <RoadNameDiv>
             <RoadName>{roadName}</RoadName>
           </RoadNameDiv>
+          :
+          null
         }
         <UpperMapDiv>
           <MapDiv className="plan-kakao"></MapDiv>
@@ -224,9 +225,8 @@ export default MakePlan;
 const UpperDiv = styled(motion.div)`
   width: 100%;
   height: 100%;
-  border: 1px solid;
-  border-radius: 15px;
   background-color: white;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
 `;
 const Form = styled.form`
   width: 100%;
@@ -304,7 +304,7 @@ const TimeOption = styled.option`
   height: 100%;
   width: 40%;
   border: 1px solid;
-  border-radius: 10px;
+  border-radius: 4px;
   display: none;
 `;
 const SearchPlaceDiv = styled.div`
@@ -331,8 +331,11 @@ const RoadName = styled.div`
   padding-left: 1%;
 `;
 const PlacesDiv = styled.div`
-  width: 90%;
-  max-height: 800%;
+  width: 100%;
+  height: 840%;
+  border: 1px solid #E9EEF2;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -340,43 +343,48 @@ const PlacesDiv = styled.div`
   background-color: white;
   z-index: 20;
   top: 110%;
+  left: -1px;
   gap: 1%;
-  border: 1px solid;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
 `;
 const Lists = styled.div`
   width: 100%;
-  height: 80%;
+  height: 90%;
   overflow: auto;
   overflow-x: hidden;
 `;
 const PageDiv = styled.div`
   width: 100%;
-  height: 15%;
+  height: 10%;
+  border-top: 1px solid #E9EEF2;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
   gap: 10px;
-  border-top: 1px solid;
 `;
 const List = styled.div`
   width: 100%;
-  height: 15%;
-  border: 1px solid;
+  height: 20%;
+  border-bottom: 1px solid #E9EEF2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   cursor: pointer;
+
+  &:hover {
+    background-color: #E9EEF2;
+  }
 `;
-const PlaceName = styled.div`
-  height: 60%;
-  width: 100%;
-  font-size: 100%;
-  font-weight: 800;
+const PlaceSpan = styled.span`
+  font-size: 90%;
+  font-weight: 600;
+  text-indent: 2%;
 `;
-const PlaceRoadName = styled.div`
-  height: 40%;
-  width: 100%;
-  font-size: 85%;
+const PlaceRoadNameSpan = styled.span`
+  font-size: 75%;
   font-weight: 300;
+  text-indent: 2%;
 `;
 const TextDiv = styled.div`
   width: 10%;
@@ -400,6 +408,7 @@ const SearchDiv = styled.div`
   border-radius: 5px;
   margin: 1% 0px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   position: relative;
 `;
@@ -410,7 +419,7 @@ const PlaceInput = styled.input`
   font-weight: 600;
   display: flex;
   align-items: center;
-  margin: 0px 2%;
+  margin: 0 0 0 1%;
   border: none;
   outline: none;
 `;
