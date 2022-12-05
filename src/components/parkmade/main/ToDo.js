@@ -86,14 +86,18 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
                   {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
                 </Date>
               </WrapSummary>
-              <OptionDiv>
-                <OptionImg ref={deleteRef} src={dot} animate={{rotateZ: isDelete ? 90 : 0}} onClick={openDR}/>
-                <Delete transition={{ type: "linear" }}  initial={{scaleX:0}} animate={{scaleX: isDelete ? 1 : 0,}}>
-                  <Choice whileHover={{scale:1.1}} onClick={deleteThis}>
-                    삭제
-                  </Choice>
-                </Delete>
-              </OptionDiv>
+              {(getDetailData?.users?.length === 1)?
+                <OptionDiv>
+                  <OptionImg ref={deleteRef} src={dot} animate={{ rotateZ: isDelete ? 90 : 0 }} onClick={openDR} />
+                  <Delete transition={{ type: "linear" }} initial={{ scaleX: 0 }} animate={{ scaleX: isDelete ? 1 : 0, }}>
+                    <Choice whileHover={{ scale: 1.1 }} onClick={deleteThis}>
+                      삭제
+                    </Choice>
+                  </Delete>
+                </OptionDiv>
+                :
+                null
+              }
             </SummaryDiv>
           </UpperSummaryDiv>
           <UpperDetailDiv variants={clickVariants} animate={openDetail ? "detailSec" : "detailFir"}>

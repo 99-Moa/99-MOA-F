@@ -350,7 +350,6 @@ const Lists = styled.div`
   width: 100%;
   height: 90%;
   overflow: auto;
-  overflow-x: hidden;
 `;
 const PageDiv = styled.div`
   width: 100%;
