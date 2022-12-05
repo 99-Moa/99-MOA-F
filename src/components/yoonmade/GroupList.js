@@ -101,8 +101,8 @@ const AddFriendDiv = styled.div`
   cursor: pointer;
 `;
 const Container = styled(motion.div)`
-  height: 310%;
-  width: 150%;
+  height: 1600%;
+  width: 200%;
   top: 170%;
   left: ${prop => prop.left};
   position: absolute;

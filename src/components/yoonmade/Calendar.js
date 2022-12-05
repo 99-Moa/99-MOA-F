@@ -165,8 +165,8 @@ const UpperDiv = styled.div`
       font-weight: 600;
       position: absolute;
       z-index: 2;
-      top:2650%;
-      left:1725%;
+      top:60em;
+      left:107em;
       transition: all 0.3s ease 0s;
 
       &:focus {
