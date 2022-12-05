@@ -68,10 +68,10 @@ const SearchFriend = ({ goBack }) => {
       <Body>
         {userInfo ? (
           <FriendWrapper>
-            <img src={userInfo.imgUrl} alt="userImg" />
-            <span className="userName">{userInfo.friendUsername}</span>
-            <span className="userId">{userInfo.userId}</span>
-            <div onClick={onAddFriend}>친구추가</div>
+            <UserImg src={userInfo.imgUrl} alt="userImg" />
+            <UserName className="userName">{userInfo.friendUsername}</UserName>
+            <UserId className="userId">{userInfo.userId}</UserId>
+            <FriendAdd onClick={onAddFriend}>친구추가</FriendAdd>
           </FriendWrapper>
         ) : (
           <NotFriendWrapper>
@@ -98,101 +98,94 @@ const Container = styled.div`
   box-shadow: 0px 0px 10px lightgray;
   background-color: white;
   overflow: hidden;
+  
 `;
 
 const SearchTitle = styled.div`
-  width:90%;
-  margin: 8.5% 7%;
+  width:80%;
+  height:5%;
+  margin: 6% 8%;
   display: flex;
   align-items: center;
-
-  svg {
-    height: 100%;
-    cursor: pointer;
-  }
 
   span {
     width: 100%;
     display: flex;
     align-items: center;
-    font-size: 1.2em;
+    font-size: 120%;
     font-weight: bold;
     position: absolute;
-    left: 38%;
-    right: 53%;
+    top:30%;
+    left: 57%;
     user-select: none;
   }
 `;
-
 const Header = styled.div`
-  height: 30%;
   width: 90%;
-  margin-bottom: 1em;
+  height: 7%;
+  margin-bottom: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.8em;
 `;
-
 const Body = styled.div`
-  width:90%;
-  height: 400%;
+  width:100%;
+  height: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
 const FriendWrapper = styled.div`
-  margin-top: 3em;
+  width:100%;
+  height:100%;
+  margin-top: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
   user-select: none;
-
-  img {
-    height: 5em;
-    width: 5em;
-    border-radius: 50%;
-    margin-bottom: 0.5em;
-    object-fit: cover;
-  }
-
-  .userName {
-    font-size: 1.2em;
-  }
-
-  .userId {
-    font-size: 0.8em;
-    color: ${defaultColor.darkGrey};
-  }
-
-  div {
-    width:170%;
-    padding: 1em 3em;
-    margin-top: 4em;
-    display: flex;
-    justify-content: center;
-    border-radius: 0.3em;
-    background-color: ${defaultColor.red};
-    color: white;
-  }
+  flex-grow: 0;
+  flex-shrink: 0;
 `;
-
+const UserImg = styled.img`
+  width: 25%;
+  height:25%;
+  border-radius: 50%;
+  margin-bottom: 3%;
+  object-fit: cover; 
+`;
+const UserName = styled.div`
+  font-size: 120%;
+`;
+const UserId = styled.div`
+  font-size: 80%;
+  color: ${defaultColor.darkGrey};
+`;
+const FriendAdd = styled.div`
+  width:90%;
+  padding: 5%;
+  margin-top: 20%;
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: ${defaultColor.red};
+  color: white;
+`;
 const NotFriendWrapper = styled.div`
+  margin-top: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2em;
 
   img {
-    height: 2em;
-    width: 2em;
+    width: 10%;
+    height: 20%;
+    margin-bottom: 5%;
     opacity: 0.4;
   }
   span {
-    font-size: 1em;
+    font-size: 90%;
     font-weight: 400;
     color: ${defaultColor.darkGrey};
-    margin-bottom: 5em;
+    margin-bottom: 50%;
   }
 `;
