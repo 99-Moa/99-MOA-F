@@ -5,17 +5,16 @@ const FriendInfo = ({ friendInfo, onDeleteFriend }) => {
   return (
     <UserWrapper>
       <ImgAndName>
-        <img src={friendInfo.imgUrl} alt="userImg" />
+        <UserImage src={friendInfo.imgUrl} alt="userImg" />
         <User>
-          <span className="userName">{friendInfo.friendUsername}</span>
-          <span className="userId">{friendInfo.userId}</span>
+          <Name className="userName">{friendInfo.friendUsername}</Name>
+          <Id className="userId">{friendInfo.userId}</Id>
         </User>
       </ImgAndName>
       <DeleteWrapper>
-        <span className="text">삭제</span>
-        <span className="btn" onClick={() => onDeleteFriend(friendInfo.id)}>
+        <Delete className="btn" onClick={() => onDeleteFriend(friendInfo.id)}>
           ⊝
-        </span>
+        </Delete>
       </DeleteWrapper>
     </UserWrapper>
   );
@@ -24,59 +23,59 @@ const FriendInfo = ({ friendInfo, onDeleteFriend }) => {
 export default FriendInfo;
 
 const UserWrapper = styled.div`
-  height: 19%;
+  width:100%;
+  height: 18%;
   display: grid;
   grid-template-columns: 30% 69% 20%;
+  margin-bottom: 4%;
   align-items: center;
   font-weight: 300;
+  
 `;
-
 const ImgAndName = styled.div`
+  width:90%;
+  height:100%;
   display: flex;
   align-items: center;
-  gap: 1em;
-
-  img {
-    height: 3em;
-    width: 3em;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+  gap: 20%;
+  
 
   span {
-    width:120%;
     display: flex;
     flex-direction: row;
   }
   `;
 
+const UserImage = styled.img`
+  width: 82%;
+  height:100%;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+const Name = styled.div`
+  font-size: 120%;
+`;
+const Id = styled.div`
+  color:gray;
+`;
 const User = styled.div`
-  .userName {
-    font-size: 120%;
-  }
-  .userId {
-    color:gray;
-  }
-  `;
+`;
 
 const DeleteWrapper = styled.div`
+  width:10%;
+  margin-left: 95%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  gap: 0.3em;
+  gap: 30%;
 
   &:hover {
     color: ${defaultColor.red};
   }
+`;
 
-  .text {
-    font-size: 0.8em;
-  }
-
-  .btn {
-    padding-bottom: 0.1em;
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-  }
+const Delete = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 120%;
 `;
