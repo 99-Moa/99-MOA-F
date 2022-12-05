@@ -6,13 +6,15 @@ const FriendInfo = ({ friendInfo, onDeleteFriend }) => {
     <UserWrapper>
       <ImgAndName>
         <img src={friendInfo.imgUrl} alt="userImg" />
-        <span>{friendInfo.friendUsername}</span>
+        <User>
+          <span className="userName">{friendInfo.friendUsername}</span>
+          <span className="userId">{friendInfo.userId}</span>
+        </User>
       </ImgAndName>
-      <span>{friendInfo.userId}</span>
       <DeleteWrapper>
         <span className="text">삭제</span>
         <span className="btn" onClick={() => onDeleteFriend(friendInfo.id)}>
-          ⊖
+          ⊝
         </span>
       </DeleteWrapper>
     </UserWrapper>
@@ -22,9 +24,9 @@ const FriendInfo = ({ friendInfo, onDeleteFriend }) => {
 export default FriendInfo;
 
 const UserWrapper = styled.div`
-  height: 10%;
+  height: 19%;
   display: grid;
-  grid-template-columns: 30% 50% 20%;
+  grid-template-columns: 30% 69% 20%;
   align-items: center;
   font-weight: 300;
 `;
@@ -40,7 +42,22 @@ const ImgAndName = styled.div`
     border-radius: 50%;
     object-fit: cover;
   }
-`;
+
+  span {
+    width:120%;
+    display: flex;
+    flex-direction: row;
+  }
+  `;
+
+const User = styled.div`
+  .userName {
+    font-size: 120%;
+  }
+  .userId {
+    color:gray;
+  }
+  `;
 
 const DeleteWrapper = styled.div`
   display: flex;
