@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { postLogOut } from "../../../../api/memberManage";
-import pePe from "../../../../img/pePe.png"
 import { toggleEditProfile } from "../../../../store/modules/parkmade/toggleModal";
 
 // 상위에서 이미지, 이름 받아와야함
@@ -87,7 +86,6 @@ const Img = styled.img`
   width: 130px;
   height: 130px;
   border-radius: 65px;
-  background-color: gray;
 `;
 const ProfileDiv = styled.div`
   height: 100%;
