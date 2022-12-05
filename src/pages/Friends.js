@@ -14,26 +14,22 @@ import SearchFriend from "../components/yoonmade/SearchFriend";
 
 const Friends = () => {
   const [back, setBack] = useState(true);
-  const [firstRender, setFirstRender] = useState(true);
   const [showFriend, setShowFriend] = useState(false);
   const [showSearch, setShowSerach] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
-  const { alarmState, profileState } = useSelector((state) => state.modalState);
 
-  const { isLoading:infoLoading, data:infoData } = useQuery(["myInfo"], getMyInfo);
-  const { isLoading:groupLoading, data:friendGroup } = useQuery(["friendGroup"], getFriendGroup);
-  const { isLoading:friendLoading, data:friendList } = useQuery(["friendList"], getMyFriends);
-  
+  const { isLoading: infoLoading, data: infoData } = useQuery(["myInfo"], getMyInfo);
+  const { isLoading: groupLoading, data: friendGroup } = useQuery(["friendGroup"], getFriendGroup);
+  const { isLoading: friendLoading, data: friendList } = useQuery(["friendList"], getMyFriends);
+
   const showSearchCom = () => {
-    setBack(false);
-    setFirstRender(false);
-    setShowSerach(true);
+    setShowSerach(prev => !prev);
+    setShowFriend(false);
   };
 
   const showFriendCom = () => {
-    setBack(false);
-    setFirstRender(false);
-    setShowFriend(true);
+    setShowFriend(prev => !prev);
+    setShowSerach(false);
   };
 
   const goBack = () => {
@@ -41,65 +37,56 @@ const Friends = () => {
     setShowFriend(false);
     setShowSerach(false);
   };
+
   return (
     <>
-      {infoLoading || groupLoading || friendLoading ? (
+      {(infoLoading || groupLoading || friendLoading) ? (
         <Loading />
       ) : (
         <>
           <NavBar infoData={infoData} setIsEditProfile={setIsEditProfile} />
           <Portal>
-            {isEditProfile && (
+            {isEditProfile && 
               <EditMyProfile
                 info={infoData.data}
                 setIsEditProfile={setIsEditProfile}
               />
-            )}
+            }
           </Portal>
           <Wrap>
             <AnimatePresence custom={{ back }}>
-              {!showFriend && !showSearch && (
-                <GroupContainer
-                  custom={{ back, firstRender }}
-                  variants={box}
-                  initial="invisible"
-                  animate="visible"
-                  exit="exit"
-                  key="1"
-                >
-                  <GroupList
-                    showSearchCom={showSearchCom}
-                    showFriendCom={showFriendCom}
-                    friendGroup={friendGroup.data}
-                  />
-                </GroupContainer>
-              )}
-              {showFriend && (
+              <GroupContainer>
+                <GroupList
+                  showFriend={showFriend}
+                  showSearch={showSearch}
+                  showSearchCom={showSearchCom}
+                  showFriendCom={showFriendCom}
+                  friendGroup={friendGroup.data}
+                />
+              </GroupContainer>
+
+              {/* 아래 두개 그룹리스트로 들어가야함. */}
+              {showFriend && 
                 <FriendContainer
-                  custom={{ back }}
-                  variants={box}
-                  initial="invisible"
-                  animate="visible"
-                  exit="exit"
-                  $ismodal={profileState || alarmState}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 0 }}
                   key="2"
                 >
-                  <FriendList goBack={goBack} friendList={friendList} />
+                  <FriendList goBack={goBack} friendList={friendList}/>
                 </FriendContainer>
-              )}
-              {showSearch && (
+              }
+              {showSearch && 
                 <SerachContainer
-                  custom={{ back }}
-                  variants={box}
-                  initial="invisible"
-                  animate="visible"
-                  exit="exit"
-                  $ismodal={profileState || alarmState}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 0 }}
                   key="2"
                 >
                   <SearchFriend goBack={goBack} />
                 </SerachContainer>
-              )}
+              }
+              {/* 위에 두개 그룹리스트로 들어가야함*/}
             </AnimatePresence>
           </Wrap>
         </>
@@ -118,7 +105,7 @@ const Wrap = styled(motion.div)`
   gap: 3%;
 
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
   @media all and (min-width: 1024px) {
     font-size: 15px;
@@ -140,43 +127,19 @@ const GroupContainer = styled(motion.div)`
 `;
 
 const SerachContainer = styled(motion.div)`
-  height: 70%;
-  width: 60%;
+  height: 10%;
+  width: 13%;
   position: absolute;
-  z-index: ${prop => prop.$isModal ? "-1" : 0};
+  top:22%;
+  right:37%;
+  z-index: ${(prop) => (prop.ismodal ? "-1" : 0)};
 `;
 
 const FriendContainer = styled(motion.div)`
-  height: 70%;
-  width: 60%;
+  height: 10%;
+  width: 13%;
   position: absolute;
-  z-index: ${prop => prop.$isModal ? "-1" : 0};
+  top:22%;
+  right:41.5%;
+  z-index: ${(prop) => (prop.ismodal ? "-1" : 0)};
 `;
-const SLIDE_X = window.innerWidth / 6;
-const box = {
-  invisible: ({ back: isBack, firstRender }) => {
-    if (firstRender) {
-      return {
-        x: 0,
-        opacity: 1,
-        scale: 1,
-      };
-    } else return { x: isBack ? -SLIDE_X : SLIDE_X, opacity: 0, scale: 1 };
-  },
-  visible: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  exit: ({ back: isBack }) => ({
-    x: isBack ? SLIDE_X : -SLIDE_X,
-    opacity: 0,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-    },
-  }),
-};

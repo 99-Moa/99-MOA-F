@@ -6,7 +6,7 @@ import FriendInfo from "./FriendInfo";
 import InputComponent from "./InputComponent";
 import { defaultColor } from "./styles";
 
-const FriendList = ({ goBack, friendList }) => {
+const FriendList = ({ friendList }) => {
   const [friendName, setFriendName] = useState("");
   const [filterFriendList, setFilterFriendList] = useState([]);
 
@@ -34,20 +34,11 @@ const FriendList = ({ goBack, friendList }) => {
   };
 
   return (
-    <>
-      <Header>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 0 24 24"
-          width="24px"
-          fill="#000000"
-          onClick={goBack}
-        >
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-        </svg>
+    <Container>
+      <FriendTitle>
         <span>친구목록</span>
+      </FriendTitle>
+      <Header>
         <InputComponent
           placeholder="닉네임"
           onChange={onChangeFriendInput}
@@ -55,44 +46,47 @@ const FriendList = ({ goBack, friendList }) => {
         />
       </Header>
       <Body>
-        <BodyHeader>
-          <span className="name">NAME</span>
-          <span className="id">ID</span>
-          <span className="delete"></span>
-        </BodyHeader>
         <BodyMain>
           {filterFriendList.length >= 1 || friendName
             ? filterFriendList.map((friendInfo) => (
-                <FriendInfo
-                  friendInfo={friendInfo}
-                  onDeleteFriend={onDeleteFriend}
-                  key={friendInfo.id}
-                />
-              ))
+              <FriendInfo
+                friendInfo={friendInfo}
+                onDeleteFriend={onDeleteFriend}
+                key={friendInfo.id}
+              />
+            ))
             : friendList?.data.map((friendInfo) => (
-                <FriendInfo
-                  friendInfo={friendInfo}
-                  onDeleteFriend={onDeleteFriend}
-                  key={friendInfo.id}
-                />
-              ))}
+              <FriendInfo
+                friendInfo={friendInfo}
+                onDeleteFriend={onDeleteFriend}
+                key={friendInfo.id}
+              />
+            ))}
         </BodyMain>
       </Body>
-    </>
+    </Container>
   );
 };
 
 export default FriendList;
 
-const Header = styled.div`
-  height: 5%;
-  width: 100%;
-  margin-bottom: 1em;
+const Container = styled.div`
+  width:150%;
+  height:600%;
+  border:1px solid ${defaultColor.lightGrey};
+  border-radius: 2px;
+  box-shadow: 0px 0px 10px lightgray;
+  background-color: white;
+  position: absolute;
+  top:-13%;
+  right:146%;
+`;
+
+const FriendTitle = styled.div`
+  margin:5% 12%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 0.8em;
-  position: relative;
 
   svg {
     height: 100%;
@@ -101,37 +95,46 @@ const Header = styled.div`
   }
 
   span {
-    width: 10%;
+    width: 40%;
     display: flex;
     align-items: center;
     font-size: 1.2em;
     font-weight: bold;
-    position: absolute;
-    left: 47%;
-    right: 53%;
+    margin-left:10%;
     user-select: none;
   }
-`;
+  `;
 
-const Body = styled.div`
-  height: 100%;
-  border: 1px solid ${defaultColor.lightGrey};
-`;
+  const Header = styled.div`
+    width: 88%;
+    height: 6%;
+    margin:5% 6%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8em;
+    position: relative;
+  `;
 
-const BodyHeader = styled.div`
-  height: 5%;
-  margin-bottom: 1em;
-  padding: 0 2em;
-  display: grid;
-  grid-template-columns: 30% 50% 20%;
-  align-items: center;
-  background-color: ${defaultColor.lightGrey};
-  font-size: 1em;
-  font-weight: 300;
-`;
+  const Body = styled.div`
+    height: 71%;
+  `;
 
-const BodyMain = styled.div`
-  height: 95%;
-  padding: 0 2em;
-  user-select: none;
+  const BodyMain = styled.div`
+    height: 109%;
+    padding: 0 1em;
+    user-select: none;
+    overflow-y:auto;
+
+  ::-webkit-scrollbar {
+    border-radius: 5px;
+    background-color: #E9EEF2;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #AAAFB5;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
 `;

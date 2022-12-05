@@ -19,7 +19,6 @@ const SearchFriend = ({ goBack }) => {
       }
     },
   });
-
   const { mutate: addMutate } = useMutation(postPlusFriend, {
     onSuccess: ({ success, error }) => {
       if (success) {
@@ -45,29 +44,18 @@ const SearchFriend = ({ goBack }) => {
       searchMutate(userName);
     }
   };
-
   const onAddFriend = () => {
     const user = {
       userName: userInfo.friendUsername,
     };
     addMutate(user);
   };
-
   return (
-    <>
-      <Header>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 0 24 24"
-          width="24px"
-          fill="#000000"
-          onClick={goBack}
-        >
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-        </svg>
+    <Container>
+      <SearchTitle>
         <span>친구검색</span>
+      </SearchTitle>
+      <Header>
         <InputComponent
           placeholder="닉네임"
           value={userName}
@@ -91,21 +79,34 @@ const SearchFriend = ({ goBack }) => {
           </NotFriendWrapper>
         )}
       </Body>
-    </>
+    </Container>
   );
 };
 
 export default SearchFriend;
 
-const Header = styled.div`
-  height: 5%;
-  width: 100%;
-  margin-bottom: 1em;
+const Container = styled.div`
+  width:150%;
+  height:600%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 0.8em;
-  position: relative;
+  border:1px solid ${defaultColor.lightGrey};
+  border-radius: 2px;
+  box-shadow: 0px 0px 10px lightgray;
+  background-color: white;
+  overflow: hidden;
+  position: absolute;
+  top:-13%;
+  right:136%;
+`;
+
+const SearchTitle = styled.div`
+  width:90%;
+  margin: 8.5% 7%;
+  display: flex;
+  align-items: center;
 
   svg {
     height: 100%;
@@ -113,37 +114,48 @@ const Header = styled.div`
   }
 
   span {
-    width: 10%;
+    width: 100%;
     display: flex;
     align-items: center;
     font-size: 1.2em;
     font-weight: bold;
     position: absolute;
-    left: 47%;
+    left: 38%;
     right: 53%;
     user-select: none;
   }
 `;
 
-const Body = styled.div`
-  height: 100%;
+const Header = styled.div`
+  height: 30%;
+  width: 90%;
+  margin-bottom: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${defaultColor.lightGrey};
+  gap: 0.8em;
+`;
+
+const Body = styled.div`
+  width:90%;
+  height: 400%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const FriendWrapper = styled.div`
+  margin-top: 3em;
   display: flex;
   flex-direction: column;
   align-items: center;
   user-select: none;
 
   img {
-    height: 10em;
-    width: 10em;
+    height: 5em;
+    width: 5em;
     border-radius: 50%;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
     object-fit: cover;
   }
 
@@ -157,8 +169,11 @@ const FriendWrapper = styled.div`
   }
 
   div {
-    padding: 0.2em 0.7em;
-    margin-top: 0.8em;
+    width:170%;
+    padding: 1em 3em;
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
     border-radius: 0.3em;
     background-color: ${defaultColor.red};
     color: white;
@@ -177,8 +192,9 @@ const NotFriendWrapper = styled.div`
     opacity: 0.4;
   }
   span {
-    font-size: 1.3em;
+    font-size: 1em;
     font-weight: 400;
     color: ${defaultColor.darkGrey};
+    margin-bottom: 5em;
   }
 `;
