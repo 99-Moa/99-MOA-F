@@ -6,7 +6,6 @@ import Portal from "../components/parkmade/common/modal/Portal";
 import EditMyProfile from "../components/parkmade/common/navigationBar/EditMyProfile";
 import NavBar from "../components/parkmade/common/navigationBar/NavBar";
 import ChatPage from "../components/yoonmade/ChatPage"
-import { io } from "socket.io-client";
 
 
 const ChatRoom = () => {
@@ -22,7 +21,7 @@ const ChatRoom = () => {
           {/* <Portal>
             {isEditProfile && <EditMyProfile info={infoData.data} setIsEditProfile={setIsEditProfile}/>}
           </Portal> */}
-          <ChatPage />
+          {/* <ChatPage /> */}
         </>
       {/* } */}
     </>

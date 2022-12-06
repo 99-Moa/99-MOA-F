@@ -1,9 +1,13 @@
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { axiosIns } from "../../api/api";
 import { defaultColor } from "./styles";
 
 const GroupInfo = ({ group }) => {
   const [isHovering, setIsHovering] = useState(false);
+  const navigate = useNavigate();
 
   const handleMouseOver = () => {
     setIsHovering(true);
@@ -12,11 +16,27 @@ const GroupInfo = ({ group }) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
+
+  const onChatRoomMove = () => {
+    axiosIns
+      .post("/room", {
+        chatRoomId: group.groupId,
+      })
+      .then((res) => {
+        navigate(`/ChatP/${group.groupId}`, {
+          state: {
+            chatRoomId: res.data.data.chatRoomId,
+          },
+        });
+      });
+  };
+
   return (
     <GroupInfoBox
       over={group.userNum > 4}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
+      onClick={onChatRoomMove}
     >
       <InfoHeader>
         <span>{group.groupName}</span>
