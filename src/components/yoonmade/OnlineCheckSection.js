@@ -7,7 +7,7 @@ const OnlineCheckSection = ({ onlineUser, userInfoList }) => {
       <UserBoxHeader>활동 중인 사람 ({onlineUser.length}명)</UserBoxHeader>
       <UserBoxBody>
         <UserList>
-          {userInfoList.map((user) => (
+          {userInfoList?.map((user) => (
             <UserWrapper>
               <ImgWrapper>
                 <img src={user.imgUrl} alt="user" />

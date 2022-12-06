@@ -9,6 +9,7 @@ import ChatSection from "./ChatSection";
 import OnlineCheckSection from "./OnlineCheckSection";
 import { useQuery } from "react-query";
 import { getGroupDetail } from "../../api/memberManage";
+import PlanSection from "./PlanSection";
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.amPm = function () {
@@ -32,7 +33,7 @@ const ChatPage = () => {
   const { chatRoomId } = location.state;
 
   const [userBoxView, setUserBoxView] = useState(false);
-  const [planBoxView, setPlanBoxView] = useState(false);
+  const [planBoxView, setPlanBoxView] = useState(true);
   const [allMessage, setAllmessage] = useState([]);
   const [onlineUser, setOnlineUser] = useState([]);
 
@@ -193,7 +194,9 @@ const ChatPage = () => {
             />
           )}
         </UserBox>
-        <PlanBox view={planBoxView}></PlanBox>
+        <PlanBox view={planBoxView}>
+          <PlanSection data={detailData?.data} planBoxView={planBoxView} />
+        </PlanBox>
       </Container>
     </Layout>
   );
@@ -273,6 +276,9 @@ const PlanBox = styled.div`
   border-left: 1px solid ${defaultColor.lightGrey};
 
   transition: 0.5s ease-in-out;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
   ${(props) =>
     props.view &&

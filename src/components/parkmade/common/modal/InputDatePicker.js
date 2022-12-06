@@ -1,15 +1,13 @@
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import styled from "styled-components";
-import { ko } from 'date-fns/esm/locale';
-import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from "date-fns/esm/locale";
+import "react-datepicker/dist/react-datepicker.css";
 
-const InputDatePicker = () => {
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+const InputDatePicker = ({ startDate, setStartDate, endDate, setEndDate }) => {
   return (
     <Wrap className="Wrap-DatePicker">
       <DatePicker
+        dateFormat="yyyy-MM-dd"
         selected={startDate}
         onChange={(date) => setStartDate(date)}
         selectsStart
@@ -18,7 +16,9 @@ const InputDatePicker = () => {
         locale={ko}
         placeholderText="시작일"
       />
+      <Dash>-</Dash>
       <DatePicker
+        dateFormat="yyyy-MM-dd"
         selected={endDate}
         onChange={(date) => setEndDate(date)}
         selectsEnd
@@ -30,29 +30,46 @@ const InputDatePicker = () => {
       />
     </Wrap>
   );
-}
+};
 
 export default InputDatePicker;
 
 const Wrap = styled.div`
-  width: 40%;
-  max-height: 100%; 
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   position: relative;
-  gap:5%;
-  
+
   .react-datepicker-wrapper {
-    width: 40%;
+    width: 46%;
     height: 100%;
-  };
+  }
+  .react-datepicker-popper {
+    z-index: 10;
+  }
   .react-datepicker-popper {
     position: absolute;
   }
-  input {
-    width: 100%;
+  .react-datepicker__input-container {
     height: 100%;
+  }
+  input {
+    width: 99%;
+    height: 99%;
+    border: 1px solid #aaafb5;
+    padding: 0;
     border-radius: 5px;
-  };
+    text-indent: 3%;
+  }
+`;
+const Dash = styled.div`
+  height: 100%;
+  width: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 200%;
+  font-weight: 700;
 `;
