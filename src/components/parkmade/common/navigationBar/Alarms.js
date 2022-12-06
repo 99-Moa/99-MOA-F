@@ -4,9 +4,9 @@ import styled from "styled-components";
 import Alarm from "./Alarm";
 
 const Alarms = () => {
-  // const [subscribe, setSubscribe] = useState(false);
-  // const [alarmList, setAlarmList] = useState([]);
-  // let evSource;
+  const [subscribe, setSubscribe] = useState(false);
+  const [alarmList, setAlarmList] = useState([]);
+  let evSource;
   // useEffect(() => {
   //   if (!subscribe) {
   //     evSource = new EventSource(`http://18.206.140.108/sub?token=${localStorage.getItem("access_token")}`);
@@ -15,10 +15,9 @@ const Alarms = () => {
   //     }
   //     evSource.onmessage = (ev) => {
   //       console.log(ev.data)
-  //       // setAlarmList(prev => [...prev, JSON.parse(ev.data)])
+  //       setAlarmList(prev => [...prev, JSON.parse(ev.data)])
   //     }
-
-  //     // setSubscribe(true);
+  //     setSubscribe(true);
   //     return () => {
   //       evSource.close();
   //     };

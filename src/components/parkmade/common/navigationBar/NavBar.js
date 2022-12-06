@@ -25,7 +25,6 @@ const NavBar = ({infoData}) => {
   const showAlarm = () => {
     setMyInfo(false);
     setAlarm(prev=>!prev);
-
   };
   const modalProfile = () => {
     setAlarm(false);

@@ -6,7 +6,7 @@ import InputComponent from "./InputComponent";
 import { defaultColor } from "./styles";
 import emoji from "../../img/Sunglasses_emoji.png";
 
-const SearchFriend = ({ goBack }) => {
+const SearchFriend = () => {
   const [userName, setUserName] = useState("");
   const [userInfo, setUserInfo] = useState();
 
@@ -23,7 +23,7 @@ const SearchFriend = ({ goBack }) => {
     onSuccess: ({ success, error }) => {
       if (success) {
         alert("친구추가 완료!");
-        goBack();
+        setUserInfo("")
       } else {
         alert(error.detail);
       }

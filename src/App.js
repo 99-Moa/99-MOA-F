@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import store from "./store/configureStore";
 
 function App() {
+  console.log("hello it's fun. Right?")
   return (
     <Provider store={store}>
       <Outlet />

@@ -59,13 +59,6 @@ const UpperDiv = styled(motion.div)`
   flex-direction: column;
   align-items: center;
 `;
-const Triangle = styled.div`
-  height: 0px;
-  width: 0px;
-  border: 5px solid transparent;
-  border-bottom-color: #AAAFB5;
-  margin-left: 36%;
-`;
 const UpperProfileDiv = styled(motion.div)`
   height: 100%;
   width: 100%;
