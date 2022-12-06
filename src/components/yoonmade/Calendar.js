@@ -100,13 +100,110 @@ const UpperDiv = styled.div`
   height: 90%;
   width: 100%;
 
-  @media all and (min-width: 1024px) {
-    font-size: 11px;
+  .fc-header-toolbar {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+
+    .fc-toolbar-chunk {
+      height: 100%;
+      width: 33%;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 5;
+
+      .fc-today-button {
+        height: 80%;
+        width: 10%;
+        border: 1px solid #AAAFB5;
+        padding: 0;
+        background-color: white;
+        font-size: 90%;
+        color: #27292D;
+        opacity: 1;
+      }
+      .fc-myCustomButton-button {
+        width: 30%;
+        height: 150%;
+        top: 1770%;
+        left : 266%;
+        margin: 0%;
+        border: none;
+        border-radius: 30px;
+        background-color: #FF4545;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+        position: absolute;
+      }
+
+      .fc-toolbar-title {
+        width: 100%;
+        height: 100%;
+        font-size: 120%;
+
+        div {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .fc-button-group {
+        height: 100%;
+        width: 20%;
+        margin-left: 80%;
+        gap: 15%;
+
+        button {
+          height: 100%;
+          width: 40%;
+          padding: 0;
+          border: none;
+          background-color: white;
+
+          span {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #27292D;
+            font-weight: 700;
+          }
+        }
+      }
+    }
   }
-  @media all and (min-width: 2000px) {
-    font-size: 15px;
+
+  .fc-view-harness {
+    height: 90%;
+    width: 100%;
+
+    .fc-col-header-cell {
+      background-color: #E9EEF2;
+
+      div {
+        width: 95%;
+        margin-left: 5%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+    }
+
+    .fc-daygrid-day {
+      font-weight: 600;
+      font-size: 90%;
+    }
+
+    .fc-day-sun {
+      color: rgba(255, 119, 119);
+    }
   }
-  .fc th {
+
+  /* .fc th {
     height: 2.5em;
     text-align: left;
     font-weight: 400;
@@ -165,8 +262,8 @@ const UpperDiv = styled.div`
       font-weight: 600;
       position: absolute;
       z-index: 2;
-      top:60em;
-      left:107em;
+      top:100%;
+      left:100%;
       transition: all 0.3s ease 0s;
 
       &:focus {
@@ -224,5 +321,5 @@ const UpperDiv = styled.div`
     text-align: center;
     font-size: 1.4em;
     line-height: 1.2em;
-  }
+  } */
 `;
