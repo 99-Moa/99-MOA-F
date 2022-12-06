@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { getFriendGroup, getMyFriends, getMyInfo } from "../api/memberManage";
 import Loading from "../components/parkmade/common/loading/Loading";
@@ -10,7 +11,7 @@ import NavBar from "../components/parkmade/common/navigationBar/NavBar";
 import GroupList from "../components/yoonmade/GroupList";
 
 const Friends = () => {
-  const [isEditProfile, setIsEditProfile] = useState(false);
+  const isEditProfile = useSelector(state => state.toggleModal.editProfile);
 
   const { isLoading: infoLoading, data: infoData } = useQuery(["myInfo"], getMyInfo);
   const { isLoading: groupLoading, data: friendGroup } = useQuery(["friendGroup"], getFriendGroup);
@@ -21,9 +22,9 @@ const Friends = () => {
         <Loading />
         : 
         <>
-          <NavBar infoData={infoData} setIsEditProfile={setIsEditProfile} />
+          <NavBar infoData={infoData} />
           <Portal>
-            {isEditProfile && <EditMyProfile info={infoData.data} setIsEditProfile={setIsEditProfile} />}
+            {isEditProfile && <EditMyProfile info={infoData.data} />}
           </Portal>
           <Wrap>
             <GroupContainer>

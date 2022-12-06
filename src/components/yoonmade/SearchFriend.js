@@ -23,7 +23,6 @@ const SearchFriend = () => {
     onSuccess: ({ success, error }) => {
       if (success) {
         alert("친구추가 완료!");
-        setUserInfo("")
       } else {
         alert(error.detail);
       }
@@ -46,6 +45,7 @@ const SearchFriend = () => {
   const onAddFriend = () => {
     const user = { userName: userInfo.friendUsername };
     addMutate(user);
+    setUserInfo("")
   };
   return (
     <Container>
@@ -64,10 +64,12 @@ const SearchFriend = () => {
         />
       </SearchInputDiv>
       <Body>
-        {userInfo ? (
+        {userInfo ? 
           <FriendWrapper>
             <UsersDiv>
+              <SquareDiv>
               <UserImg src={userInfo.imgUrl} alt="userImg" />
+              </SquareDiv>
               <UserName className="userName">{userInfo.friendUsername}</UserName>
               <UserId className="userId">{userInfo.userId}</UserId>
             </UsersDiv>
@@ -75,7 +77,7 @@ const SearchFriend = () => {
               <FriendAddBtn onClick={onAddFriend}>친구추가</FriendAddBtn>
             </FriendAddDiv>
           </FriendWrapper>
-        ) : (
+          : 
           <NotFriendWrapper>
             <SmileImgDiv>
               <SmileImg src={emoji} alt="emoji" />
@@ -84,7 +86,7 @@ const SearchFriend = () => {
               새로운 친구를 등록해주세요.
             </AddFriendText>
           </NotFriendWrapper>
-        )}
+        }
       </Body>
     </Container>
   );
@@ -140,14 +142,27 @@ const UsersDiv = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const UserImg = styled.img`
+
+const SquareDiv = styled.div`
   width: 25%;
-  max-height: 60%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
+`;
+const UserImg = styled.img`
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  margin-bottom: 3%;
+  position: absolute;
+  top: 0;
+  left: 0;
   object-fit: cover; 
 `;
 const UserName = styled.div`
+  margin-top: 5%;
   font-size: 120%;
 `;
 const UserId = styled.div`
@@ -160,6 +175,7 @@ const FriendAddDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  cursor: pointer;
 `;
 const FriendAddBtn = styled.div`
   height: 70%;
