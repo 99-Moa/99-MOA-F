@@ -123,6 +123,13 @@ const UpperDiv = styled.div`
         font-size: 90%;
         color: #27292D;
         opacity: 1;
+
+        &:hover {
+          background-color: #E9EEF2;
+        }
+        &:focus {
+          box-shadow: none;
+        }
       }
       .fc-myCustomButton-button {
         width: 30%;
@@ -161,7 +168,15 @@ const UpperDiv = styled.div`
           width: 40%;
           padding: 0;
           border: none;
-          background-color: white;
+          background-color: transparent;
+
+          &:hover {
+            border-radius: 50%;
+            background-color: #E9EEF2;
+          }
+          &:focus {
+            box-shadow: none;
+          }
 
           span {
             width: 100%;
