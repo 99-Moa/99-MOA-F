@@ -7,26 +7,26 @@ const Alarms = () => {
   const [subscribe, setSubscribe] = useState(false);
   const [alarmList, setAlarmList] = useState([]);
   let evSource;
-  // useEffect(() => {
-  //   if (!subscribe) {
-  //     evSource = new EventSource(`http://18.206.140.108/sub?token=${localStorage.getItem("access_token")}`);
-  //     evSource.onopen = (ev) => {
-  //       console.log("연결잘됨", ev)
-  //     }
-  //     evSource.onmessage = (ev) => {
-  //       console.log(ev.data)
-  //       setAlarmList(prev => [...prev, JSON.parse(ev.data)])
-  //     }
-  //     setSubscribe(true);
-  //     return () => {
-  //       evSource.close();
-  //     };
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (!subscribe) {
+      evSource = new EventSource(`http://18.206.140.108/sub?token=${localStorage.getItem("access_token")}`);
+      evSource.onopen = (ev) => {
+        console.log("연결잘됨", ev)
+      }
+      evSource.onmessage = (ev) => {
+        console.log(ev.data)
+        setAlarmList(prev => [...prev, JSON.parse(ev.data)])
+      }
+      setSubscribe(true);
+      return () => {
+        evSource.close();
+      };
+    }
+  }, [])
   return (
     <UpperDiv>
       <UpperProfileDiv>
-        {/* {alarmList.length>0 ? alarmList.map((prop,index) => <Alarm key={index} prop={prop}/>) : null} */}
+        {alarmList.length>0 ? alarmList.map((prop,index) => <Alarm key={index} prop={prop}/>) : null}
       </UpperProfileDiv>
     </UpperDiv>
   );

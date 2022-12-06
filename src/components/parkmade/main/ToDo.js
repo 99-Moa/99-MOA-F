@@ -181,6 +181,7 @@ const UpperSummaryDiv = styled(motion.div)`
   height: 10%;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 `;
 const SummaryDiv = styled.div`
   height: 100%;
