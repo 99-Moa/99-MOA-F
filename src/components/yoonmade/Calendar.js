@@ -117,7 +117,7 @@ const UpperDiv = styled.div`
       .fc-today-button {
         height: 80%;
         width: 10%;
-        border: 1px solid #AAAFB5;
+        border: 0.5px solid #AAAFB5;
         padding: 0;
         background-color: white;
         font-size: 90%;
