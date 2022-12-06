@@ -6,7 +6,7 @@ import InputComponent from "./InputComponent";
 import { defaultColor } from "./styles";
 import emoji from "../../img/Sunglasses_emoji.png";
 
-const SearchFriend = ({ goBack }) => {
+const SearchFriend = () => {
   const [userName, setUserName] = useState("");
   const [userInfo, setUserInfo] = useState();
 
@@ -19,23 +19,20 @@ const SearchFriend = ({ goBack }) => {
       }
     },
   });
-
   const { mutate: addMutate } = useMutation(postPlusFriend, {
     onSuccess: ({ success, error }) => {
       if (success) {
         alert("친구추가 완료!");
-        goBack();
       } else {
         alert(error.detail);
       }
     },
   });
 
-  const onChangeSerachInput = (e) => {
+  const onChangeSearchInput = (e) => {
     const value = e.target.value;
     setUserName(value);
   };
-
   const onSearchFriend = (e) => {
     if (e.key === "Enter" || e.type === "click") {
       if (!userName.trim()) {
@@ -45,138 +42,175 @@ const SearchFriend = ({ goBack }) => {
       searchMutate(userName);
     }
   };
-
   const onAddFriend = () => {
-    const user = {
-      userName: userInfo.friendUsername,
-    };
+    const user = { userName: userInfo.friendUsername };
     addMutate(user);
+    setUserInfo("")
   };
-
   return (
-    <>
-      <Header>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 0 24 24"
-          width="24px"
-          fill="#000000"
-          onClick={goBack}
-        >
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-        </svg>
-        <span>친구검색</span>
+    <Container>
+      <SearchTitle>
+        친구검색
+      </SearchTitle>
+      <SearchInputDiv>
         <InputComponent
           placeholder="닉네임"
           value={userName}
-          onChange={onChangeSerachInput}
+          width={"95%"}
+          height={"100%"}
+          onChange={onChangeSearchInput}
           onKeyPress={onSearchFriend}
           iconClick={onSearchFriend}
         />
-      </Header>
+      </SearchInputDiv>
       <Body>
-        {userInfo ? (
+        {userInfo ? 
           <FriendWrapper>
-            <img src={userInfo.imgUrl} alt="userImg" />
-            <span className="userName">{userInfo.friendUsername}</span>
-            <span className="userId">{userInfo.userId}</span>
-            <div onClick={onAddFriend}>친구추가</div>
+            <UsersDiv>
+              <SquareDiv>
+              <UserImg src={userInfo.imgUrl} alt="userImg" />
+              </SquareDiv>
+              <UserName className="userName">{userInfo.friendUsername}</UserName>
+              <UserId className="userId">{userInfo.userId}</UserId>
+            </UsersDiv>
+            <FriendAddDiv>
+              <FriendAddBtn onClick={onAddFriend}>친구추가</FriendAddBtn>
+            </FriendAddDiv>
           </FriendWrapper>
-        ) : (
+          : 
           <NotFriendWrapper>
-            <img src={emoji} alt="emoji" />
-            <span>새로운 친구를 등록해주세요.</span>
+            <SmileImgDiv>
+              <SmileImg src={emoji} alt="emoji" />
+            </SmileImgDiv>
+            <AddFriendText>
+              새로운 친구를 등록해주세요.
+            </AddFriendText>
           </NotFriendWrapper>
-        )}
+        }
       </Body>
-    </>
+    </Container>
   );
 };
 
 export default SearchFriend;
 
-const Header = styled.div`
-  height: 5%;
-  width: 100%;
-  margin-bottom: 1em;
+const Container = styled.div`
+  width:100%;
+  height:100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  gap: 0.8em;
-  position: relative;
-
-  svg {
-    height: 100%;
-  }
-
-  span {
-    width: 10%;
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    position: absolute;
-    left: 47%;
-    right: 53%;
-  }
+  border-radius: 4px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+  background-color: white;
 `;
-
-const Body = styled.div`
-  height: 100%;
+const SearchTitle = styled.div`
+  width: 100%;
+  height: 15%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${defaultColor.lightGrey};
-`;
-
-const FriendWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-size: 120%;
+  font-weight: bold;
   user-select: none;
-
-  img {
-    height: 10em;
-    width: 10em;
-    border-radius: 50%;
-    margin-bottom: 1em;
-    object-fit: cover;
-  }
-
-  .userName {
-    font-size: 1.2em;
-  }
-
-  .userId {
-    font-size: 0.8em;
-    color: ${defaultColor.darkGrey};
-  }
-
-  div {
-    padding: 0.2em 0.7em;
-    margin-top: 0.8em;
-    border-radius: 0.3em;
-    background-color: ${defaultColor.red};
-    color: white;
-  }
 `;
-
-const NotFriendWrapper = styled.div`
+const SearchInputDiv = styled.div`
+  width: 100%;
+  height: 7%;
+  margin-bottom: 6%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Body = styled.div`
+  width:100%;
+  height: 72%;
+  display: flex;
+`;
+const FriendWrapper = styled.div`
+  width:100%;
+  height:100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2em;
+`;
+const UsersDiv = styled.div`
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
-  img {
-    height: 2em;
-    width: 2em;
-    opacity: 0.4;
+const SquareDiv = styled.div`
+  width: 25%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
   }
-  span {
-    font-size: 1.3em;
-    font-weight: 400;
-    color: ${defaultColor.darkGrey};
-  }
+`;
+const UserImg = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover; 
+`;
+const UserName = styled.div`
+  margin-top: 5%;
+  font-size: 120%;
+`;
+const UserId = styled.div`
+  font-size: 80%;
+  color: ${defaultColor.darkGrey};
+`;
+const FriendAddDiv = styled.div`
+  width: 100%;
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  cursor: pointer;
+`;
+const FriendAddBtn = styled.div`
+  height: 70%;
+  width:90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: ${defaultColor.red};
+  color: white;
+`;
+const NotFriendWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const SmileImgDiv = styled.div`
+  height: 20%;
+  width: 100%;
+  margin-bottom: 3%;
+  display: flex;
+  justify-content: center;
+  opacity: 0.3;
+`;
+const SmileImg = styled.img`
+  height: 100%;
+  max-width: 100%;
+`;
+const AddFriendText = styled.div`
+  height: 7%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 100%;
+  opacity: 0.4;
 `;

@@ -10,27 +10,37 @@ const ToDos = ({schedulesData}) => {
   const [upToDatePlan, setUpToDatePlan] = useState(false);
   const sortPlan = (schedulesData.sort((a,b) => (new Date(`${a.startDate} ${a.startTime}`) - new Date(`${b.startDate} ${b.startTime}`)))).filter(prop=> new Date(`${prop.startDate} ${prop.startTime}`) > new Date());
   return (
-    <Wrap variants={WrapVariant} animate="start">
-      <DDayDiv>
-        <CountDay firstDate={sortPlan[0]?.startDate} firstTime={sortPlan[0]?.startTime} setUpToDatePlan={setUpToDatePlan}/>
-      </DDayDiv>
-      <ToDoDiv ref={traceScroll}>
-        {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} traceScroll={traceScroll} index={index} />)}
-        {extend && <Extend />}
-      </ToDoDiv>
+    <Wrap>
+      <UpperDiv variants={WrapVariant} animate="start">
+        <DDayDiv>
+          <CountDay firstDate={sortPlan[0]?.startDate} firstTime={sortPlan[0]?.startTime} setUpToDatePlan={setUpToDatePlan} />
+        </DDayDiv>
+        <ToDoDiv ref={traceScroll}>
+          {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} traceScroll={traceScroll} index={index} />)}
+          {extend && <Extend />}
+        </ToDoDiv>
+      </UpperDiv>
     </Wrap>
   )
 }
 
 export default ToDos;
 
-const Wrap = styled(motion.div)`
-  height: 80%;
+const Wrap = styled.div`
+  height: 100%;
   width: 20%;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const UpperDiv = styled(motion.div)`
+  height: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 5%;
+  margin-top: 20%;
 `;
 const DDayDiv = styled(motion.div)`
   height: 15%;

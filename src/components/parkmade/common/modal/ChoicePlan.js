@@ -1,21 +1,25 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import InputDatePicker from "./InputDatePicker";
 import MakeGroup from "./MakeGroup";
 import MakePlan from "./MakePlan";
-import alone from "../../../../img/aloneImg.png"
-import group from "../../../../img/groupImg.png"
+import alone from "../../../../img/presonal.png"
+import group from "../../../../img/group.png"
+import { useDispatch, useSelector } from "react-redux";
+import { toggleChoiceGroup } from "../../../../store/modules/parkmade/toggleModal";
 
-const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
+const ChoiceGroup =({myFriendsList}) => {
   const modalRef = useRef();
+  const dispatch = useDispatch();
   const [isFirStep, setIsFirStep] = useState(true);
   const [isAlone, setIsAlone] = useState(true);
-  const nextStepAlone = (ev) => {
+  const isChoiceGroup = useSelector(state => state.toggleModal.choiceGroup);
+
+  const nextStepAlone = () => {
     setIsFirStep(false);
     setIsAlone(true);
   };
-  const nextStepGroup = (ev) => {
+  const nextStepGroup = () => {
     setIsFirStep(false);
     setIsAlone(prev=>!prev);
   };
@@ -25,17 +29,17 @@ const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
     return () => {document.removeEventListener('mousedown', clickModalOutside)};
   });
   const clickModalOutside = (ev) => {
-    (isChoiceGroup && !modalRef.current.contains(ev.target)) && setIsChoiceGroup(false);
+    (isChoiceGroup && !modalRef.current.contains(ev.target)) && dispatch(toggleChoiceGroup(false));
   };
   return (
-    <Wrap>
+    <Wrap $isFirStep={isFirStep}>
       {isFirStep ?
         (<UpperDiv ref={modalRef} layoutId="transition">
-          <ChoiceBtn onClick={nextStepAlone} bgColor={"#FF4545"} variants={showVariants} initial="init" animate="start" whileHover="hover">
+          <ChoiceBtn onClick={nextStepAlone} $bgColor={"#FF4545"} variants={showVariants} initial="init" animate="start" whileHover="hover">
             <IconImg src={alone}/>
             개인
           </ChoiceBtn>
-          <ChoiceBtn onClick={nextStepGroup} bgColor={"#008CFF"} variants={showVariants} initial="init" animate="start" whileHover="hover">
+          <ChoiceBtn onClick={nextStepGroup} $bgColor={"#008CFF"} variants={showVariants} initial="init" animate="start" whileHover="hover">
             <IconImg src={group}/>
             그룹
           </ChoiceBtn>
@@ -43,11 +47,11 @@ const ChoiceGroup =({isChoiceGroup, setIsChoiceGroup, myFriendsList}) => {
         :
         isAlone ?
           (<Alone ref={modalRef} layoutId="transition">
-            <MakePlan setIsChoiceGroup={setIsChoiceGroup}/>
+            <MakePlan/>
           </Alone>)
           :
           (<Group ref={modalRef} layoutId="transition">
-            <MakeGroup myFriendsList={myFriendsList} setIsChoiceGroup={setIsChoiceGroup}/>
+            <MakeGroup myFriendsList={myFriendsList}/>
           </Group>)
       }
     </Wrap>
@@ -59,14 +63,14 @@ export default ChoiceGroup;
 const Wrap = styled(motion.div)`
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: ${prop => prop.$isFirStep ? "rgba(0, 0, 0, 0.4)" : null};
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 10;
+  z-index: 20;
 `;
 const UpperDiv = styled(motion.div)`
   width: 20%;
@@ -74,45 +78,40 @@ const UpperDiv = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: white; */
-  border-radius: 15px;
   gap: 5%;
 `;
 const ChoiceBtn = styled(motion.button)`
-  width: 45%;
-  height: 95%;
+  width: 41%;
+  height: 90%;
   border: none;
-  border-radius: 15%;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${prop => prop.bgColor};
+  background-color: ${prop => prop.$bgColor};
   color: white;
-  font-size: 90%;
-  gap: 10%;
+  font-size: 110%;
+  font-weight: 700;
+  gap: 15%;
   cursor: pointer;
 `;
 const IconImg = styled(motion.img)`
-  height: 50%;
+  height: 20%;
   max-width: 50%;
 `;
 const Alone = styled(motion.div)`
   width: 35%;
   height: 90%;
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: white;
 `;
 const Group = styled(motion.div)`
-  width: 35%;
-  height: 85%;
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: white;
+  width: 25%;
+  height: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
 `;
 
 const showVariants = {

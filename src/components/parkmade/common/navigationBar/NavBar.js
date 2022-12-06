@@ -3,22 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import MyProfile from "./MyProfile";
-import Alarm from "./Alarm";
+import Alarms from "./Alarms";
 import alarmImg from "../../../../img/Icon_Alarm.png";
 import groupImg from "../../../../img/Icon_Group.png"
-import logoImg from "../../../../img/Logo_Main.png"
-import { useMutation } from "react-query";
+import logoImg from "../../../../img/moa_logo.png"
 import { useDispatch } from "react-redux";
 import { getAlarmState, getProfileState } from "../../../../store/modules/yoonmade/modalState";
 
-const NavBar = ({infoData, setIsEditProfile}) => {
+const NavBar = ({infoData}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [myInfo, setMyInfo] = useState(false);
   const [alarm, setAlarm] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-
-  // alarm, myInfo state값 얻기위한 dispatch 입니다.
-  const dispatch = useDispatch()
 
   const toMain = () => {
     navigate("/main")
@@ -27,21 +23,17 @@ const NavBar = ({infoData, setIsEditProfile}) => {
     navigate("/myFriends")
   };
   const showAlarm = () => {
-    // 알람 확인하기
     setMyInfo(false);
     setAlarm(prev=>!prev);
-
   };
   const modalProfile = () => {
     setAlarm(false);
     setMyInfo(prev=>!prev);
-  }
-
+  };
   useEffect(() => {
     dispatch(getProfileState(myInfo))
     dispatch(getAlarmState(alarm))
-  },[myInfo,alarm,dispatch]) // 모달 상태 dispatch
-
+  },[myInfo,alarm,dispatch]);
   return (
     <Upper>
       <Wrap>
@@ -56,21 +48,21 @@ const NavBar = ({infoData, setIsEditProfile}) => {
             <NavImg src={alarmImg} onClick={showAlarm}/>
             <AlarmWrap
               transition={{ type: "linear" }}
-              initial={{scale: 0}}
-              animate={{ scale: alarm ? 1 : 0, opacity: alarm ? 1 : 0 }}
+              initial={{scaleY: 0}}
+              animate={{scaleY: alarm ? 1 : 0, opacity: alarm ? 1 : 0, transition:{duration:0.5}}}
             >
-              <Alarm />
+              <Alarms />
             </AlarmWrap>
+            <ProfileWrap
+              transition={{ type: "linear" }}
+              initial={{scaleY: 0}}
+              animate={{scaleY: myInfo ? 1 : 0, opacity: myInfo ? 1 : 0, transition:{duration:0.5}}}
+            >
+              <MyProfile setMyInfo={setMyInfo}  info={infoData.data}/>
+            </ProfileWrap>
           </EleImgDiv>
           <EleImgDiv>
             <NavImg src={infoData.data.imgUrl} onClick={modalProfile}/>
-              <ProfileWrap
-                transition={{ type: "linear" }}
-                initial={{scale: 0}}
-                animate={{ scale: myInfo ? 1 : 0, opacity: myInfo ? 1 : 0}}
-              >
-                <MyProfile setMyInfo={setMyInfo}  info={infoData.data} setIsEditProfile={setIsEditProfile}/>
-              </ProfileWrap>
           </EleImgDiv>
         </NavUpperDiv>
       </Wrap>
@@ -83,36 +75,39 @@ export default NavBar;
 const Upper = styled.div`
   width: 100%;
   height: 70px;
-  border-bottom: 1px solid rgb(219, 219, 219);
+  border-bottom: 1px solid #AAAFB5;
   position: fixed;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: white;
+  position: fixed;
+  z-index: 15;
 `;
 const Wrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 70%;
+  width: 100%;
   height: 100%;
 `;
 const LogoUpperDiv = styled.div`
-  width: 10%;
+  width: 75%;
   height: 100%;
   display: flex;
   align-items: center;
 `;
 const LogoImg = styled(motion.img)`
-  width: 100%;
-  max-height: 100%;
+  max-width: 100%;
+  max-height: 80%;
+  margin-left: 1%;
   cursor: pointer;
 `;
 const NavUpperDiv = styled.div`
   width: 25%;
   height: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 `;
 const EleImgDiv = styled.div`
@@ -133,14 +128,14 @@ const NavImg = styled(motion.img)`
 const ProfileWrap = styled(motion.div)`
   height: 350%;
   width: 650%;
-  top: 85%;
+  top: 90%;
   position: absolute;
   transform-origin: top center;
 `;
 const AlarmWrap = styled(motion.div)`
-  height: 350%;
+  height: 550%;
   width: 650%;
-  top: 85%;
+  top: 90%;
   position: absolute;
-  transform-origin: top center;
+  transform-origin: top;
 `;

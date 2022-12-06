@@ -1,38 +1,41 @@
-import { motion } from "framer-motion";
+import React from "react";
 import styled from "styled-components";
 
-const Alarm = () => {
+const Alarm = ({prop}) => {
   return (
-    <UpperDiv>
-      <Triangle />
-      <UpperProfileDiv>
-        알람이 없군요~
-      </UpperProfileDiv>
+    <UpperDiv> 
+      {prop.message}
     </UpperDiv>
   );
 }
 
-export default Alarm;
+export default React.memo(Alarm);
 
-const UpperDiv = styled(motion.div)`
-  height: 100%;
+const UpperDiv = styled.div`
   width: 100%;
+  height: 20%;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #E9EEF2;
+  }
 `;
-const Triangle = styled.div`
-  height: 0px;
-  width: 0px;
-  border: 10px solid transparent;
-  border-bottom-color: #ecf0f1;
-`;
-const UpperProfileDiv = styled.div`
+const ImgDiv = styled.div`
   height: 100%;
-  width: 100%;
+  max-width: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ecf0f1;
-  border-radius: 10px;
+`;
+const Img = styled.img`
+
+`;
+const InfoDiv = styled.div`
+  height: 100%;
+  max-width: 80%;
+  display: flex;
+  align-items: center;
 `;

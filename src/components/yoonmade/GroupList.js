@@ -3,54 +3,58 @@ import styled from "styled-components";
 import GroupInfo from "./GroupInfo";
 import { defaultColor } from "./styles";
 import emoji from "../../img/Sunglasses_emoji.png";
+import { motion } from "framer-motion";
+import FriendList from "./FriendList";
+import SearchFriend from "./SearchFriend";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
-const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
-  const [groupName, setGroupName] = useState("");
-  const [filterGroupList, setFilterGroupList] = useState([]);
+const GroupList = ({ friendGroup, friendList }) => {
+  const [showFriend, setShowFriend] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
-  const onChangeGroupInput = (e) => {
-    const value = e.target.value;
-    const filterList = friendGroup.filter(({ groupName }) => {
-      return groupName.includes(value);
-    });
-
-    setFilterGroupList(filterList);
-    setGroupName(value);
+  const showSearchCom = () => {
+    setShowSearch(prev => !prev);
+    setShowFriend(false);
   };
-
+  const showFriendCom = () => {
+    setShowFriend(prev => !prev);
+    setShowSearch(false);
+  };
   return (
     <>
       <Header>
-        <Button onClick={showFriendCom}>친구목록</Button>
-        <Button onClick={showSearchCom}>친구추가</Button>
-        <InputComponent
-          placeholder="그룹 검색"
-          onChange={onChangeGroupInput}
-          value={groupName}
-        />
+        <UpperFriendDiv>
+          <FriendListDiv $showFriend={showFriend} onClick={showFriendCom}>
+              친구목록
+          </FriendListDiv>
+          <AddFriendDiv $showSearch={showSearch} onClick={showSearchCom}>
+              친구추가
+          </AddFriendDiv>
+          {showFriend &&
+            <Container left="0%" initial={{ opacity: 1, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 0 }} >
+              <FriendList friendList={friendList} />
+            </Container>
+          }
+          {showSearch &&
+            <Container left="55%" initial={{ opacity: 1, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 0 }} >
+              <SearchFriend/>
+            </Container>
+          }
+        </UpperFriendDiv>
+        <InputComponent width={"35%"} placeholder="그룹 검색" />
       </Header>
-      {!friendGroup?.length ? (
-        // 친구그룹이 존재하지 않을때
-        <NotGropuWrapper>
+      {!friendGroup?.length ?
+        <NotGroup>
           <img src={emoji} alt="emoji" />
           <span>새로운 그룹을 등록해주세요.</span>
-        </NotGropuWrapper>
-      ) : (
-        // 친구그룹이 1개이상 존재할때
-        <Body>
-          {filterGroupList.length >= 1 || groupName
-            ? // 유저가 input창에서 검색을 하고 있다면
-              filterGroupList.map((group) => (
-                <GroupInfo group={group} key={group.groupId} />
-              ))
-            : // 아무것도 검색하고 있지 않다면
-              friendGroup.map((group) => (
-                <GroupInfo group={group} key={group.groupId} />
-              ))}
-        </Body>
-      )}
+        </NotGroup>
+        : 
+        <HaveGroup>
+          {friendGroup.map((group) => (
+            <GroupInfo group={group} key={group.groupId} />
+          ))}
+        </HaveGroup>
+      }
     </>
   );
 };
@@ -58,59 +62,87 @@ const GroupList = ({ showFriendCom, showSearchCom, friendGroup }) => {
 export default GroupList;
 
 const Header = styled.div`
-  height: 5%;
   width: 100%;
-  margin-bottom: 1em;
+  height: 4.5%;
+  margin-bottom: 1.5%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.8em;
 `;
-
-const Button = styled.div`
+const UpperFriendDiv = styled.div`
   height: 100%;
+  width: 15%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+`;
+const FriendListDiv = styled.div`
+  height: 100%;
+  width:45%;
   border: 1px solid ${defaultColor.darkGrey};
-  padding: 0 0.6em;
-  border-radius: 0.4em;
+  border-radius: 4px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  font-size: 0.8em;
-  user-select: none;
+  background-color: ${prop => prop.$showFriend ? "#E9EEF2" : "white"};
+  font-size: 100%;
+  cursor: pointer;
 `;
-
-const Body = styled.div`
-  height: 95%;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, auto));
-  grid-auto-rows: 180px;
-  gap: 1em;
-  overflow: auto;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const NotGropuWrapper = styled.div`
+const AddFriendDiv = styled.div`
   height: 100%;
+  width:45%;
+  border: 1px solid ${defaultColor.darkGrey};
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${prop => prop.$showSearch ? "#E9EEF2" : "white"};
+  font-size: 100%;
+  cursor: pointer;
+`;
+const Container = styled(motion.div)`
+  height: 1600%;
+  width: 200%;
+  top: 170%;
+  left: ${prop => prop.left};
+  position: absolute;
+  z-index: 15;
+`;
+const NotGroup = styled.div`
+  height: 94%;
+  width: 100%;
   border: 1px solid ${defaultColor.lightGrey};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.2em;
+  gap: 1.5%;
 
   img {
-    height: 2em;
-    width: 2em;
+    height: 5%;
+    max-width: 5%;
     opacity: 0.4;
   }
   span {
-    font-size: 1.3em;
+    font-size: 130%;
     font-weight: 400;
     color: ${defaultColor.darkGrey};
   }
+`;
+const HaveGroup = styled.div`
+  height: 94%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, auto));
+  grid-auto-rows: 180px;
+  gap: 1em;
+  position: relative;
+  z-index: 5;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+  display: none;
+}
 `;

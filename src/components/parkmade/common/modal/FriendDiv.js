@@ -9,7 +9,7 @@ const FriendDiv = ({img, name, inviteList, setInviteList, setIsTargetSearch}) =>
     if (inviteList.length) {
       for (let prop of inviteList) {
         if (prop === name) {
-          alert("이미 목록에 추가 되있습니다.");
+          alert("이미 목록에 추가 있습니다.");
           return;
         }
       }
@@ -23,7 +23,9 @@ const FriendDiv = ({img, name, inviteList, setInviteList, setIsTargetSearch}) =>
   return (
     <Wrap>
       <ImgDiv>
-        <Img src={img}/>
+        <SquareDiv>
+          <Img src={img} />
+        </SquareDiv>
       </ImgDiv>
       <NickNameDiv>
         <NickName>
@@ -41,23 +43,33 @@ export default React.memo(FriendDiv);
 
 const Wrap = styled.div`
   width: 100%;
-  height: 9%;
+  height: 15%;
   display: flex;
 `;
 const ImgDiv = styled.div`
-  width: 15%;
   height: 100%;
+  width: 15%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+const SquareDiv = styled.div`
+  width: 70%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
+`;
 const Img = styled.img`
-  max-width: 100%;
-  max-height: 90%;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 `;
 const NickNameDiv = styled.div`
   width: 75%;
@@ -66,6 +78,7 @@ const NickNameDiv = styled.div`
   align-items: center;
 `;
 const NickName = styled.span`
+  margin-left: 3%;
 `;
 const PlusIconDiv = styled.div`
   width: 10%;
@@ -75,5 +88,6 @@ const PlusIconDiv = styled.div`
   align-items: center;
 `;
 const PlusIconImg = styled.img`
+  
   cursor: pointer;
 `;

@@ -1,22 +1,28 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteSchedule, getDetailSchedule } from "../../../api/schedulesManage";
 import dot from "../../../img/dot.png"
+import { revisePersonalPlan } from "../../../store/modules/parkmade/toggleModal";
 
-
-// 모임장소 이름과 도로명주소 변경해야함, 지도 적용  제대로 안됬음
 const ToDo = ({prop, traceScroll, index, setExtend}) => {
-  const navigate = useNavigate();
-  const deleteRef = useRef();
   const { kakao } = window;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const deleteRef = useRef();
   const [openDetail, setOpenDetail] = useState(false);
   const [getDetailData, setGetDetailData] = useState({});
-  const [isDeleteOrRevise, setIsDeleteOrRevise] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isPersonalPlan, setIsPersonalPlan] = useState(false); 
+
   const { mutate:detailPlan } = useMutation(getDetailSchedule, {
     onSuccess: (res) => {
+      if (res.data.users.length === 1) {
+        setIsPersonalPlan(true);
+      }
       setGetDetailData(res.data);
     }
   });
@@ -28,22 +34,22 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
 
   const toChat = () => {
     // navigate("/채팅방")
-  }
+  };
   const openDR = () => {
-    setIsDeleteOrRevise(prev=>!prev);
-  }
+    setIsDelete(prev=>!prev);
+  };
   const deleteThis = () => {
     deletePlan(prop.id)
-  }
-  const reviseThis = () => {
-    // 수정하기 뮤테이트 쓰기
-  }
+  };
+  const revisePlan = () => {
+    dispatch(revisePersonalPlan([true, getDetailData, prop.id]))
+  };
   const open =  () => {
     setExtend(prev=>!prev)
     setOpenDetail(prev=>!prev);
     !openDetail && traceScroll.current.scrollBy({top: -traceScroll.current.scrollTop})
-    !openDetail && setTimeout(() => {traceScroll.current.scrollBy({top: (traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.24)*index, behavior: 'smooth'})}, 1)
-    openDetail && traceScroll.current.scrollBy({top: -(traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.24)*index, behavior: 'smooth'})
+    !openDetail && setTimeout(() => {traceScroll.current.scrollBy({top: (traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.21)*index, behavior: 'smooth'})}, 1)
+    openDetail && traceScroll.current.scrollBy({top: -(traceScroll.current.children[0].offsetHeight + traceScroll.current.children[0].offsetHeight*0.21)*index, behavior: 'smooth'})
   };
 
   useEffect(() => {
@@ -65,56 +71,33 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
         }
       });  
     }
-  }, [getDetailData.location])
-  // useEffect(() => {
-  //   detailPlan(prop.id);
-  //   const infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-  //   const container = document.querySelector('.kakao-map');
-  //   if (container && Object.keys(getDetailData).length) {
-  //     const options = { center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), level: 2 };
-  //     const map = new kakao.maps.Map(container, options);
-  //     const ps = new kakao.maps.services.Places();
-  //     const displayMarker = (place) => {
-  //       let marker = new kakao.maps.Marker({
-  //         map: map,
-  //         position: new kakao.maps.LatLng(place.y, place.x),
-  //       });
-  //       kakao.maps.event.addListener(marker, 'click', () => {
-  //         infoWindow.setContent('<div style="padding:5px; font-size:12px; margin:auto">' + place.place_name + '</div>');
-  //         infoWindow.open(map, marker);
-  //       });
-  //     };
-  //     ps.keywordSearch(getDetailData.location, (data, status, pagination) => {
-  //       if (status === kakao.maps.services.Status.OK) {
-  //         const bounds = new kakao.maps.LatLngBounds();
-  //         data.map((prop) => { displayMarker(prop); bounds.extend(new kakao.maps.LatLng(prop.y, prop.x)); });
-  //         map.setBounds(bounds);
-  //       }
-  //     });
-  //   }
-  // }, [getDetailData.location]);
+  }, [getDetailData.location, prop]);
   return (
     <>
       {Object.keys(getDetailData).length ? 
-        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} index={index}>
-          <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"}>
+        <ToDoDiv variants={clickVariants} animate={openDetail ? "open" : "close"} personal={getDetailData?.users?.length} index={index} $isPersonalPlan={isPersonalPlan}>
+          <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
-                <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
+                <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
                   {getDetailData.title}
                 </SumContent>
-                <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index}>
+                <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
                   {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
                 </Date>
               </WrapSummary>
-              <OptionDiv>
-                <OptionImg ref={deleteRef} src={dot} variants={dotVariant} animate={{rotateZ: isDeleteOrRevise ? 90 : 0}} onClick={openDR}/>
-                <DeleteOrRevise transition={{ type: "linear" }}  initial={{scaleX:0}} animate={{ scaleX: isDeleteOrRevise ? 1 : 0, duration:0.5 }}>
-                  <Choice whileHover={{scale:1.1}} onClick={deleteThis}>
-                    삭제
-                  </Choice>
-                </DeleteOrRevise>
-              </OptionDiv>
+              {(getDetailData?.users?.length === 1)?
+                <OptionDiv>
+                  <OptionImg ref={deleteRef} src={dot} animate={{ rotateZ: isDelete ? 90 : 0 }} onClick={openDR} />
+                  <Delete transition={{ type: "linear" }} initial={{ scaleX: 0 }} animate={{ scaleX: isDelete ? 1 : 0, }}>
+                    <Choice whileHover={{ scale: 1.1 }} onClick={deleteThis}>
+                      삭제
+                    </Choice>
+                  </Delete>
+                </OptionDiv>
+                :
+                null
+              }
             </SummaryDiv>
           </UpperSummaryDiv>
           <UpperDetailDiv variants={clickVariants} animate={openDetail ? "detailSec" : "detailFir"}>
@@ -143,27 +126,32 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
               <MapDiv className={`kakao-map${prop.id}`} />
             </SecDetailDiv>
             {(getDetailData.users?.length === 1) ?  
-              <ThirdDetailDivAlone>
-                <BigSpan>
-                  세부 내용
-                </BigSpan>
-                <Content>
-                  {getDetailData.content}
-              </Content>
-              </ThirdDetailDivAlone>
-              :
               <>
-                <ThirdDetailDivGroup>
+                <ThirdDetailDiv>
                   <BigSpan>
                     세부 내용
                   </BigSpan>
                   <Content>
                     {getDetailData.content}
                   </Content>
-                </ThirdDetailDivGroup>
-                <UpperChatRoom onClick={toChat}>
+                </ThirdDetailDiv>
+                <EachEventBtn onClick={revisePlan}>
+                  수정하기
+                </EachEventBtn>
+              </>
+              :
+              <>
+                <ThirdDetailDiv>
+                  <BigSpan>
+                    세부 내용
+                  </BigSpan>
+                  <Content>
+                    {getDetailData.content}
+                  </Content>
+                </ThirdDetailDiv>
+                <EachEventBtn onClick={toChat}>
                   그룹채팅
-                </UpperChatRoom>
+                </EachEventBtn>
               </>
             }
           </UpperDetailDiv>
@@ -181,18 +169,19 @@ export default React.memo(ToDo);
 const ToDoDiv = styled(motion.div)`
   width: 99%;
   height: 10%;
+  border: 1px solid ${prop => prop.$isPersonalPlan ? "#FF4545" : "#0984e3"};
+  border-radius: 8px;
   align-items: center;
   overflow: hidden;
   margin: 0px 0px 4% 0px;
-  border: 1px solid #0984e3;
-  border-radius: 8px;
-  background-color: ${prop => (prop.index === 0 && !prop.openDetail) && "#00a8ff"};
+  background-color: ${prop => (prop.index === 0) ? ((prop.personal === 1) ? "#FF4545" : "#00a8ff") : "white"};
 `;
 const UpperSummaryDiv = styled(motion.div)`
   width: 100%;
   height: 10%;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 `;
 const SummaryDiv = styled.div`
   height: 100%;
@@ -209,35 +198,38 @@ const OptionDiv = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  z-index: 1;
 `;
 const OptionImg = styled(motion.img)`
   height: 50%;
   width: 70%;
 `;
-const DeleteOrRevise = styled(motion.div)`
+const Delete = styled(motion.div)`
   height: 300%;
-  width: 400%;
+  width: 200%;
   top: -100%;
   right: 100%;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
   transform-origin: right center;
   gap: 10%;
+  position: absolute;
 `;
 const Choice = styled(motion.div)`
-  height: 40%;
-  width: 40%;
+  height: 50%;
+  width: 80%;
   border: 1px solid #AAAFB5;
-  border-radius: 10px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #E9EEF2;
-  font-size: 50%;
+  background-color: white;
+  font-size: 80%;
+  font-weight: 600;
+  color: #FF4545;
   cursor: pointer;
 `;
 
@@ -253,7 +245,9 @@ const Date = styled(motion.div)`
   display: flex;
   align-items: center;
   font-size: 20px;
-  color: ${prop => (prop.index === 0) && "white"};
+  color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"};
+  transition-property: color;
+  transition-delay: 0.7s;
 `;
 const SumContent = styled(motion.div)`
   height: 30%;
@@ -261,7 +255,9 @@ const SumContent = styled(motion.div)`
   display: flex;
   align-items: center;
   font-size: 13px;
-  color: ${prop => (prop.index === 0) && "white"};
+  color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"}; //
+  transition-property: color;
+  transition-delay: 0.7s;
 `;
 const UpperDetailDiv = styled(motion.div)`
   width: 100%;
@@ -336,15 +332,7 @@ const MapDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-const ThirdDetailDivAlone = styled.div`
-  height: 30%;
-  width: 85%;
-  padding: 0 3%;
-  margin-bottom: 3%;
-`;
-
-const ThirdDetailDivGroup = styled.div`
+const ThirdDetailDiv = styled.div`
   height: 20%;
   width: 85%;
   padding: 0% 3%;
@@ -355,15 +343,15 @@ const Content = styled.div`
   margin-top: 2%;
   padding: 1%;
   background-color: white;
-  border: 1px solid gray;
-  border-radius: 8px;
+  border: 1px solid #E9EEF2;
+  border-radius: 4px;
   display: flex;
   word-break: break-all;
   align-items: center;
   overflow-y: auto;
 
 `;
-const UpperChatRoom = styled(motion.div)`
+const EachEventBtn = styled(motion.div)`
   height: 10%;
   width: 80%;
   padding: 0px 3%;
@@ -378,11 +366,10 @@ const UpperChatRoom = styled(motion.div)`
   border-radius: 8px;
   cursor: pointer;
 `;
-
 const clickVariants = {
   open : {
     height : "98%",
-    border: "1px solid gray",
+    border: "1px solid #E9EEF2",
     transition : {
       duration : 0.7,
     }
@@ -399,23 +386,21 @@ const clickVariants = {
       duration : 0.7,
     }
   },
-  sumSec : {
+  sumSec : (isPersonalPlan) => ({
     height : "10%",
-    color : "white",
-    backgroundColor : "#00a8ff",
+    backgroundColor : isPersonalPlan ? "#FF4545" : "#00a8ff",
     borderRadius : "5px",
     transition : {
       duration : 0.7,
       delay : 0.7
     }
-  },
+  }),
   colorFir : {
     transition : {
       duration : 0.7,
     }
   },
   colorSec : {
-    color : "white",
     transition : {
       duration : 0.7,
       delay : 0.7
@@ -434,11 +419,5 @@ const clickVariants = {
       duration : 0.5,
       
     }
-  }
-}
-
-const dotVariant = {
-  ani: {
-    rotateZ:90
   }
 }

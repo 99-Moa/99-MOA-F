@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
 import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { postLogOut } from "../../../../api/memberManage";
-import pePe from "../../../../img/pePe.png"
+import { toggleEditProfile } from "../../../../store/modules/parkmade/toggleModal";
 
 // 상위에서 이미지, 이름 받아와야함
-const MyProfile = ({info, setMyInfo, setIsEditProfile}) => {
+const MyProfile = ({info, setMyInfo}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { mutate } = useMutation(postLogOut, {
     onSuccess: (res) => {
       localStorage.removeItem("access_token");
@@ -19,15 +21,16 @@ const MyProfile = ({info, setMyInfo, setIsEditProfile}) => {
     mutate();
   }
   const editProfile = () => {
-    setIsEditProfile(prev=>!prev);
+    dispatch(toggleEditProfile(true));
     setMyInfo(prev=>!prev)
   }
   return (
-    <UpperDiv>
-      <Triangle />
+    <UpperDiv initial={{zIndex:10}}>
       <UpperProfileDiv>
         <ImgDiv>
-          <Img src={info.imgUrl}/>
+          <SquareDiv>
+            <Img src={info.imgUrl} />
+          </SquareDiv>
         </ImgDiv>
         <ProfileDiv>
           <MyInfoDiv>
@@ -55,21 +58,16 @@ const UpperDiv = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 10;
 `;
-const Triangle = styled.div`
-  height: 0px;
-  width: 0px;
-  border: 10px solid transparent;
-  border-bottom-color: #ecf0f1;
-`;
-const UpperProfileDiv = styled.div`
+const UpperProfileDiv = styled(motion.div)`
   height: 100%;
   width: 100%;
+  margin-top: 3%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ecf0f1;
+  background-color: white;
+  border: 3px solid #AAAFB5;
   border-radius: 10px;
 `;
 const ImgDiv = styled.div`
@@ -79,11 +77,23 @@ const ImgDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const SquareDiv = styled.div`
+  width: 85%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
+`;
 const Img = styled.img`
-  width: 130px;
-  height: 130px;
-  border-radius: 65px;
-  background-color: gray;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 `;
 const ProfileDiv = styled.div`
   height: 100%;

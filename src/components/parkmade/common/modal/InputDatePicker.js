@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 
-const InputDatePicker = ({ startDate, setStartDate, endDate, setEndDate }) => {
+const InputDatePicker = ({startDate, setStartDate, endDate, setEndDate}) => {
   return (
     <Wrap className="Wrap-DatePicker">
       <DatePicker
@@ -36,15 +36,21 @@ export default InputDatePicker;
 
 const Wrap = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100%; 
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-
+  
   .react-datepicker-wrapper {
     width: 46%;
     height: 100%;
+  }
+  .react-datepicker-popper {
+    z-index: 10;
+  }
+  .react-datepicker-popper {
+    z-index: 10;
   }
   .react-datepicker-popper {
     z-index: 10;
@@ -58,11 +64,11 @@ const Wrap = styled.div`
   input {
     width: 99%;
     height: 99%;
-    border: 1px solid #aaafb5;
+    border: 1px solid #AAAFB5;
     padding: 0;
     border-radius: 5px;
     text-indent: 3%;
-  }
+  };
 `;
 const Dash = styled.div`
   height: 100%;

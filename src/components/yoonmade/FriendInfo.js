@@ -5,15 +5,20 @@ const FriendInfo = ({ friendInfo, onDeleteFriend }) => {
   return (
     <UserWrapper>
       <ImgAndName>
-        <img src={friendInfo.imgUrl} alt="userImg" />
-        <span>{friendInfo.friendUsername}</span>
+        <UserImageDiv>
+          <SquareDiv>
+            <UserImage src={friendInfo.imgUrl} alt="userImg" />
+          </SquareDiv>
+        </UserImageDiv>
+        <User>
+          <Name className="userName">{friendInfo.friendUsername}</Name>
+          <Id className="userId">{friendInfo.userId}</Id>
+        </User>
       </ImgAndName>
-      <span>{friendInfo.userId}</span>
       <DeleteWrapper>
-        <span className="text">삭제</span>
-        <span className="btn" onClick={() => onDeleteFriend(friendInfo.id)}>
-          ⊖
-        </span>
+        <Delete className="btn" onClick={() => onDeleteFriend(friendInfo.id)}>
+          ⊝
+        </Delete>
       </DeleteWrapper>
     </UserWrapper>
   );
@@ -22,44 +27,73 @@ const FriendInfo = ({ friendInfo, onDeleteFriend }) => {
 export default FriendInfo;
 
 const UserWrapper = styled.div`
-  height: 10%;
-  display: grid;
-  grid-template-columns: 30% 50% 20%;
-  align-items: center;
-  font-weight: 300;
-`;
-
-const ImgAndName = styled.div`
+  width:95%;
+  height: 18%;
   display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+`;
+const ImgAndName = styled.div`
+  width:90%;
+  height:100%;
+  display: flex;
+`;
+const UserImageDiv = styled.div`
+  height:100%;
+  width: 23%;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1em;
-
-  img {
-    height: 3em;
-    width: 3em;
-    border-radius: 50%;
-    object-fit: cover;
+`;
+const SquareDiv = styled.div`
+  width: 85%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
   }
 `;
+const UserImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+`;
 
-const DeleteWrapper = styled.div`
+const User = styled.div`
+  height: 100%;
+  width: 72%;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: center;
+`;
+const Name = styled.span`
+  font-weight: 700;
+  font-size: 110%;
+  margin-left: 2%;
+`;
+const Id = styled.span`
+  font-weight: 300;
+  font-size: 90%;
+  margin-left: 2%;
+  color:gray;
+`;
+const DeleteWrapper = styled.div`
+  height: 100%;
+  width:10%;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.3em;
+`;
+const Delete = styled.div`
+  font-size: 120%;
+  cursor: pointer;
 
   &:hover {
     color: ${defaultColor.red};
-  }
-
-  .text {
-    font-size: 0.8em;
-  }
-
-  .btn {
-    padding-bottom: 0.1em;
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
   }
 `;
