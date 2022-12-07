@@ -142,6 +142,14 @@ const UpperDiv = styled.div`
         background-color: #FF4545;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
         position: absolute;
+        transition: all 0.3s ease 0s;
+
+        &:hover {
+          transform: translateY(-20%);
+        }
+        &:focus {
+          box-shadow: none;
+        }
       }
 
       .fc-toolbar-title {
