@@ -2,6 +2,7 @@ import React from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
 import { postAlarmCheck } from "../../../../api/memberManage";
+import moaDefaultImg from "../../../../img/moaDefaultImg.jpg"
 
 const Alarm = ({prop}) => {
   console.log(prop)
@@ -15,11 +16,11 @@ const Alarm = ({prop}) => {
     <UpperDiv onClick={check}>
       <ImgDiv>
         <SquareDiv>
-          {/* <Img /> */}
+          <Img src={prop.imgUrl ? prop.imgUrl : moaDefaultImg}/>
         </SquareDiv>
       </ImgDiv>
       <InfoDiv>
-        가나다라마바사아자가나다라마바사아자가나다라마바사아자가나다라마바사아자
+        {prop.message}
       </InfoDiv>
     </UpperDiv>
   );

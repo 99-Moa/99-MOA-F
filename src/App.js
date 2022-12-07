@@ -58,7 +58,9 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 function App() {
-  axios.get("https://api.adviceslip.com/advice").then( res => console.log(`hello it's fun. Right? \ni got sentence for you. \n${res.data.slip.advice}`))
+  axios.get("https://api.adviceslip.com/advice").then( 
+    res => console.log(`hello it's fun. Right? \ni got sentence for you. \n${res.data.slip.advice}`)
+  )
   return (
     <Provider store={store}>
       <GlobalStyle />
