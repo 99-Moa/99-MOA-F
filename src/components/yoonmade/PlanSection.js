@@ -526,6 +526,7 @@ const SearchDiv = styled.div`
   align-items: center;
   position: relative;
   overflow: hidden;
+  z-index: 3;
 `;
 
 const PlaceInput = styled.input`
@@ -559,6 +560,7 @@ const MapAreaWrapper = styled.div`
   width: 100%;
   border-radius: 0.3em;
   position: relative;
+  z-index: 3;
 `;
 
 const EditMapArea = styled.div`

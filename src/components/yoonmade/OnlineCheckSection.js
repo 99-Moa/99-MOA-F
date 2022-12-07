@@ -4,7 +4,7 @@ import { defaultColor } from "./styles";
 const OnlineCheckSection = ({ onlineUser, userInfoList }) => {
   return (
     <>
-      <UserBoxHeader>활동 중인 사람 ({onlineUser.length}명)</UserBoxHeader>
+      <UserBoxHeader>활동 중인 사람 ({onlineUser.length - 1}명)</UserBoxHeader>
       <UserBoxBody>
         <UserList>
           {userInfoList?.map((user) => (

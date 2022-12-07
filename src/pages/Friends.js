@@ -28,7 +28,7 @@ const Friends = () => {
           </Portal>
           <Wrap>
             <GroupContainer>
-              <GroupList friendGroup={friendGroup.data} friendList={friendList} />
+              <GroupList friendGroup={friendGroup.data} friendList={friendList} infoData={infoData.data}/>
             </GroupContainer>
           </Wrap>
         </>

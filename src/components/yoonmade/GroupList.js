@@ -8,7 +8,7 @@ import FriendList from "./FriendList";
 import SearchFriend from "./SearchFriend";
 import { useState } from "react";
 
-const GroupList = ({ friendGroup, friendList }) => {
+const GroupList = ({ friendGroup, friendList, infoData }) => {
   const [showFriend, setShowFriend] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -51,7 +51,7 @@ const GroupList = ({ friendGroup, friendList }) => {
         : 
         <HaveGroup>
           {friendGroup.map((group) => (
-            <GroupInfo group={group} key={group.groupId} />
+            <GroupInfo group={group} key={group.groupId} infoData={infoData} />
           ))}
         </HaveGroup>
       }

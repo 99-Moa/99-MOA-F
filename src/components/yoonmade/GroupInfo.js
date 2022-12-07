@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 import { axiosIns } from "../../api/api";
 import { defaultColor } from "./styles";
 
-const GroupInfo = ({ group }) => {
+const GroupInfo = ({ group, infoData }) => {
   const [isHovering, setIsHovering] = useState(false);
   const navigate = useNavigate();
 
@@ -26,6 +26,7 @@ const GroupInfo = ({ group }) => {
         navigate(`/ChatP/${group.groupId}`, {
           state: {
             chatRoomId: res.data.data.chatRoomId,
+            infoData
           },
         });
       });
