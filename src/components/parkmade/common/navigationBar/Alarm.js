@@ -5,12 +5,10 @@ import { postAlarmCheck } from "../../../../api/memberManage";
 import moaDefaultImg from "../../../../img/moaDefaultImg.jpg"
 
 const Alarm = ({prop}) => {
-  console.log(prop)
-
   const { mutate:alarmCheck } = useMutation(postAlarmCheck)
 
   const check = () => {
-
+    alarmCheck(prop.id)
   }
   return (
     <UpperDiv onClick={check}>
@@ -39,6 +37,8 @@ const UpperDiv = styled.div`
   &:hover {
     background-color: #E9EEF2;
   }
+  
+  cursor: pointer;
 `;
 const ImgDiv = styled.div`
   height: 100%;
