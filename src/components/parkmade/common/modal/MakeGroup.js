@@ -126,7 +126,6 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
 const FindFriendDiv = styled.div`
   height: 6%;
   width: 100%;
@@ -184,7 +183,7 @@ const BackBtnImg = styled.img`
 `;
 const ResultFriendDiv = styled.div`
   width: 100%;
-  height: 60%;
+  height: 55%;
   border-bottom: 2px solid #AAAFB5;
   display: flex;
   flex-direction: column;
@@ -230,7 +229,7 @@ const FriendsCount = styled.span`
 `;
 const InviteDiv = styled.div`
   width: 100%;
-  height: 15%;
+  height: 20%;
   margin-top: 3%;
 `;
 const Invite = styled.div`
