@@ -10,17 +10,25 @@ const ToDos = ({schedulesData}) => {
   const [upToDatePlan, setUpToDatePlan] = useState(false);
   const sortPlan = (schedulesData.sort((a,b) => (new Date(`${a.startDate} ${a.startTime}`) - new Date(`${b.startDate} ${b.startTime}`)))).filter(prop=> new Date(`${prop.startDate} ${prop.startTime}`) > new Date());
   return (
-    <Wrap>
-      <UpperDiv variants={WrapVariant} animate="start">
-        <DDayDiv>
-          <CountDay firstDate={sortPlan[0]?.startDate} firstTime={sortPlan[0]?.startTime} setUpToDatePlan={setUpToDatePlan} />
-        </DDayDiv>
-        <ToDoDiv ref={traceScroll}>
-          {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} traceScroll={traceScroll} index={index} />)}
-          {extend && <Extend />}
-        </ToDoDiv>
-      </UpperDiv>
-    </Wrap>
+    <>
+      {(sortPlan.length > 0) ?
+        <>
+          <Wrap>
+            <UpperDiv variants={WrapVariant} animate="start">
+              <DDayDiv>
+                <CountDay firstDate={sortPlan[0]?.startDate} firstTime={sortPlan[0]?.startTime} setUpToDatePlan={setUpToDatePlan} />
+              </DDayDiv>
+              <ToDoDiv ref={traceScroll}>
+                {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} traceScroll={traceScroll} index={index} />)}
+                {extend && <Extend />}
+              </ToDoDiv>
+            </UpperDiv>
+          </Wrap>
+        </>
+        :
+        null
+      }
+    </>
   )
 }
 

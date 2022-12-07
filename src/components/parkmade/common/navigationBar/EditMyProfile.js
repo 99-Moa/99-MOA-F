@@ -21,7 +21,6 @@ const EditMyProfile = ({info}) => {
   const { mutate:changeInfo } = useMutation(putInfoChange, {
     onSuccess: (res) => {
       alert("성공!");
-      setValue("nickname", "")
     },
     onError: (err) => {
       alert("지쟈스");
@@ -55,14 +54,21 @@ const EditMyProfile = ({info}) => {
   const submit = (data) => {
     const formData = new FormData();
     if (data.nickname) {
-      if (!doneDupCheck) {
-        alert("닉네임 중복확인 해 주 세 요.");
-        return;
-      };
-      formData.append("userName", data.nickname);
-      if (data.img[0]) {
-        formData.append("file", data.img[0]);
-      };
+      if (data.nickname === info.userName) {
+        formData.append("userName", "");
+        if (data.img[0]) {
+          formData.append("file", data.img[0]);
+        };
+      } else {
+        if (!doneDupCheck) {
+          alert("닉네임 중복확인 해주세요.");
+          return;
+        };
+        formData.append("userName", data.nickname);
+        if (data.img[0]) {
+          formData.append("file", data.img[0]);
+        };
+      }
     } ;
     if (!data.nickname) {
       formData.append("userName", "");

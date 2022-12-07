@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { toggleChoiceGroup } from "../../store/modules/parkmade/toggleModal";
 
-const Calendar = ({schedulesData }) => {
+const Calendar = ({ schedulesData }) => {
   const dispatch = useDispatch();
   const onDateClick = (e) => {
     const date = e.dateStr;
@@ -117,12 +117,19 @@ const UpperDiv = styled.div`
       .fc-today-button {
         height: 80%;
         width: 10%;
-        border: 1px solid #AAAFB5;
+        border: 0.5px solid #AAAFB5;
         padding: 0;
         background-color: white;
         font-size: 90%;
         color: #27292D;
         opacity: 1;
+
+        &:hover {
+          background-color: #E9EEF2;
+        }
+        &:focus {
+          box-shadow: none;
+        }
       }
       .fc-myCustomButton-button {
         width: 30%;
@@ -135,6 +142,14 @@ const UpperDiv = styled.div`
         background-color: #FF4545;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
         position: absolute;
+        transition: all 0.3s ease 0s;
+
+        &:hover {
+          transform: translateY(-20%);
+        }
+        &:focus {
+          box-shadow: none;
+        }
       }
 
       .fc-toolbar-title {
@@ -161,7 +176,15 @@ const UpperDiv = styled.div`
           width: 40%;
           padding: 0;
           border: none;
-          background-color: white;
+          background-color: transparent;
+
+          &:hover {
+            border-radius: 50%;
+            background-color: #E9EEF2;
+          }
+          &:focus {
+            box-shadow: none;
+          }
 
           span {
             width: 100%;
@@ -194,7 +217,7 @@ const UpperDiv = styled.div`
     }
 
     .fc-daygrid-day {
-      font-weight: 600;
+      font-weight: 500;
       font-size: 90%;
     }
 

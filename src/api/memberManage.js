@@ -64,8 +64,15 @@ export const getGroupDetail = async (groupId) => {
   return data
 }
 
+
 // 메세지 조회
 export const getAllMessage = async (chatRoomId) => {
   const {data} = await axiosIns.get(`/message/${chatRoomId}`);
   return data;
 } 
+
+// 알람관리
+export const postAlarmCheck = async (alarmId) => {
+  const {data} = await axiosIns.post(`/alert/${alarmId}`)
+  return data
+}
