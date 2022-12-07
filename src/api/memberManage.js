@@ -63,3 +63,9 @@ export const getGroupDetail = async (groupId) => {
   const {data} = await axiosIns.get(`/group/${groupId}`)
   return data
 }
+
+// 메세지 조회
+export const getAllMessage = async (chatRoomId) => {
+  const {data} = await axiosIns.get(`/message/${chatRoomId}`);
+  return data;
+} 

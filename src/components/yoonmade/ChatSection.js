@@ -18,20 +18,25 @@ const ChatSection = ({
   stompSendFn,
   chatRoomId,
   MY_TOKEN,
+  myProfile,
   data,
 }) => {
   const [chatInput, setChatInput] = useState("");
   const [scroll, setScroll] = useState(false);
   const [scrollTop, setScrollTop] = useState(10000);
 
+
   const navigate = useNavigate();
   const chatRef = useRef();
 
   const userImgMatchingFn = (userName) => {
-    const filterUser = data.userInfoList.filter(
+    const filterUser = data?.userInfoList.filter(
       (user) => user.userName === userName
     )[0];
-    return filterUser.imgUrl;
+
+    const MatchigImg = filterUser ? filterUser.imgUrl : "https://yuns8708bucket.s3.ap-northeast-2.amazonaws.com/images/moa99_profile.jpg"
+
+    return MatchigImg
   };
 
   const onChattingChange = (e) => {
@@ -77,6 +82,8 @@ const ChatSection = ({
       setScroll(false);
     }
   };
+
+
   return (
     <>
       <ChatBoxHeader>
@@ -105,7 +112,7 @@ const ChatSection = ({
         <ChattingArea ref={chatRef}>
           {allMessage.map((msg) =>
             // sender가 본인일 경우
-            msg.token === MY_TOKEN ? (
+            msg.sender === myProfile.userName ? (
               <>
                 <MyChattingBox>
                   <ChattingMainWrapper myMessage={true}>
