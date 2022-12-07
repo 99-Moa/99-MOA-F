@@ -22,7 +22,13 @@ const Alarms = () => {
   return (
     <UpperDiv>
       <UpperProfileDiv>
-        {alarmList.length>0 ? alarmList.map((prop,index) => <Alarm key={index} prop={prop}/>) : null}
+        {alarmList.length>0 ? 
+          alarmList.map((prop,index) => <Alarm key={index} prop={prop}/>) 
+          : 
+          <AnyAlarm>
+            알람이 없습니다.
+          </AnyAlarm>
+        }
       </UpperProfileDiv>
     </UpperDiv>
   );
@@ -48,4 +54,11 @@ const UpperProfileDiv = styled.div`
   background-color: white;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
   overflow: auto;
+`;
+const AnyAlarm = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
