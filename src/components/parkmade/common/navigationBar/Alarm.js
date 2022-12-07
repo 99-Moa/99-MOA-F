@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { postAlarmCheck } from "../../../../api/memberManage";
 
 const Alarm = ({prop}) => {
+  console.log(prop)
+
   const { mutate:alarmCheck } = useMutation(postAlarmCheck)
 
   const check = () => {
