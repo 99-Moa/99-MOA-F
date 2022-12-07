@@ -63,3 +63,9 @@ export const getGroupDetail = async (groupId) => {
   const {data} = await axiosIns.get(`/group/${groupId}`)
   return data
 }
+
+// 알람관리
+export const postAlarmCheck = async (alarmId) => {
+  const {data} = await axiosIns.post(`/alert/${alarmId}`)
+  return data
+}

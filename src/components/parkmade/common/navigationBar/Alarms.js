@@ -44,12 +44,12 @@ const UpperDiv = styled(motion.div)`
 const UpperProfileDiv = styled.div`
   height: 100%;
   width: 100%;
+  border-radius: 4px;
   margin-top: 3%;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: white;
-  border: 3px solid #AAAFB5;
-  border-radius: 5px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
   overflow: auto;
 `;
