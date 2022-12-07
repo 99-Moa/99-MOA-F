@@ -8,9 +8,11 @@ const InvitedFriend = ({name, inviteList, setInviteList}) => {
   }
   return (
     <UpperDiv>
-      <NameSpan>
-        {name}
-      </NameSpan>
+      <NameDiv>
+        <NameSpan>
+          {name}
+        </NameSpan>
+      </NameDiv>
       <XImg src={cancel} onClick={deleteList}/>
     </UpperDiv>
   );
@@ -28,12 +30,18 @@ const UpperDiv = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+const NameDiv = styled.div`
+  height: 70%;
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const NameSpan = styled.span`
   font-size: 70%;
-  margin-left: 5%;
+  
 `;
 const XImg = styled.img`
-  height: 70%;
-  max-width: 100%;
+  height: 65%;
   cursor: pointer;
 `;

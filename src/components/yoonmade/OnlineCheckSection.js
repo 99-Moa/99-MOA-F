@@ -1,7 +1,13 @@
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { inviteNewFriendToGroup } from "../../store/modules/parkmade/toggleModal";
 import { defaultColor } from "./styles";
 
 const OnlineCheckSection = ({ onlineUser, userInfoList }) => {
+  const dispatch = useDispatch()
+  const openInviteFriends = () => {
+    dispatch(inviteNewFriendToGroup(true));
+  }
   return (
     <>
       <UserBoxHeader>활동 중인 사람 ({onlineUser.length - 1}명)</UserBoxHeader>
@@ -17,7 +23,9 @@ const OnlineCheckSection = ({ onlineUser, userInfoList }) => {
             </UserWrapper>
           ))}
         </UserList>
-        <UserBoxAddFriend>친구추가</UserBoxAddFriend>
+        <UserBoxAddFriend onClick={openInviteFriends}>
+          친구추가
+        </UserBoxAddFriend>
       </UserBoxBody>
     </>
   );
