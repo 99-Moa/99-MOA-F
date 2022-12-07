@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { toggleChoiceGroup } from "../../store/modules/parkmade/toggleModal";
 
-const Calendar = ({schedulesData }) => {
+const Calendar = ({ schedulesData }) => {
   const dispatch = useDispatch();
   const onDateClick = (e) => {
     const date = e.dateStr;

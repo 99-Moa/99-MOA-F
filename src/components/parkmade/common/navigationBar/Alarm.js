@@ -1,10 +1,24 @@
 import React from "react";
+import { useMutation } from "react-query";
 import styled from "styled-components";
+import { postAlarmCheck } from "../../../../api/memberManage";
 
 const Alarm = ({prop}) => {
+  const { mutate:alarmCheck } = useMutation(postAlarmCheck)
+
+  const check = () => {
+
+  }
   return (
-    <UpperDiv> 
-      {prop.message}
+    <UpperDiv onClick={check}>
+      <ImgDiv>
+        <SquareDiv>
+          {/* <Img /> */}
+        </SquareDiv>
+      </ImgDiv>
+      <InfoDiv>
+        가나다라마바사아자가나다라마바사아자가나다라마바사아자가나다라마바사아자
+      </InfoDiv>
     </UpperDiv>
   );
 }
@@ -25,17 +39,33 @@ const UpperDiv = styled.div`
 `;
 const ImgDiv = styled.div`
   height: 100%;
-  max-width: 20%;
+  width: 16%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+const SquareDiv = styled.div`
+  width: 65%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
+`;
 const Img = styled.img`
-
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 `;
 const InfoDiv = styled.div`
   height: 100%;
-  max-width: 80%;
+  max-width: 82.5%;
+  margin-right:1.5%;
   display: flex;
   align-items: center;
 `;

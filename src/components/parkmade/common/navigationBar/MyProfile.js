@@ -63,12 +63,12 @@ const UpperProfileDiv = styled(motion.div)`
   height: 100%;
   width: 100%;
   margin-top: 3%;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: white;
-  border: 3px solid #AAAFB5;
-  border-radius: 10px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
 `;
 const ImgDiv = styled.div`
   height: 100%;
