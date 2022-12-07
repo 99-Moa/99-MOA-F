@@ -217,7 +217,7 @@ const UpperDiv = styled.div`
     }
 
     .fc-daygrid-day {
-      font-weight: 600;
+      font-weight: 500;
       font-size: 90%;
     }
 

@@ -10,11 +10,7 @@ const Alarms = () => {
   useEffect(() => {
     if (!subscribe) {
       evSource = new EventSource(`http://18.206.140.108/sub?token=${localStorage.getItem("access_token")}`);
-      evSource.onopen = (ev) => {
-        console.log("연결잘됨", ev)
-      }
       evSource.onmessage = (ev) => {
-        console.log(ev.data)
         setAlarmList(prev => [...prev, JSON.parse(ev.data)])
       }
       setSubscribe(true);
