@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CountDay from "./CountDay";
 import ToDo from "./ToDo";
 
-const ToDos = ({schedulesData}) => {
+const ToDos = ({schedulesData, infoData}) => {
   const traceScroll = useRef();
   const [extend, setExtend] = useState(false);
   const [upToDatePlan, setUpToDatePlan] = useState(false);
@@ -19,7 +19,7 @@ const ToDos = ({schedulesData}) => {
                 <CountDay firstDate={sortPlan[0]?.startDate} firstTime={sortPlan[0]?.startTime} setUpToDatePlan={setUpToDatePlan} />
               </DDayDiv>
               <ToDoDiv ref={traceScroll}>
-                {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} traceScroll={traceScroll} index={index} />)}
+                {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} traceScroll={traceScroll} index={index} infoData={infoData} />)}
                 {extend && <Extend />}
               </ToDoDiv>
             </UpperDiv>

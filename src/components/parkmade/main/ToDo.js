@@ -10,8 +10,9 @@ import { revisePersonalPlan } from "../../../store/modules/parkmade/toggleModal"
 
 import { ReactComponent as Alone } from "../../../img/svg/alone.svg";
 import { ReactComponent as Test } from "../../../img/svg/mini-group.svg";
+import { axiosIns } from "../../../api/api";
 
-const ToDo = ({prop, traceScroll, index, setExtend}) => {
+const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
   const { kakao } = window;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,8 +36,20 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
     }
   })
 
+  console.log(prop);
   const toChat = () => {
-    // navigate("/채팅방")
+    axiosIns
+    .post("/room", {
+      chatRoomId: prop.id,
+    })
+    .then((res) => {
+      navigate(`/chatroom/${prop.id}`, {
+        state: {
+          chatRoomId: res.data.data.chatRoomId,
+          infoData
+        },
+      });
+    });
   };
   const openDR = () => {
     setIsDelete(prev=>!prev);
