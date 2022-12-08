@@ -4,19 +4,25 @@ import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import styled, { css } from "styled-components";
 import { defaultColor } from "./styles";
-
 import ChatSection from "./ChatSection";
 import OnlineCheckSection from "./OnlineCheckSection";
 import { useQuery } from "react-query";
-import { getAllMessage, getGroupDetail, getMyInfo } from "../../api/memberManage";
+import {
+  getAllMessage,
+  getGroupDetail,
+  getMyInfo,
+} from "../../api/memberManage";
 import PlanSection from "./PlanSection";
-import { axiosIns } from "../../api/api";
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.amPm = function () {
-  let h;
+  let h, min
   const hour = this.getHours();
-  const min = this.getMinutes();
+  min = this.getMinutes();
+
+  if(this.getMinutes() <= 10) {
+    min = `0${this.getMinutes()}`
+  } 
   if (this.getHours() < 12) {
     h = `오전${hour}:${min}`;
   } else {
@@ -39,18 +45,17 @@ const ChatPage = () => {
   const [onlineUser, setOnlineUser] = useState([]);
 
   // 리액트쿼리
-  const {
-    isLoading: detailLoading,
-    data: detailData,
-    refetch: detailRefetch,
-  } = useQuery(["groupDetail"], () => getGroupDetail(groupId));
-
-  const { isLoading: msgLoading } = useQuery(["allMsg"], () => getAllMessage(chatRoomId), {
-    onSuccess: (data) => {
-      setAllmessage(allDateFormat(data.data))
+  const { isLoading: detailLoading, data: detailData, refetch: detailRefetch } = useQuery(["groupDetail"], () => getGroupDetail(groupId));
+  const { isLoading: msgLoading } = useQuery(["allMsg"], () => getAllMessage(chatRoomId),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        setAllmessage(allDateFormat(data.data));
+      },
     }
-  })
+  );
 
+  console.log(detailData);
 
   // utils
   const stompSendFn = (des, body) => {
@@ -63,12 +68,14 @@ const ChatPage = () => {
 
   const allDateFormat = (prevAllMsg) => {
     return prevAllMsg.map((msg) => {
-      const newDate = new Date(Date.parse(msg.time))
+      const newDate = new Date(Date.parse(msg.time));
       return {
-        sender:msg.sender, message:[msg.message], time: newDate.amPm()
-      }
-    })
-  }
+        sender: msg.sender,
+        message: [msg.message],
+        time: newDate.amPm(),
+      };
+    });
+  };
 
   // callbackHandler
   const messageCallbackHandler = (message) => {
@@ -82,7 +89,6 @@ const ChatPage = () => {
       sender: msgData.sender,
       time: amPm,
     };
-
 
     setAllmessage((prev) => {
       if (
@@ -110,7 +116,7 @@ const ChatPage = () => {
     detailRefetch();
   };
 
-  const onlineCheckHandelr = () => {
+  const onlineCheckCallbackHandler = () => {
     detailRefetch();
   };
 
@@ -128,10 +134,6 @@ const ChatPage = () => {
   );
 
   useEffect(() => {
-    // axiosIns.get(`/message/${chatRoomId}`).then(success => {
-    //   const msgData = success.data;
-    //   setAllmessage(allDateFormat(msgData.data))
-    // })
     client.current.activate();
     return () => {
       // 유저가 나갈때마다 실행
@@ -168,19 +170,13 @@ const ChatPage = () => {
     console.log("소켓 연결완료✅");
 
     // 채팅관련 구독
-    client.current.subscribe(
-      `/topic/${chatRoomId}/message`,
-      messageCallbackHandler
-    );
+    client.current.subscribe(`/topic/${chatRoomId}/message`, messageCallbackHandler);
     // user상태관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/user`, userCallbackHandler);
     // 일정관리관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/plan`, planCallbackHandler);
-
-    client.current.subscribe(
-      `/topic/${chatRoomId}/onlineCheck`,
-      onlineCheckHandelr
-    );
+    // 온라인체크, 친구추가 관련 구독
+    client.current.subscribe(`/topic/${chatRoomId}/onlineCheck`, onlineCheckCallbackHandler);
 
     // 유저가 입장할때마다 실행(소켓연결)
     stompSendFn("/app/user", {
@@ -193,35 +189,35 @@ const ChatPage = () => {
 
   return (
     <Layout>
-      {!detailLoading &&       
-      <Container>
-        <ChatBox userBoxView={userBoxView} planBoxView={planBoxView}>
-          <ChatSection
-            myProfile={infoData}
-            data={detailData?.data}
-            setUserBoxView={setUserBoxView}
-            userBoxView={userBoxView}
-            setPlanBoxView={setPlanBoxView}
-            planBoxView={planBoxView}
-            allMessage={allMessage}
-            stompSendFn={stompSendFn}
-            chatRoomId={chatRoomId}
-            MY_TOKEN={MY_TOKEN}
-          />
-        </ChatBox>
-        <UserBox view={userBoxView}>
-          {userBoxView && (
-            <OnlineCheckSection
-              onlineUser={onlineUser}
-              userInfoList={detailData?.data?.userInfoList}
+      {!detailLoading && (
+        <Container>
+          <ChatBox userBoxView={userBoxView} planBoxView={planBoxView}>
+            <ChatSection
+              myProfile={infoData}
+              data={detailData?.data}
+              setUserBoxView={setUserBoxView}
+              userBoxView={userBoxView}
+              setPlanBoxView={setPlanBoxView}
+              planBoxView={planBoxView}
+              allMessage={allMessage}
+              stompSendFn={stompSendFn}
+              chatRoomId={chatRoomId}
+              MY_TOKEN={MY_TOKEN}
             />
-          )}
-        </UserBox>
-        <PlanBox view={planBoxView}>
-          <PlanSection data={detailData?.data} planBoxView={planBoxView} />
-        </PlanBox>
-      </Container>}
+          </ChatBox>
+          <UserBox view={userBoxView}>
 
+              <OnlineCheckSection
+                onlineUser={onlineUser}
+                userInfoList={detailData?.data?.userInfoList}
+              />
+
+          </UserBox>
+          <PlanBox view={planBoxView}>
+            <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId}/>
+          </PlanBox>
+        </Container>
+      )}
     </Layout>
   );
 };
@@ -283,6 +279,7 @@ const UserBox = styled.div`
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${defaultColor.lightGrey};
+  opacity: 0;
 
   transition: 0.5s ease-in-out;
 
@@ -290,6 +287,7 @@ const UserBox = styled.div`
     props.view &&
     css`
       width: 15%;
+      opacity: 1;
       border-left: 1px solid ${defaultColor.lightGrey};
     `}
 `;

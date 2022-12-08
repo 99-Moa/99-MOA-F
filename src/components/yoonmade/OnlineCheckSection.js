@@ -31,6 +31,7 @@ const UserBoxHeader = styled.div`
   display: flex;
   align-items: flex-end;
   font-weight: 400;
+  white-space: nowrap;
 `;
 
 const UserBoxBody = styled.div`

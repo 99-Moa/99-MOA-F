@@ -7,17 +7,29 @@ import { defaultColor } from "./styles";
 
 const GroupInfo = ({ group, infoData }) => {
   const [isHovering, setIsHovering] = useState(false);
+  const [deleteHovering,setDeleteHovering] = useState(false)
   const navigate = useNavigate();
 
   const handleMouseOver = () => {
     setIsHovering(true);
   };
-
   const handleMouseOut = () => {
     setIsHovering(false);
   };
 
+  const handlerDeleteOver= () => {
+    setDeleteHovering(true)
+  }
+  const handleDeleteOut = () => {
+    setDeleteHovering(false)
+  }
+
+  const deleteGroup = (e) => {
+    console.log("dd");
+  }
+
   const onChatRoomMove = () => {
+    if(deleteHovering) return
     axiosIns
       .post("/room", {
         chatRoomId: group.groupId,
@@ -41,6 +53,11 @@ const GroupInfo = ({ group, infoData }) => {
     >
       <InfoHeader>
         <span>{group.groupName}</span>
+        <DeleteIconWrapper   
+        hovering={deleteHovering}
+        onMouseOver={handlerDeleteOver}
+        onMouseOut={handleDeleteOut}>
+          {deleteHovering && <Choice onClick={deleteGroup}>삭제</Choice>}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -48,6 +65,7 @@ const GroupInfo = ({ group, infoData }) => {
         >
           <path d="M12,10a2,2,0,1,0,2,2A2,2,0,0,0,12,10ZM5,10a2,2,0,1,0,2,2A2,2,0,0,0,5,10Zm14,0a2,2,0,1,0,2,2A2,2,0,0,0,19,10Z" />
         </svg>
+        </DeleteIconWrapper>
       </InfoHeader>
       <InfoBody>
         <TextInfo>
@@ -161,6 +179,7 @@ const InfoHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
 
   span {
     font-weight: 400;
@@ -171,6 +190,31 @@ const InfoHeader = styled.div`
     @media all and (min-width: 2000px) {
       font-size: 1em;
     }
+  }
+
+`;
+
+const DeleteIconWrapper = styled.div`
+position: relative;
+
+  svg {
+    transition: 0.2s ease-in-out;
+
+    ${props => props.hovering && css`transform: rotate(-90deg);`}
+  }
+`;
+
+const Choice = styled.div`
+  padding: 0.5em 1em;
+  border: 1px solid ${defaultColor.darkGrey};
+  border-radius: 0.7em;
+  font-size: 0.5em;
+  position: absolute;
+  left: -4em;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    scale: 1.2;
   }
 `;
 
