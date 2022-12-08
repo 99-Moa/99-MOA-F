@@ -10,7 +10,7 @@ import { defaultColor } from "./styles";
 
 import { ReactComponent as MapSvg } from "./svg/map.svg";
 
-const PlanSection = ({ data ,groupId}) => {
+const PlanSection = ({ data ,groupId }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadname] = useState("");
@@ -395,10 +395,12 @@ export default PlanSection;
 
 const DefaultBox = styled.div`
   height: 100%;
+  width: 100%;
 `;
 
 const Header = styled.div`
   height: 9%;
+  width: 100%;
   padding-left: 1em;
   display: flex;
   align-items: flex-end;
@@ -406,27 +408,34 @@ const Header = styled.div`
 
 const Body = styled.div`
   height: 91%;
+  width: 100%;
   padding: 1em 2em;
 `;
 
 const InfoArea = styled.div`
   height: 93%;
+  width: 100%;
 `;
 
 const DateWrapper = styled.div`
   height: 10%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 const LocationBox = styled.div`
   height: 50%;
+  width: 100%;
 `;
 
 const LocationTextArea = styled.div`
   font-weight: 300;
+  width: 100%;
 `;
-const LocationTitle = styled.span``;
+const LocationTitle = styled.span`
+  width: 100%;
+`;
 
 const LocationLoadTitle = styled.span`
   color: ${defaultColor.darkGrey};
@@ -454,7 +463,6 @@ const MemoWrapper = styled.div`
 
 const Button = styled.div`
   height: 7%;
-  width: 100%;
   padding: 0.5em 1em;
   border-radius: 0.3em;
   display: flex;
@@ -481,6 +489,7 @@ const MemoDiv = styled.div`
 
 const Form = styled.form`
   height: 100%;
+  width: 100%;
 `;
 
 const EditHeader = styled.div`
@@ -696,6 +705,7 @@ const PlacePageWrapper = styled.div`
 
 const EditMemoWrapper = styled.div`
   height: 20%;
+  width: 100%;
   display: flex;
 `;
 

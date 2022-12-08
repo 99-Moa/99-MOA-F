@@ -209,7 +209,7 @@ const ChatPage = () => {
                 <OnlineCheckSection onlineUser={onlineUser} userInfoList={detailData?.data?.userInfoList} />
               </UserBox>
               <PlanBox view={planBoxView}>
-                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId}/>
+                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId} view={planBoxView}/>
               </PlanBox>
             </Container>
           </Layout>
@@ -226,6 +226,7 @@ const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   @media all and (min-width: 1024px) {
     font-size: 15px;
@@ -276,13 +277,19 @@ const UserBox = styled.div`
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${defaultColor.lightGrey};
-  opacity: 0;
+  font-size: 0px;
 
   transition: 0.5s ease-in-out;
 
   ${(props) =>
     props.view &&
     css`
+     @media all and (min-width: 1024px) {
+          font-size: 15px;
+        }
+        @media all and (min-width: 2000px) {
+          font-size: 20px;
+        }
       width: 15%;
       opacity: 1;
       border-left: 1px solid ${defaultColor.lightGrey};
@@ -293,6 +300,7 @@ const PlanBox = styled.div`
   height: 100%;
   width: 0%;
   border-left: 1px solid ${defaultColor.lightGrey};
+  font-size: 0px;
 
   transition: 0.5s ease-in-out;
 
@@ -302,6 +310,12 @@ const PlanBox = styled.div`
   ${(props) =>
     props.view &&
     css`
+        @media all and (min-width: 1024px) {
+          font-size: 15px;
+        }
+        @media all and (min-width: 2000px) {
+          font-size: 20px;
+        }
       width: 30%;
       border-left: 1px solid ${defaultColor.lightGrey};
     `}
