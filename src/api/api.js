@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosIns = axios.create({
-  baseURL: "http://43.201.101.151",
+  baseURL: "https://moa7.shop",
 });
 
 axiosIns.interceptors.request.use((config) => {

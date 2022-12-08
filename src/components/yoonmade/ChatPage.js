@@ -119,7 +119,7 @@ const ChatPage = () => {
   // stomp
   const client = useRef(
     new Client({
-      brokerURL: "ws://18.206.140.108/chatroom",
+      brokerURL: "ws://moa7.shop/chatroom",
       debug: function (str) {
         // console.log(str);
       },
