@@ -41,9 +41,9 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
 
   const fullDateFormatFn =(startD, endD, startT, endT ) => {
     const replaceSD = startD?.replaceAll("-", ". ")
-    const sliceST = startT.slice(0, 5)
-    const replaceSE = endD.replaceAll("-", ". ")
-    const sliceET = endT.slice(0, 5)
+    const sliceST = startT?.slice(0, 5)
+    const replaceSE = endD?.replaceAll("-", ". ")
+    const sliceET = endT?.slice(0, 5)
 
     return `${replaceSD}, ${sliceST} - ${replaceSE}, ${sliceET}`
   }

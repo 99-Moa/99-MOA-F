@@ -141,6 +141,8 @@ const GroupInfoBox = styled.div`
 
   transition: 0.3s ease-in-out;
 
+  cursor: pointer;
+
   &:hover {
     border: 1px solid ${defaultColor.blue};
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
