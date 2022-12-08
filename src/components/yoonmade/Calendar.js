@@ -3,7 +3,6 @@ import styled from "styled-components";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import React from "react";
-import { defaultColor } from "./styles";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { toggleChoiceGroup } from "../../store/modules/parkmade/toggleModal";
@@ -72,12 +71,11 @@ const Calendar = ({ schedulesData }) => {
           events={
             schedulesData.map((prop) => {
               if (prop.startDate === prop.endDate) {
-                return { "title": prop.title, "start": prop.startDate }
+                return { "title": prop.title, "start": prop.startDate, "color": (prop.userNum === 1) ? "rgba(255,69,69,0.9)" : "#008CFF" }
               }
-              return { "title": prop.title, "start": prop.startDate, "end": dayjs(prop.endDate).add(1, "day").format("YYYY-MM-DD") }
+              return { "title": prop.title, "start": prop.startDate, "end": dayjs(prop.endDate).add(1, "day").format("YYYY-MM-DD"), "color": (prop.userNum === 1) ? "rgba(255,69,69,0.9)" : "#008CFF" }
             })
           }
-          eventColor="rgba(1,140,255)"
           eventClick={onEventClick}
           dateClick={onDateClick}
         />

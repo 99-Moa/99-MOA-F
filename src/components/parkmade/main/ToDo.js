@@ -8,6 +8,9 @@ import { deleteSchedule, getDetailSchedule } from "../../../api/schedulesManage"
 import dot from "../../../img/dot.png"
 import { revisePersonalPlan } from "../../../store/modules/parkmade/toggleModal";
 
+import { ReactComponent as Alone } from "../../../img/svg/alone.svg";
+import { ReactComponent as Test } from "../../../img/svg/mini-group.svg";
+
 const ToDo = ({prop, traceScroll, index, setExtend}) => {
   const { kakao } = window;
   const navigate = useNavigate();
@@ -66,7 +69,6 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
             map: map,
             position: coords
           });
-
           map.setCenter(coords);
         }
       });  
@@ -79,12 +81,21 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
           <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
-                <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
-                  {getDetailData.title}
-                </SumContent>
-                <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
-                  {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
-                </Date>
+                <ImgDiv>
+                  {(getDetailData?.users?.length === 1) ?
+                    <Alone fill={!index ? "rgba(255,255,255,1)" : openDetail ? "rgba(255,255,255,1)" : "rgba(255,69,69,1)"} />
+                    :
+                    <Test width="65%" fill={!index ? "rgba(255,255,255,1)" : openDetail ? "rgba(255,255,255,1)" : "rgba(0,140,255,1)"} />
+                  }
+                </ImgDiv>
+                <TextDiv>
+                  <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
+                    {getDetailData.title}
+                  </SumContent>
+                  <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
+                    {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
+                  </Date>
+                </TextDiv>
               </WrapSummary>
               {(getDetailData?.users?.length === 1)?
                 <OptionDiv>
@@ -108,7 +119,9 @@ const ToDo = ({prop, traceScroll, index, setExtend}) => {
               <Attendees>
                 {getDetailData.users?.map((prop) =>
                   <AttendeesDiv key={prop.id}>
-                    <AttendeesImg src={prop.imgUrl} />
+                    <SquareDiv>
+                      <AttendeesImg src={prop.imgUrl} />
+                    </SquareDiv>  
                   </AttendeesDiv>
                 )}
               </Attendees>
@@ -232,9 +245,21 @@ const Choice = styled(motion.div)`
   color: #FF4545;
   cursor: pointer;
 `;
-
 const WrapSummary = styled.div`
-  width: 100%;
+  height: 100%;
+  width: 80%;
+  display: flex;
+`;
+const ImgDiv = styled.div`
+  height: 100%;
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const TextDiv = styled.div`
+  height: 100%;
+  width: 85%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -243,17 +268,18 @@ const Date = styled(motion.div)`
   height: 50%;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: 20px;
   color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"};
   transition-property: color;
   transition-delay: 0.7s;
 `;
 const SumContent = styled(motion.div)`
-  height: 30%;
+  height: 48%;
   width: 100%;
+  margin-bottom: 2%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   font-size: 13px;
   color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"}; //
   transition-property: color;
@@ -289,21 +315,37 @@ const Attendees = styled.div`
   width: 80%;
   display: flex;
   align-items: center;
+  overflow-x: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const AttendeesDiv = styled.div`
-  height: 70%;
-  width: 40px;
+  height: 100%;
+  width: 25%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2%;
+  flex-grow: 0;
+  flex-shrink: 0;
+`;
+const SquareDiv = styled.div`
+  width: 70%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
 `;
 const AttendeesImg = styled.img`
-  height: 100%;
   width: 100%;
-  border: none ;
-  border-radius: 25px;
-  background-color: gray;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 `;
 const SecDetailDiv = styled.div`
   height: 48%;
@@ -347,9 +389,9 @@ const Content = styled.div`
   border-radius: 4px;
   display: flex;
   word-break: break-all;
-  align-items: center;
   overflow-y: auto;
-
+  text-indent: 3%;
+  font-size: 85%;
 `;
 const EachEventBtn = styled(motion.div)`
   height: 10%;

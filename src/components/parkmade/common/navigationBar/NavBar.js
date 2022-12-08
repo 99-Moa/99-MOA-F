@@ -4,10 +4,13 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import MyProfile from "./MyProfile";
 import Alarms from "./Alarms";
-import alarmImg from "../../../../img/Icon_Alarm.png";
+// import alarmImg from "../../../../img/ring.png";
 import groupImg from "../../../../img/Icon_Group.png"
 import logoImg from "../../../../img/moa_logo.png"
 import { useDispatch } from "react-redux";
+
+import { ReactComponent as AlarmImg } from "../../../../img/svg/ring.svg";
+import { ReactComponent as MiniGroup } from "../../../../img/svg/mini-group.svg";
 
 const NavBar = ({infoData}) => {
   const navigate = useNavigate();
@@ -37,10 +40,10 @@ const NavBar = ({infoData}) => {
         </LogoUpperDiv>
         <NavUpperDiv>
           <EleImgDiv>
-            <NavImg src={groupImg} onClick={toMyFriends}/>
+            <MiniGroup width="50%" onClick={toMyFriends}/>
           </EleImgDiv>
           <EleImgDiv>
-            <NavImg src={alarmImg} onClick={showAlarm}/>
+            <AlarmImg onClick={showAlarm}/>
             <AlarmWrap
               transition={{ type: "linear" }}
               initial={{scaleY: 0}}
@@ -57,7 +60,9 @@ const NavBar = ({infoData}) => {
             </ProfileWrap>
           </EleImgDiv>
           <EleImgDiv>
-            <NavImg src={infoData.data.imgUrl} onClick={modalProfile}/>
+            <SquareDiv>
+              <NavImg src={infoData.data.imgUrl} onClick={modalProfile}/>
+            </SquareDiv>
           </EleImgDiv>
         </NavUpperDiv>
       </Wrap>
@@ -95,7 +100,7 @@ const LogoUpperDiv = styled.div`
 const LogoImg = styled(motion.img)`
   max-width: 100%;
   max-height: 80%;
-  margin-left: 1%;
+  margin-left: 6.875%;
   cursor: pointer;
 `;
 const NavUpperDiv = styled.div`
@@ -106,18 +111,34 @@ const NavUpperDiv = styled.div`
   align-items: center;
 `;
 const EleImgDiv = styled.div`
-  height: 60px;
-  width: 60px;
+  height: 100%;
+  width: 15%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1%;
   position: relative;
+
+  svg {
+    cursor: pointer;
+  }
+`;
+const SquareDiv = styled.div`
+  width: 65%;
+  position: relative;
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
 `;
 const NavImg = styled(motion.img)`
-  height: 80%;
-  width: 80%;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
   cursor: pointer;
 `;
 const ProfileWrap = styled(motion.div)`

@@ -262,6 +262,7 @@ const UserBox = styled.div`
   flex-direction: column;
   border-left: 1px solid ${defaultColor.lightGrey};
   font-size: 0px;
+  opacity: 0;
 
   transition: 0.5s ease-in-out;
 
@@ -285,6 +286,7 @@ const PlanBox = styled.div`
   width: 0%;
   border-left: 1px solid ${defaultColor.lightGrey};
   font-size: 0px;
+  opacity: 0;
 
   transition: 0.5s ease-in-out;
 
@@ -295,6 +297,7 @@ const PlanBox = styled.div`
     props.view &&
     css`
     font-size: 15px;
+    opacity: 1;
         @media all and (min-width: 1024px) {
           font-size: 15px;
         }
