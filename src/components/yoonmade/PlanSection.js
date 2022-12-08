@@ -10,7 +10,7 @@ import { defaultColor } from "./styles";
 
 import { ReactComponent as MapSvg } from "./svg/map.svg";
 
-const PlanSection = ({ data ,groupId }) => {
+const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadname] = useState("");
@@ -26,16 +26,27 @@ const PlanSection = ({ data ,groupId }) => {
       alert("계획 작성 완료");
       // dispatch(toggleChoiceGroup(false));
       setIsEdit(false);
+      stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
   });
 
   const { mutate: reviseMyPlan } = useMutation(reviseGroupSchedule, {
     onSuccess: () => {
-      alert("계획 작성 완료");
+      alert("계획 수정 완료");
       // dispatch(toggleChoiceGroup(false));
       setIsEdit(false);
+      stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
   });
+
+  const fullDateFormatFn =(startD, endD, startT, endT ) => {
+    const replaceSD = startD.replaceAll("-", ". ")
+    const sliceST = startT.slice(0, 5)
+    const replaceSE = endD.replaceAll("-", ". ")
+    const sliceET = endT.slice(0, 5)
+
+    return `${replaceSD}, ${sliceST} - ${replaceSE}, ${sliceET}`
+  }
 
   // 초기 plan 섹션
   useEffect(() => {
@@ -62,7 +73,7 @@ const PlanSection = ({ data ,groupId }) => {
         }
       );
     }
-  }, [isEdit]);
+  }, [isEdit, data]);
 
   // 수정중 plan 섹션
   useEffect(() => {
@@ -196,7 +207,7 @@ const PlanSection = ({ data ,groupId }) => {
     }
 
     const savaData = {
-      groupId,
+      id:data?.scheduleId || groupId,
       planData: {
         title: title,
         startDate: dayjs(startDate).format("YYYY-MM-DD"),
@@ -210,7 +221,7 @@ const PlanSection = ({ data ,groupId }) => {
  
     }
     if(data.plan) {
-      reviseMyPlan()
+      reviseMyPlan(savaData)
     } else {
       saveMyPlan(savaData);
     }
@@ -220,13 +231,13 @@ const PlanSection = ({ data ,groupId }) => {
     <>
       {!isEdit ? (
         <DefaultBox>
-          <Header></Header>
+          <Header>{data?.title}</Header>
           <Body>
             <InfoArea>
               <DateWrapper>
                 <SubTitle>일시</SubTitle>
                 <span className="date">
-                  -{/* 2022. 11. 10 오후 7:00 - 11. 11 오전 10:00 */}
+                  {fullDateFormatFn(data?.startDate, data?.endDate, data?.startTime, data?.endTime) || "-"}
                 </span>
               </DateWrapper>
               <LocationBox>
@@ -404,6 +415,8 @@ const Header = styled.div`
   padding-left: 1em;
   display: flex;
   align-items: flex-end;
+  font-size: 1.5em;
+  font-weight: 500;
 `;
 
 const Body = styled.div`
@@ -470,6 +483,7 @@ const Button = styled.div`
   align-items: center;
   background-color: ${defaultColor.red};
   color: white;
+  cursor: pointer;
 `;
 
 const SubTitle = styled.span`
@@ -528,6 +542,7 @@ const EditDateWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-left: 0.2em;
   margin-bottom: 0.6em;
 `;
 

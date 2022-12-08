@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import InviteGroup from "../parkmade/common/modal/InviteGroup";
 
 // eslint-disable-next-line no-extend-native
-Date.prototype.amPm = function () {
+ Date.prototype.amPm = function () {
   let h, min
   const hour = this.getHours();
   min = this.getMinutes();
@@ -57,6 +57,8 @@ const ChatPage = () => {
       setAllMessage(allDateFormat(data.data))
     }
   });
+
+  console.log(detailData);
 
   // utils
   const stompSendFn = (des, body) => {
@@ -114,6 +116,10 @@ const ChatPage = () => {
   const planCallbackHandler = (message) => {
     detailRefetch();
   };
+  const updateCallbackHandler = (message) => {
+    console.log(message);
+    detailRefetch()
+  }
   const onlineCheckCallbackHandler = () => {
     detailRefetch();
   };
@@ -172,6 +178,8 @@ const ChatPage = () => {
     client.current.subscribe(`/topic/${chatRoomId}/user`, userCallbackHandler);
     // 일정관리관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/plan`, planCallbackHandler);
+    // 업데이트 구독
+    client.current.subscribe(`/topic/${chatRoomId}/update`, updateCallbackHandler)
     // 온라인체크, 친구추가 관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/onlineCheck`, onlineCheckCallbackHandler);
     // 유저가 입장할때마다 실행(소켓연결)
@@ -180,7 +188,7 @@ const ChatPage = () => {
 
   return (
     <>
-      {(detailLoading || myFriendsLoading || infoLoading) ?
+      {(detailLoading || myFriendsLoading || infoLoading || msgLoading) ?
         <Loading/>
         :
         <>
@@ -209,7 +217,7 @@ const ChatPage = () => {
                 <OnlineCheckSection onlineUser={onlineUser} userInfoList={detailData?.data?.userInfoList} />
               </UserBox>
               <PlanBox view={planBoxView}>
-                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId} view={planBoxView}/>
+                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId} view={planBoxView} stompSendFn={stompSendFn} chatRoomId={chatRoomId}/>
               </PlanBox>
             </Container>
           </Layout>
@@ -310,6 +318,7 @@ const PlanBox = styled.div`
   ${(props) =>
     props.view &&
     css`
+    font-size: 15px;
         @media all and (min-width: 1024px) {
           font-size: 15px;
         }

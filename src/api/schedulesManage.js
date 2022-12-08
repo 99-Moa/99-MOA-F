@@ -20,11 +20,11 @@ export const postSchedule = async (planData) => {
 //   return data;
 // }
 export const postScheduleGroup = async (planData) => {
-  const {data} = await axiosIns.post(`/schedule/${planData.groupId}`, planData.planData);
+  const {data} = await axiosIns.post(`/schedule/${planData.id}`, planData.planData);
   return data;
 }
 export const reviseGroupSchedule = async (planData) => {
-  const {data} = await axiosIns.put(`/schedule/${planData.scheduleId}`, planData.planData);
+  const {data} = await axiosIns.put(`/schedule/${planData.id}`, planData.planData);
   return data;
 }
 export const deleteSchedule = async (scheduleId) => {
