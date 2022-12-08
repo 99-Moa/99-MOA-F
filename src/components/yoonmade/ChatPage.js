@@ -1,18 +1,19 @@
 import { Client } from "@stomp/stompjs";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import SockJS from "sockjs-client";
 import styled, { css } from "styled-components";
 import { defaultColor } from "./styles";
 import ChatSection from "./ChatSection";
 import OnlineCheckSection from "./OnlineCheckSection";
 import { useQuery } from "react-query";
-import {
-  getAllMessage,
-  getGroupDetail,
-  getMyInfo,
-} from "../../api/memberManage";
+import { getAllMessage, getGroupDetail, getMyFriends, getMyInfo } from "../../api/memberManage";
 import PlanSection from "./PlanSection";
+import Loading from "../parkmade/common/loading/Loading";
+import Portal from "../parkmade/common/modal/Portal";
+import NavBar from "../parkmade/common/navigationBar/NavBar";
+import EditMyProfile from "../parkmade/common/navigationBar/EditMyProfile";
+import { useSelector } from "react-redux";
+import InviteGroup from "../parkmade/common/modal/InviteGroup";
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.amPm = function () {
@@ -41,21 +42,21 @@ const ChatPage = () => {
 
   const [userBoxView, setUserBoxView] = useState(false);
   const [planBoxView, setPlanBoxView] = useState(true);
-  const [allMessage, setAllmessage] = useState([]);
+  const [allMessage, setAllMessage] = useState([]);
   const [onlineUser, setOnlineUser] = useState([]);
 
-  // 리액트쿼리
-  const { isLoading: detailLoading, data: detailData, refetch: detailRefetch } = useQuery(["groupDetail"], () => getGroupDetail(groupId));
-  const { isLoading: msgLoading } = useQuery(["allMsg"], () => getAllMessage(chatRoomId),
-    {
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        setAllmessage(allDateFormat(data.data));
-      },
-    }
-  );
+  const isEditProfile = useSelector(state => state.toggleModal.editProfile);
+  const isInviteFriend = useSelector(state => state.toggleModal.inviteNewFriendToGroup);
 
-  console.log(detailData);
+  // 리액트쿼리
+  const { isLoading:infoLoading, data:MyInfoData } = useQuery(["myInfo"], getMyInfo);
+  const { isLoading:myFriendsLoading, data:myFriendsList } = useQuery(["getMyFriends"], getMyFriends);
+  const { isLoading: detailLoading, data: detailData, refetch: detailRefetch } = useQuery(["groupDetail"], () => getGroupDetail(groupId));
+  const { isLoading: msgLoading } = useQuery(["allMsg"], () => getAllMessage(chatRoomId), {
+    onSuccess: (data) => {
+      setAllMessage(allDateFormat(data.data))
+    }
+  });
 
   // utils
   const stompSendFn = (des, body) => {
@@ -90,7 +91,7 @@ const ChatPage = () => {
       time: amPm,
     };
 
-    setAllmessage((prev) => {
+    setAllMessage((prev) => {
       if (
         // 내가보낸 메세지가 아니면서, 메세지가 1개이상, 직전의 메세지와 현재 메세지의 sender가 같을경우
         msgData.sender !== infoData.userName &&
@@ -110,12 +111,9 @@ const ChatPage = () => {
   const userCallbackHandler = (message) => {
     setOnlineUser(JSON.parse(message.body));
   };
-
   const planCallbackHandler = (message) => {
-    console.log(JSON.parse(message.body));
     detailRefetch();
   };
-
   const onlineCheckCallbackHandler = () => {
     detailRefetch();
   };
@@ -125,7 +123,7 @@ const ChatPage = () => {
     new Client({
       brokerURL: "ws://18.206.140.108/chatroom",
       debug: function (str) {
-        console.log(str);
+        // console.log(str);
       },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
@@ -167,8 +165,7 @@ const ChatPage = () => {
 
   //채팅 로직
   client.current.onConnect = () => {
-    console.log("소켓 연결완료✅");
-
+    // console.log("소켓 연결완료✅");
     // 채팅관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/message`, messageCallbackHandler);
     // user상태관련 구독
@@ -177,48 +174,48 @@ const ChatPage = () => {
     client.current.subscribe(`/topic/${chatRoomId}/plan`, planCallbackHandler);
     // 온라인체크, 친구추가 관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/onlineCheck`, onlineCheckCallbackHandler);
-
     // 유저가 입장할때마다 실행(소켓연결)
-    stompSendFn("/app/user", {
-      status: "JOIN",
-      token: MY_TOKEN,
-      chatRoomId,
-      message: "소켓연결됨",
-    });
+    stompSendFn("/app/user", {status: "JOIN", token: MY_TOKEN, chatRoomId, message: "소켓연결됨",});
   };
 
   return (
-    <Layout>
-      {!detailLoading && (
-        <Container>
-          <ChatBox userBoxView={userBoxView} planBoxView={planBoxView}>
-            <ChatSection
-              myProfile={infoData}
-              data={detailData?.data}
-              setUserBoxView={setUserBoxView}
-              userBoxView={userBoxView}
-              setPlanBoxView={setPlanBoxView}
-              planBoxView={planBoxView}
-              allMessage={allMessage}
-              stompSendFn={stompSendFn}
-              chatRoomId={chatRoomId}
-              MY_TOKEN={MY_TOKEN}
-            />
-          </ChatBox>
-          <UserBox view={userBoxView}>
-
-              <OnlineCheckSection
-                onlineUser={onlineUser}
-                userInfoList={detailData?.data?.userInfoList}
-              />
-
-          </UserBox>
-          <PlanBox view={planBoxView}>
-            <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId}/>
-          </PlanBox>
-        </Container>
-      )}
-    </Layout>
+    <>
+      {(detailLoading || myFriendsLoading || infoLoading) ?
+        <Loading/>
+        :
+        <>
+          <NavBar infoData={MyInfoData} />
+          <Portal>
+            {isEditProfile && <EditMyProfile info={MyInfoData.data}/>}
+            {isInviteFriend && <InviteGroup myFriendsList={myFriendsList.data} groupData={detailData?.data}/>}
+          </Portal>
+          <Layout>
+            <Container>
+              <ChatBox userBoxView={userBoxView} planBoxView={planBoxView}>
+                <ChatSection
+                  myProfile={infoData}
+                  data={detailData?.data}
+                  setUserBoxView={setUserBoxView}
+                  userBoxView={userBoxView}
+                  setPlanBoxView={setPlanBoxView}
+                  planBoxView={planBoxView}
+                  allMessage={allMessage}
+                  stompSendFn={stompSendFn}
+                  chatRoomId={chatRoomId}
+                  MY_TOKEN={MY_TOKEN}
+                />
+              </ChatBox>
+              <UserBox view={userBoxView}>
+                <OnlineCheckSection onlineUser={onlineUser} userInfoList={detailData?.data?.userInfoList} />
+              </UserBox>
+              <PlanBox view={planBoxView}>
+                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId}/>
+              </PlanBox>
+            </Container>
+          </Layout>
+        </>
+      }
+    </>
   );
 };
 

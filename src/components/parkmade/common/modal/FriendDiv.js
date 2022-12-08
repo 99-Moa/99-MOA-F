@@ -1,10 +1,8 @@
-import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 import plus from "../../../../img/Icon_Group_add.png"
-import defaultImg from "../../../../img/Icon_Profile.png"
 
-const FriendDiv = ({img, name, inviteList, setInviteList, setIsTargetSearch}) => {
+const FriendDiv = ({img, name, inviteList, setInviteList, setIsTargetSearch, participant}) => {
   const addInviteList = () => {
     if (inviteList.length) {
       for (let prop of inviteList) {
@@ -33,7 +31,7 @@ const FriendDiv = ({img, name, inviteList, setInviteList, setIsTargetSearch}) =>
         </NickName>
       </NickNameDiv>
       <PlusIconDiv>
-        {!inviteList.find(prop => prop === name) && <PlusIconImg src={plus} onClick={addInviteList}/>}
+        {(!inviteList.find(prop => prop === name) && !participant?.find(prop => prop.userName === name)) && <PlusIconImg src={plus} onClick={addInviteList}/>}
       </PlusIconDiv>
     </Wrap>
   );

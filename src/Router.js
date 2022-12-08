@@ -34,17 +34,18 @@ const router = createBrowserRouter([
       {
         path: "chatroom",
         element: <ChatRoom />,
-        errorElement: <LogIn />
+        errorElement: <LogIn />,
+        children: [
+          {
+            path: ":groupId",
+            element: <ChatPage />
+          }
+        ]
       },
       {
         path: "kakao",
         element: <KakaoRedirectHandler />
       },
-      {
-        // 연습페이지
-        path:"chatP/:groupId",
-        element: <ChatPage />
-      }
     ]
   }
 ]);
