@@ -58,8 +58,6 @@ const ChatPage = () => {
     }
   });
 
-  console.log(detailData);
-
   // utils
   const stompSendFn = (des, body) => {
     client.current.publish({
@@ -150,18 +148,6 @@ const ChatPage = () => {
   //   return new SockJS("http://18.206.140.108/chatroom");
   // };
 
-  // 일정수정 더미데이터
-  const plan = {
-    chatRoomId,
-    startDate: "2022-11-04",
-    endDate: "2022-11-04",
-    title: "제목입니다",
-    startTime: "09:33",
-    endTime: "13:00",
-    location: "광주광역시",
-    locationRoadName: "사암로",
-    content: "야무지게 고기먹기",
-  };
 
   //채팅 로직
   client.current.onConnect = () => {

@@ -1,14 +1,40 @@
 import axios from "axios";
 import { useState } from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { axiosIns } from "../../api/api";
+import { postGroupOut } from "../../api/memberManage";
 import { defaultColor } from "./styles";
 
 const GroupInfo = ({ group, infoData }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [deleteHovering,setDeleteHovering] = useState(false)
   const navigate = useNavigate();
+
+  console.log(group);
+
+  const { mutate:groupOut } = useMutation(postGroupOut, {
+    onSuccess: (res) => {
+      alert("그룹삭제 완료!")
+    }
+  })
+
+  const DateFormat = (startDate) => {
+    const year = startDate.slice(0,4)
+    const month = startDate.slice(5,7)
+    const day = startDate.slice(8,10)
+
+    return `${year}년 ${month}월 ${day}일`
+  }
+
+  const timeFormat = (startTime) => {
+    let hour = Number(startTime.slice(0,2))
+    if(hour < 12) hour = `오전 ${hour}시`
+    else hour = `오후 ${hour - 12}시`
+
+    return hour
+  }
 
   const handleMouseOver = () => {
     setIsHovering(true);
@@ -24,8 +50,8 @@ const GroupInfo = ({ group, infoData }) => {
     setDeleteHovering(false)
   }
 
-  const deleteGroup = (e) => {
-    console.log("dd");
+  const deleteGroup = () => {
+    groupOut(group.groupId)
   }
 
   const onChatRoomMove = () => {
@@ -79,7 +105,7 @@ const GroupInfo = ({ group, infoData }) => {
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z" />
               </TextInfoSvg>
-              <span>{group.date}</span>
+              <span>{group?.startDate ? DateFormat(group?.startDate) : "-"}</span>
             </DayWrapper>
             <TimeWrapper>
               <TextInfoSvg
@@ -91,7 +117,7 @@ const GroupInfo = ({ group, infoData }) => {
                 <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
                 <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
               </TextInfoSvg>
-              <span>{group.time}</span>
+              <span>{group?.startTime ? timeFormat(group?.startTime) : "-"}</span>
             </TimeWrapper>
           </TextInfoTop>
           <TextInfoBottom>
@@ -104,7 +130,7 @@ const GroupInfo = ({ group, infoData }) => {
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
               </TextInfoSvg>
-              <span>{group.location}</span>
+              <span>{group.location || "-"}</span>
             </LocationWrapper>
           </TextInfoBottom>
         </TextInfo>
@@ -121,11 +147,11 @@ const GroupInfo = ({ group, infoData }) => {
             </CountCircle>
           </ImgWrapper>
         </ImgInfo>
-        {(!group?.date || !group?.time || !group?.location) && (
+        {/* {(!group?.date || !group?.time || !group?.location) && (
           <NullBox>
             <span>채팅으로 시작하기!!</span>
           </NullBox>
-        )}
+        )} */}
       </InfoBody>
     </GroupInfoBox>
   );
