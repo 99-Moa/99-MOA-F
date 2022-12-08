@@ -112,7 +112,6 @@ const ChatSection = ({
           {allMessage.map((msg ,i) =>
             // sender가 본인일 경우
             msg.sender === myProfile.userName ? (
-              <>
                 <MyChattingBox key={i}>
                   <ChattingMainWrapper myMessage={true}>
                     <div>{msg.message}</div>
@@ -121,7 +120,6 @@ const ChatSection = ({
                     <span>{msg.time}</span>
                   </ChattingTimeWrapper>
                 </MyChattingBox>
-              </>
             ) : (
               // sender가 타인일 경우
               <>
@@ -132,8 +130,7 @@ const ChatSection = ({
                   <ChattingMainWrapper myMessage={false}>
                     <span>{msg.sender}</span>
                     {/* 같은 시간에 온 메세지는 이어서 렌더링 해준다. */}
-                    {msg.message.map((message, i) => (
-                      <>
+                    {msg.message.map((message, i) => (                      
                         <div key={i}>
                           {message}
                           {/* 메세지의 시간은 마지막 메세지에만 표시, 포지션 앱솔루트로 고정 */}
@@ -141,7 +138,6 @@ const ChatSection = ({
                             <span className="send_time">{msg.time}</span>
                           )}
                         </div>
-                      </>
                     ))}
                   </ChattingMainWrapper>
                 </ChattingBox>

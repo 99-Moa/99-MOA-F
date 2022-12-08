@@ -24,7 +24,6 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
   const { mutate: saveMyPlan } = useMutation(postScheduleGroup, {
     onSuccess: () => {
       alert("계획 작성 완료");
-      // dispatch(toggleChoiceGroup(false));
       setIsEdit(false);
       stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
@@ -33,7 +32,6 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
   const { mutate: reviseMyPlan } = useMutation(reviseGroupSchedule, {
     onSuccess: () => {
       alert("계획 수정 완료");
-      // dispatch(toggleChoiceGroup(false));
       setIsEdit(false);
       stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
@@ -44,7 +42,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
     const sliceST = startT?.slice(0, 5)
     const replaceSE = endD?.replaceAll("-", ". ")
     const sliceET = endT?.slice(0, 5)
-
+// dd
     return `${replaceSD}, ${sliceST} - ${replaceSE}, ${sliceET}`
   }
 
@@ -236,7 +234,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
               <DateWrapper>
                 <SubTitle>일시</SubTitle>
                 <span className="date">
-                  {fullDateFormatFn(data?.startDate, data?.endDate, data?.startTime, data?.endTime) || "-"}
+                  {data?.startDate ? fullDateFormatFn(data?.startDate, data?.endDate, data?.startTime, data?.endTime) : "-"}
                 </span>
               </DateWrapper>
               <LocationBox>
@@ -359,8 +357,9 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
                     {watch("place") && (
                       <>
                         <PlaceListBox>
-                          {places.map((place) => (
+                          {places.map((place, i) => (
                             <PlaceWrapper
+                              key={i}
                               onClick={() =>
                                 onPlaceClick(
                                   place.place_name,
@@ -691,6 +690,7 @@ const PlaceListBox = styled.div`
 const PlaceWrapper = styled.div`
   padding: 0.3em 0.5em;
   border-bottom: 1px solid ${defaultColor.lightGrey};
+  cursor: pointer;
 
   div {
     font-size: 0.9em;
@@ -699,6 +699,10 @@ const PlaceWrapper = styled.div`
 
   span {
     font-size: 0.7em;
+  }
+
+  &:hover {
+    background-color: ${defaultColor.lightGrey};
   }
 `;
 
