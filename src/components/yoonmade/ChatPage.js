@@ -200,7 +200,7 @@ const ChatPage = () => {
           <NavBar infoData={MyInfoData} />
           <Portal>
             {isEditProfile && <EditMyProfile info={MyInfoData.data}/>}
-            {isInviteFriend && <InviteGroup myFriendsList={myFriendsList.data} participant={detailData?.data?.userInfoList}/>}
+            {isInviteFriend && <InviteGroup myFriendsList={myFriendsList.data} groupData={detailData?.data}/>}
           </Portal>
           <Layout>
             <Container>

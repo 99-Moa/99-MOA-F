@@ -7,9 +7,10 @@ import { useForm } from "react-hook-form";
 import FriendDiv from "./FriendDiv";
 import InvitedFriend from "../modal/InvitedFriend";
 import logoImg from "../../../../img/Logo_Main.png"
+import { useMutation } from "react-query";
+import { postGroupInvite } from "../../../../api/memberManage";
 
-const InviteGroup = ({myFriendsList, participant}) => {
-
+const InviteGroup = ({myFriendsList, groupData}) => {
   const modalRef = useRef();
   const dispatch = useDispatch();
   const isInviteFriend = useSelector(state => state.toggleModal.inviteNewFriendToGroup);
@@ -17,8 +18,13 @@ const InviteGroup = ({myFriendsList, participant}) => {
   const [isTargetSearch, setIsTargetSearch] = useState(false);
   const [resultF, setResultF] = useState({});;
   const [inviteList, setInviteList] = useState([]);
-
   const { register:searchRegister, handleSubmit:searchHandle, setValue:searchSetValue } = useForm();
+
+  const { mutate:invite } = useMutation(postGroupInvite, {
+    onSuccess: (res) => {
+      alert("초대완료!")
+    }
+  })
 
   const SearchFriends = (formData) => {
     myFriendsList.map(prop => {
@@ -34,7 +40,7 @@ const InviteGroup = ({myFriendsList, participant}) => {
     searchSetValue("friendsNick", "");
   }
   const inviteFriends = () => {
-
+    invite([groupData.groupId, {"users" : inviteList}])
   }
 
   useEffect(() => {
@@ -71,7 +77,7 @@ const InviteGroup = ({myFriendsList, participant}) => {
                     {myFriendsList.length}
                   </FriendsCount>
                 </FriendsDiv>
-                {myFriendsList.map((prop) => <FriendDiv key={prop.id} img={prop.imgUrl} name={prop.friendUsername} inviteList={inviteList} setInviteList={setInviteList} setIsTargetSearch={setIsTargetSearch} participant={participant}/>)}
+                {myFriendsList.map((prop) => <FriendDiv key={prop.id} img={prop.imgUrl} name={prop.friendUsername} inviteList={inviteList} setInviteList={setInviteList} setIsTargetSearch={setIsTargetSearch} participant={groupData.userInfoList}/>)}
               </>
               :
               <ZeroFRdiv>

@@ -38,7 +38,7 @@ export const putInfoChange = async (changeData) => {
   return data;
 }
 
-// 친구 목록 조회, 친구 찾기, 친구 추가, 친구 삭제, 그룹
+// 친구 목록 조회, 친구 찾기, 친구 추가, 친구 삭제, 그룹, 그룹에추가로초대대
 export const getMyFriends = async () => {
   const {data} = await axiosIns.get("/friends");
   return data;
@@ -61,6 +61,10 @@ export const deleteFriend = async (friendId) => {
 }
 export const getGroupDetail = async (groupId) => {
   const {data} = await axiosIns.get(`/group/${groupId}`)
+  return data
+}
+export const postGroupInvite = async (group) => {
+  const {data} = await axiosIns.post(`/group/${group[0]}`, group[1])
   return data
 }
 
