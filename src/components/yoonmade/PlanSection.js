@@ -44,7 +44,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
     const sliceST = startT?.slice(0, 5)
     const replaceSE = endD?.replaceAll("-", ". ")
     const sliceET = endT?.slice(0, 5)
-
+// dd
     return `${replaceSD}, ${sliceST} - ${replaceSE}, ${sliceET}`
   }
 
