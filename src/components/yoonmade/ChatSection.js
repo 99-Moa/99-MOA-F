@@ -25,8 +25,6 @@ const ChatSection = ({
   const [scroll, setScroll] = useState(false);
   const [scrollTop, setScrollTop] = useState(10000);
 
-  console.log(allMessage)
-
   const navigate = useNavigate();
   const chatRef = useRef();
 
@@ -111,11 +109,11 @@ const ChatSection = ({
       </ChatBoxHeader>
       <ChatBoxBody>
         <ChattingArea ref={chatRef}>
-          {allMessage.map((msg) =>
+          {allMessage.map((msg ,i) =>
             // sender가 본인일 경우
             msg.sender === myProfile.userName ? (
               <>
-                <MyChattingBox>
+                <MyChattingBox key={i}>
                   <ChattingMainWrapper myMessage={true}>
                     <div>{msg.message}</div>
                   </ChattingMainWrapper>
@@ -136,7 +134,7 @@ const ChatSection = ({
                     {/* 같은 시간에 온 메세지는 이어서 렌더링 해준다. */}
                     {msg.message.map((message, i) => (
                       <>
-                        <div>
+                        <div key={i}>
                           {message}
                           {/* 메세지의 시간은 마지막 메세지에만 표시, 포지션 앱솔루트로 고정 */}
                           {msg.message.length - 1 === i && (
@@ -178,6 +176,10 @@ const ChatBoxHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  svg {
+    cursor: pointer;
+  }
 `;
 
 const ChatTitle = styled.span`

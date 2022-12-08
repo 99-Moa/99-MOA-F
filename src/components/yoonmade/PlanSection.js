@@ -10,7 +10,7 @@ import { defaultColor } from "./styles";
 
 import { ReactComponent as MapSvg } from "./svg/map.svg";
 
-const PlanSection = ({ data ,groupId}) => {
+const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadname] = useState("");
@@ -26,16 +26,27 @@ const PlanSection = ({ data ,groupId}) => {
       alert("계획 작성 완료");
       // dispatch(toggleChoiceGroup(false));
       setIsEdit(false);
+      stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
   });
 
   const { mutate: reviseMyPlan } = useMutation(reviseGroupSchedule, {
     onSuccess: () => {
-      alert("계획 작성 완료");
+      alert("계획 수정 완료");
       // dispatch(toggleChoiceGroup(false));
       setIsEdit(false);
+      stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
   });
+
+  const fullDateFormatFn =(startD, endD, startT, endT ) => {
+    const replaceSD = startD?.replaceAll("-", ". ")
+    const sliceST = startT.slice(0, 5)
+    const replaceSE = endD.replaceAll("-", ". ")
+    const sliceET = endT.slice(0, 5)
+
+    return `${replaceSD}, ${sliceST} - ${replaceSE}, ${sliceET}`
+  }
 
   // 초기 plan 섹션
   useEffect(() => {
@@ -62,7 +73,7 @@ const PlanSection = ({ data ,groupId}) => {
         }
       );
     }
-  }, [isEdit]);
+  }, [isEdit, data]);
 
   // 수정중 plan 섹션
   useEffect(() => {
@@ -157,8 +168,7 @@ const PlanSection = ({ data ,groupId}) => {
     setValue("place", "");
   };
 
-  const submitPlan = (data) => {
-    const { title, startTime, endTime, textArea } = data;
+  const submitPlan = ({title, startTime, endTime, textArea}) => {
     if (
       !title.trim() ||
       !startTime ||
@@ -196,7 +206,7 @@ const PlanSection = ({ data ,groupId}) => {
     }
 
     const savaData = {
-      groupId,
+      id:data?.scheduleId || groupId,
       planData: {
         title: title,
         startDate: dayjs(startDate).format("YYYY-MM-DD"),
@@ -207,10 +217,10 @@ const PlanSection = ({ data ,groupId}) => {
         locationRoadName: roadName,
         content: textArea,
       }
- 
     }
+
     if(data.plan) {
-      reviseMyPlan()
+      reviseMyPlan(savaData)
     } else {
       saveMyPlan(savaData);
     }
@@ -220,13 +230,13 @@ const PlanSection = ({ data ,groupId}) => {
     <>
       {!isEdit ? (
         <DefaultBox>
-          <Header></Header>
+          <Header>{data?.title}</Header>
           <Body>
             <InfoArea>
               <DateWrapper>
                 <SubTitle>일시</SubTitle>
                 <span className="date">
-                  -{/* 2022. 11. 10 오후 7:00 - 11. 11 오전 10:00 */}
+                  {fullDateFormatFn(data?.startDate, data?.endDate, data?.startTime, data?.endTime) || "-"}
                 </span>
               </DateWrapper>
               <LocationBox>
@@ -395,38 +405,49 @@ export default PlanSection;
 
 const DefaultBox = styled.div`
   height: 100%;
+  width: 100%;
 `;
 
 const Header = styled.div`
   height: 9%;
+  width: 100%;
   padding-left: 1em;
   display: flex;
   align-items: flex-end;
+  font-size: 1.5em;
+  font-weight: 500;
 `;
 
 const Body = styled.div`
   height: 91%;
+  width: 100%;
   padding: 1em 2em;
 `;
 
 const InfoArea = styled.div`
   height: 93%;
+  width: 100%;
 `;
 
 const DateWrapper = styled.div`
   height: 10%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 const LocationBox = styled.div`
   height: 50%;
+  width: 100%;
 `;
 
 const LocationTextArea = styled.div`
   font-weight: 300;
+  width: 100%;
 `;
-const LocationTitle = styled.span``;
+const LocationTitle = styled.span`
+  width: 100%;
+`;
 
 const LocationLoadTitle = styled.span`
   color: ${defaultColor.darkGrey};
@@ -454,7 +475,6 @@ const MemoWrapper = styled.div`
 
 const Button = styled.div`
   height: 7%;
-  width: 100%;
   padding: 0.5em 1em;
   border-radius: 0.3em;
   display: flex;
@@ -462,6 +482,7 @@ const Button = styled.div`
   align-items: center;
   background-color: ${defaultColor.red};
   color: white;
+  cursor: pointer;
 `;
 
 const SubTitle = styled.span`
@@ -481,6 +502,7 @@ const MemoDiv = styled.div`
 
 const Form = styled.form`
   height: 100%;
+  width: 100%;
 `;
 
 const EditHeader = styled.div`
@@ -519,6 +541,7 @@ const EditDateWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-left: 0.2em;
   margin-bottom: 0.6em;
 `;
 
@@ -696,6 +719,7 @@ const PlacePageWrapper = styled.div`
 
 const EditMemoWrapper = styled.div`
   height: 20%;
+  width: 100%;
   display: flex;
 `;
 

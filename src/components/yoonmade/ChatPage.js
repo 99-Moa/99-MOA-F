@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import InviteGroup from "../parkmade/common/modal/InviteGroup";
 
 // eslint-disable-next-line no-extend-native
-Date.prototype.amPm = function () {
+ Date.prototype.amPm = function () {
   let h, min
   const hour = this.getHours();
   min = this.getMinutes();
@@ -57,6 +57,8 @@ const ChatPage = () => {
       setAllMessage(allDateFormat(data.data))
     }
   });
+
+  console.log(detailData);
 
   // utils
   const stompSendFn = (des, body) => {
@@ -111,12 +113,10 @@ const ChatPage = () => {
   const userCallbackHandler = (message) => {
     setOnlineUser(JSON.parse(message.body));
   };
-  const planCallbackHandler = (message) => {
-    detailRefetch();
-  };
-  const onlineCheckCallbackHandler = () => {
-    detailRefetch();
-  };
+  const updateCallbackHandler = () => {
+    detailRefetch()
+  }
+
 
   // stomp
   const client = useRef(
@@ -170,17 +170,15 @@ const ChatPage = () => {
     client.current.subscribe(`/topic/${chatRoomId}/message`, messageCallbackHandler);
     // user상태관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/user`, userCallbackHandler);
-    // 일정관리관련 구독
-    client.current.subscribe(`/topic/${chatRoomId}/plan`, planCallbackHandler);
-    // 온라인체크, 친구추가 관련 구독
-    client.current.subscribe(`/topic/${chatRoomId}/onlineCheck`, onlineCheckCallbackHandler);
+    // 업데이트 구독
+    client.current.subscribe(`/topic/${chatRoomId}/update`, updateCallbackHandler)
     // 유저가 입장할때마다 실행(소켓연결)
     stompSendFn("/app/user", {status: "JOIN", token: MY_TOKEN, chatRoomId, message: "소켓연결됨",});
   };
 
   return (
     <>
-      {(detailLoading || myFriendsLoading || infoLoading) ?
+      {(detailLoading || myFriendsLoading || infoLoading || msgLoading) ?
         <Loading/>
         :
         <>
@@ -209,7 +207,7 @@ const ChatPage = () => {
                 <OnlineCheckSection onlineUser={onlineUser} userInfoList={detailData?.data?.userInfoList} />
               </UserBox>
               <PlanBox view={planBoxView}>
-                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId}/>
+                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId} view={planBoxView} stompSendFn={stompSendFn} chatRoomId={chatRoomId}/>
               </PlanBox>
             </Container>
           </Layout>
@@ -226,6 +224,7 @@ const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   @media all and (min-width: 1024px) {
     font-size: 15px;
@@ -276,13 +275,19 @@ const UserBox = styled.div`
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${defaultColor.lightGrey};
-  opacity: 0;
+  font-size: 0px;
 
   transition: 0.5s ease-in-out;
 
   ${(props) =>
     props.view &&
     css`
+     @media all and (min-width: 1024px) {
+          font-size: 15px;
+        }
+        @media all and (min-width: 2000px) {
+          font-size: 20px;
+        }
       width: 15%;
       opacity: 1;
       border-left: 1px solid ${defaultColor.lightGrey};
@@ -293,6 +298,7 @@ const PlanBox = styled.div`
   height: 100%;
   width: 0%;
   border-left: 1px solid ${defaultColor.lightGrey};
+  font-size: 0px;
 
   transition: 0.5s ease-in-out;
 
@@ -302,6 +308,13 @@ const PlanBox = styled.div`
   ${(props) =>
     props.view &&
     css`
+    font-size: 15px;
+        @media all and (min-width: 1024px) {
+          font-size: 15px;
+        }
+        @media all and (min-width: 2000px) {
+          font-size: 20px;
+        }
       width: 30%;
       border-left: 1px solid ${defaultColor.lightGrey};
     `}
