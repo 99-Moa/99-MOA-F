@@ -8,7 +8,6 @@ import alarmImg from "../../../../img/Icon_Alarm.png";
 import groupImg from "../../../../img/Icon_Group.png"
 import logoImg from "../../../../img/moa_logo.png"
 import { useDispatch } from "react-redux";
-import { getAlarmState, getProfileState } from "../../../../store/modules/yoonmade/modalState";
 
 const NavBar = ({infoData}) => {
   const navigate = useNavigate();
@@ -30,10 +29,6 @@ const NavBar = ({infoData}) => {
     setAlarm(false);
     setMyInfo(prev=>!prev);
   };
-  useEffect(() => {
-    dispatch(getProfileState(myInfo))
-    dispatch(getAlarmState(alarm))
-  },[myInfo,alarm,dispatch]);
   return (
     <Upper>
       <Wrap>
@@ -75,7 +70,7 @@ export default NavBar;
 const Upper = styled.div`
   width: 100%;
   height: 70px;
-  border-bottom: 1px solid #AAAFB5;
+  border-bottom: 1px solid #ECF0F3;
   position: fixed;
   display: flex;
   justify-content: space-between;
@@ -134,7 +129,7 @@ const ProfileWrap = styled(motion.div)`
 `;
 const AlarmWrap = styled(motion.div)`
   height: 550%;
-  width: 650%;
+  width: 750%;
   top: 90%;
   position: absolute;
   transform-origin: top;

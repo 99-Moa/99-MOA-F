@@ -320,7 +320,7 @@ const SmallSpanOne = styled.span`
 `;
 const SmallSpanTwo = styled.span`
   font-size: 70%;
-  font-weight: 200;
+  font-weight: 300;
 `;
 const MapDiv = styled.div`
   height: 70%;
