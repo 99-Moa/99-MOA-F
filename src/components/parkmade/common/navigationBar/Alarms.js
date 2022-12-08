@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Alarm from "./Alarm";
+import alarm from "../../../../img/alarm.png"
 
 const Alarms = () => {
   const [subscribe, setSubscribe] = useState(false);
@@ -26,7 +27,10 @@ const Alarms = () => {
           alarmList.map((prop,index) => <Alarm key={index} prop={prop}/>) 
           : 
           <AnyAlarm>
-            알람이 없습니다.
+            <SquareDiv>
+              <Img src={alarm}/>
+            </SquareDiv>
+            일정 알람이 없습니다.
           </AnyAlarm>
         }
       </UpperProfileDiv>
@@ -59,6 +63,29 @@ const AnyAlarm = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #AAAFB5;
+`;
+const SquareDiv = styled.div`
+  width: 25%;
+  margin-bottom: 3%;
+  border-radius: 50%;
+  position: relative;
+  background-color: #E9EEF2;
+
+  ::after {
+    display: block;
+    content: "";
+    padding-bottom: 100%;
+  }
+`;
+const Img = styled.img`
+  width: 60%;
+  height: 60%;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  object-fit: cover;
 `;
