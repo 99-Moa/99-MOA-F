@@ -137,7 +137,7 @@ const HaveGroup = styled.div`
   grid-auto-rows: 180px;
   gap: 1em;
   position: relative;
-  z-index: 5;
+
 
   -ms-overflow-style: none;
   scrollbar-width: none;

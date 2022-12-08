@@ -1,13 +1,16 @@
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import styled from "styled-components";
+import {  postScheduleGroup, reviseGroupSchedule } from "../../api/schedulesManage";
 import InputDatePicker from "../parkmade/common/modal/InputDatePicker";
 import Time from "../parkmade/common/modal/Time";
 import { defaultColor } from "./styles";
 
 import { ReactComponent as MapSvg } from "./svg/map.svg";
 
-const PlanSection = ({ data }) => {
+const PlanSection = ({ data ,groupId}) => {
   const [isEdit, setIsEdit] = useState(false);
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadname] = useState("");
@@ -16,6 +19,23 @@ const PlanSection = ({ data }) => {
   const [endDate, setEndDate] = useState();
   const { kakao } = window;
   const { register, handleSubmit, setValue, getValues, watch } = useForm();
+
+
+  const { mutate: saveMyPlan } = useMutation(postScheduleGroup, {
+    onSuccess: () => {
+      alert("계획 작성 완료");
+      // dispatch(toggleChoiceGroup(false));
+      setIsEdit(false);
+    },
+  });
+
+  const { mutate: reviseMyPlan } = useMutation(reviseGroupSchedule, {
+    onSuccess: () => {
+      alert("계획 작성 완료");
+      // dispatch(toggleChoiceGroup(false));
+      setIsEdit(false);
+    },
+  });
 
   // 초기 plan 섹션
   useEffect(() => {
@@ -100,7 +120,7 @@ const PlanSection = ({ data }) => {
   };
 
   const displayPagination = (pagination) => {
-    const paginationEl = document.querySelector(".pagenation");
+    const paginationEl = document.querySelector(".pagination");
     const fragment = document.createDocumentFragment();
     let i;
 
@@ -131,10 +151,69 @@ const PlanSection = ({ data }) => {
     paginationEl.appendChild(fragment);
   };
 
-  const onPlaceClick = (placeName, roadNmae) => {
+  const onPlaceClick = (placeName, roadName) => {
     setPlaceName(placeName);
-    setRoadname(roadNmae);
+    setRoadname(roadName);
     setValue("place", "");
+  };
+
+  const submitPlan = (data) => {
+    const { title, startTime, endTime, textArea } = data;
+    if (
+      !title.trim() ||
+      !startTime ||
+      !endTime ||
+      !roadName ||
+      !placeName ||
+      startTime === "시작시간" ||
+      endTime === "끝나는시간"
+    ) {
+      alert("필수항목을 입력해주세요");
+      return;
+    }
+
+    if (
+      dayjs(startDate).format("YYYY-MM-DD") >
+      dayjs(endDate).format("YYYY-MM-DD")
+    ) {
+      alert("시작일은 종요일보다 늦을 수 없습니다.");
+      return;
+    }
+    if (
+      dayjs(startDate).format("YYYY-MM-DD") ===
+        dayjs(endDate).format("YYYY-MM-DD") &&
+      startTime > endTime
+    ) {
+      alert("시작시간이 종료시간보다 늦을 수 없습니다.");
+      return;
+    }
+    if (
+      dayjs(`${dayjs(startDate).format("YYYY-MM-DD")} ${startTime}`) - dayjs() <
+      0
+    ) {
+      alert("시작일(시간)이 현재보다 늦을 수 없습니다.");
+      return;
+    }
+
+    const savaData = {
+      groupId,
+      planData: {
+        title: title,
+        startDate: dayjs(startDate).format("YYYY-MM-DD"),
+        endDate: dayjs(endDate).format("YYYY-MM-DD"),
+        startTime: startTime,
+        endTime: endTime,
+        location: placeName,
+        locationRoadName: roadName,
+        content: textArea,
+      }
+ 
+    }
+    if(data.plan) {
+      reviseMyPlan()
+    } else {
+      saveMyPlan(savaData);
+    }
   };
 
   return (
@@ -181,11 +260,11 @@ const PlanSection = ({ data }) => {
           <EditBody>
             <FormArea>
               <EditDateWrapper>
-                <TextDiv>
+                <TextDiv className="date-text-div">
                   날짜<StarSpan>*</StarSpan>
                 </TextDiv>
                 <UpperDayDiv>
-                  <InputDatePicker
+                  <InputDatePicker 
                     startDate={startDate}
                     setStartDate={setStartDate}
                     endDate={endDate}
@@ -203,11 +282,7 @@ const PlanSection = ({ data }) => {
                       defaultValue="시작시간"
                       {...register("startTime")}
                     >
-                      <TimeOption
-                        disabled
-                        value="시작시간"
-                        {...register("endTime")}
-                      >
+                      <TimeOption disabled value="시작시간">
                         시작시간
                       </TimeOption>
                       <Time />
@@ -215,7 +290,10 @@ const PlanSection = ({ data }) => {
                   </TimeDiv>
                   <Dash>-</Dash>
                   <TimeDiv>
-                    <TimeSelect defaultValue="끝나는시간">
+                    <TimeSelect
+                      defaultValue="끝나는시간"
+                      {...register("endTime")}
+                    >
                       <TimeOption disabled value="끝나는시간">
                         끝나는시간
                       </TimeOption>
@@ -285,7 +363,7 @@ const PlanSection = ({ data }) => {
                             </PlaceWrapper>
                           ))}
                         </PlaceListBox>
-                        <PlacePageWrapper className="pagenation" />
+                        <PlacePageWrapper className="pagination" />
                       </>
                     )}
                     <SelectLocationWrapper>
@@ -303,7 +381,7 @@ const PlanSection = ({ data }) => {
                 />
               </EditMemoWrapper>
             </FormArea>
-            <Button onClick={() => setIsEdit((prev) => !prev)}>
+            <Button onClick={handleSubmit(submitPlan)}>
               {isEdit ? "적용하기" : "수정하기"}
             </Button>
           </EditBody>
@@ -430,6 +508,10 @@ const EditBody = styled.div`
 
 const FormArea = styled.div`
   height: 93%;
+
+  .date-text-div {
+    margin-right: 0.35em;
+  }
 `;
 
 const EditDateWrapper = styled.div`
@@ -437,6 +519,7 @@ const EditDateWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 0.6em;
 `;
 
 const TextDiv = styled.div`
@@ -457,7 +540,7 @@ const StarSpan = styled.span`
 
 const UpperDayDiv = styled.div`
   height: 100%;
-  width: 90%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -17,9 +17,13 @@ import InviteGroup from "../parkmade/common/modal/InviteGroup";
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.amPm = function () {
-  let h;
+  let h, min
   const hour = this.getHours();
-  const min = this.getMinutes();
+  min = this.getMinutes();
+
+  if(this.getMinutes() <= 10) {
+    min = `0${this.getMinutes()}`
+  } 
   if (this.getHours() < 12) {
     h = `오전${hour}:${min}`;
   } else {
@@ -65,12 +69,14 @@ const ChatPage = () => {
 
   const allDateFormat = (prevAllMsg) => {
     return prevAllMsg.map((msg) => {
-      const newDate = new Date(Date.parse(msg.time))
+      const newDate = new Date(Date.parse(msg.time));
       return {
-        sender:msg.sender, message:[msg.message], time: newDate.amPm()
-      }
-    })
-  }
+        sender: msg.sender,
+        message: [msg.message],
+        time: newDate.amPm(),
+      };
+    });
+  };
 
   // callbackHandler
   const messageCallbackHandler = (message) => {
@@ -84,7 +90,6 @@ const ChatPage = () => {
       sender: msgData.sender,
       time: amPm,
     };
-
 
     setAllMessage((prev) => {
       if (
@@ -107,10 +112,9 @@ const ChatPage = () => {
     setOnlineUser(JSON.parse(message.body));
   };
   const planCallbackHandler = (message) => {
-    // console.log(JSON.parse(message.body));
     detailRefetch();
   };
-  const onlineCheckHandler = () => {
+  const onlineCheckCallbackHandler = () => {
     detailRefetch();
   };
 
@@ -128,10 +132,6 @@ const ChatPage = () => {
   );
 
   useEffect(() => {
-    // axiosIns.get(`/message/${chatRoomId}`).then(success => {
-    //   const msgData = success.data;
-    //   setAllMessage(allDateFormat(msgData.data))
-    // })
     client.current.activate();
     return () => {
       // 유저가 나갈때마다 실행
@@ -166,29 +166,16 @@ const ChatPage = () => {
   //채팅 로직
   client.current.onConnect = () => {
     // console.log("소켓 연결완료✅");
-
     // 채팅관련 구독
-    client.current.subscribe(
-      `/topic/${chatRoomId}/message`,
-      messageCallbackHandler
-    );
+    client.current.subscribe(`/topic/${chatRoomId}/message`, messageCallbackHandler);
     // user상태관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/user`, userCallbackHandler);
     // 일정관리관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/plan`, planCallbackHandler);
-
-    client.current.subscribe(
-      `/topic/${chatRoomId}/onlineCheck`,
-      onlineCheckHandler
-    );
-
+    // 온라인체크, 친구추가 관련 구독
+    client.current.subscribe(`/topic/${chatRoomId}/onlineCheck`, onlineCheckCallbackHandler);
     // 유저가 입장할때마다 실행(소켓연결)
-    stompSendFn("/app/user", {
-      status: "JOIN",
-      token: MY_TOKEN,
-      chatRoomId,
-      message: "소켓연결됨",
-    });
+    stompSendFn("/app/user", {status: "JOIN", token: MY_TOKEN, chatRoomId, message: "소켓연결됨",});
   };
 
   return (
@@ -219,10 +206,10 @@ const ChatPage = () => {
                 />
               </ChatBox>
               <UserBox view={userBoxView}>
-                {userBoxView && <OnlineCheckSection onlineUser={onlineUser} userInfoList={detailData?.data?.userInfoList} /> }
+                <OnlineCheckSection onlineUser={onlineUser} userInfoList={detailData?.data?.userInfoList} />
               </UserBox>
               <PlanBox view={planBoxView}>
-                <PlanSection data={detailData?.data} planBoxView={planBoxView} />
+                <PlanSection data={detailData?.data} planBoxView={planBoxView} groupId={groupId}/>
               </PlanBox>
             </Container>
           </Layout>
@@ -289,6 +276,7 @@ const UserBox = styled.div`
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${defaultColor.lightGrey};
+  opacity: 0;
 
   transition: 0.5s ease-in-out;
 
@@ -296,6 +284,7 @@ const UserBox = styled.div`
     props.view &&
     css`
       width: 15%;
+      opacity: 1;
       border-left: 1px solid ${defaultColor.lightGrey};
     `}
 `;
