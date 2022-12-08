@@ -113,16 +113,10 @@ const ChatPage = () => {
   const userCallbackHandler = (message) => {
     setOnlineUser(JSON.parse(message.body));
   };
-  const planCallbackHandler = (message) => {
-    detailRefetch();
-  };
-  const updateCallbackHandler = (message) => {
-    console.log(message);
+  const updateCallbackHandler = () => {
     detailRefetch()
   }
-  const onlineCheckCallbackHandler = () => {
-    detailRefetch();
-  };
+
 
   // stomp
   const client = useRef(
@@ -176,12 +170,8 @@ const ChatPage = () => {
     client.current.subscribe(`/topic/${chatRoomId}/message`, messageCallbackHandler);
     // user상태관련 구독
     client.current.subscribe(`/topic/${chatRoomId}/user`, userCallbackHandler);
-    // 일정관리관련 구독
-    client.current.subscribe(`/topic/${chatRoomId}/plan`, planCallbackHandler);
     // 업데이트 구독
     client.current.subscribe(`/topic/${chatRoomId}/update`, updateCallbackHandler)
-    // 온라인체크, 친구추가 관련 구독
-    client.current.subscribe(`/topic/${chatRoomId}/onlineCheck`, onlineCheckCallbackHandler);
     // 유저가 입장할때마다 실행(소켓연결)
     stompSendFn("/app/user", {status: "JOIN", token: MY_TOKEN, chatRoomId, message: "소켓연결됨",});
   };

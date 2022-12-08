@@ -93,4 +93,5 @@ const UserBoxAddFriend = styled.div`
   align-items: center;
   background-color: ${defaultColor.black};
   color: white;
+  cursor: pointer;
 `;

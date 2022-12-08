@@ -40,7 +40,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
   });
 
   const fullDateFormatFn =(startD, endD, startT, endT ) => {
-    const replaceSD = startD.replaceAll("-", ". ")
+    const replaceSD = startD?.replaceAll("-", ". ")
     const sliceST = startT.slice(0, 5)
     const replaceSE = endD.replaceAll("-", ". ")
     const sliceET = endT.slice(0, 5)
@@ -168,8 +168,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
     setValue("place", "");
   };
 
-  const submitPlan = (data) => {
-    const { title, startTime, endTime, textArea } = data;
+  const submitPlan = ({title, startTime, endTime, textArea}) => {
     if (
       !title.trim() ||
       !startTime ||
@@ -218,8 +217,8 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
         locationRoadName: roadName,
         content: textArea,
       }
- 
     }
+
     if(data.plan) {
       reviseMyPlan(savaData)
     } else {
