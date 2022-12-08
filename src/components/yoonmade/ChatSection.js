@@ -25,6 +25,7 @@ const ChatSection = ({
   const [scroll, setScroll] = useState(false);
   const [scrollTop, setScrollTop] = useState(10000);
 
+  console.log(allMessage)
 
   const navigate = useNavigate();
   const chatRef = useRef();
@@ -98,7 +99,7 @@ const ChatSection = ({
             width="1.5em"
             height="1.5em"
             onClick={() => setUserBoxView((prev) => !prev)}
-            fill={userBoxView && defaultColor.blue}
+            fill={userBoxView ? defaultColor.blue : null}
           />
           <BugerLineSvg
             width="1.5em"

@@ -23,7 +23,7 @@ const GroupInfo = ({ group, infoData }) => {
         chatRoomId: group.groupId,
       })
       .then((res) => {
-        navigate(`/ChatP/${group.groupId}`, {
+        navigate(`/chatroom/${group.groupId}`, {
           state: {
             chatRoomId: res.data.data.chatRoomId,
             infoData
