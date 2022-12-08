@@ -10,7 +10,7 @@ const Alarms = () => {
   let evSource;
   useEffect(() => {
     if (!subscribe) {
-      evSource = new EventSource(`http://18.206.140.108/sub?token=${localStorage.getItem("access_token")}`);
+      evSource = new EventSource(`https://moa7.shop/sub?token=${localStorage.getItem("access_token")}`);
       evSource.onmessage = (ev) => {
         setAlarmList(prev => [...prev, JSON.parse(ev.data)])
       }
