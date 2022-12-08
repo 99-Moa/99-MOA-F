@@ -38,7 +38,7 @@ const Main = () => {
           </Portal>
           <Wrap>
             <Calendar schedulesData={schedulesData.data}/>
-            {schedulesData.data.length ? <ToDos schedulesData={schedulesData.data}/> : null}
+            {schedulesData.data.length ? <ToDos schedulesData={schedulesData.data} infoData={infoData.data}/> : null}
           </Wrap>
         </>
       } 
