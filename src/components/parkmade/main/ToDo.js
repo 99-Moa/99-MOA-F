@@ -281,7 +281,7 @@ const Date = styled(motion.div)`
   width: 100%;
   display: flex;
   align-items: flex-start;
-  font-size: 20px;
+  font-size: 110%;
   color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"};
   transition-property: color;
   transition-delay: 0.7s;
@@ -292,7 +292,7 @@ const SumContent = styled(motion.div)`
   margin-bottom: 2%;
   display: flex;
   align-items: flex-end;
-  font-size: 13px;
+  font-size: 85%;
   color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"}; //
   transition-property: color;
   transition-delay: 0.7s;
