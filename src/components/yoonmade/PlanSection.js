@@ -263,7 +263,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
       ) : (
         <Form>
           <EditHeader>
-            <TitleInput placeholder="일정제목" {...register("title")} />
+            <TitleInput placeholder="일정제목*" {...register("title")} />
           </EditHeader>
           <EditBody>
             <FormArea>
@@ -551,6 +551,7 @@ const TextDiv = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: 700;
+  white-space: nowrap;
 `;
 const StarSpan = styled.span`
   height: 100%;
