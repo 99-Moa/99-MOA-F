@@ -152,7 +152,7 @@ const NumDiv = styled(motion.div)`
   height: 80%;
   width: 45%;
   margin-top: 12%;
-  border-radius: 10px;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
