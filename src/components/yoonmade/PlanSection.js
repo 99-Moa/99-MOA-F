@@ -11,7 +11,7 @@ import { defaultColor } from "./styles";
 import { ReactComponent as MapSvg } from "./svg/map.svg";
 
 const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(data?.plan ? false:true);
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadname] = useState("");
   const [placeName, setPlaceName] = useState("");
@@ -257,7 +257,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
             </InfoArea>
             <ButtonWrapper>
             <Button onClick={() => setIsEdit((prev) => !prev)}>
-              {isEdit ? "적용하기" : "수정하기"}
+              일정수정
             </Button>
             </ButtonWrapper>
           </Body>
@@ -395,7 +395,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
             <ButtonWrapper>
             <Button className="cancel-btn" onClick={() => setIsEdit(prev => !prev)}>취소</Button>
             <Button onClick={handleSubmit(submitPlan)} className="submit-btn">
-              {isEdit ? "적용하기" : "수정하기"}
+              {isEdit ? "일정작성" : "수정하기"}
             </Button>
             </ButtonWrapper>
           </EditBody>
