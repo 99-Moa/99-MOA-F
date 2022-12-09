@@ -66,7 +66,7 @@ const Calendar = ({ schedulesData }) => {
           }}
           titleFormat={setTitleFormat}
           height="90%"
-          locale="kr"
+          locale="en"
           dayMaxEvents={true}
           events={
             schedulesData.map((prop) => {
