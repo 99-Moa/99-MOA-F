@@ -74,15 +74,6 @@ const ToLogIn = () => {
               카카오 로그인
             </KaKaoLogIn>
           </ToSignUpDiv>
-          {/* <StartKakaDiv>
-            <Sign onClick={toSignUp} whileHover={{scale:1.02}}>
-              회원가입
-            </Sign>
-            <KaKaBtn whileHover={{scale:1.02}} onClick={onKakaoLogin}>
-              <KaKaoImg src={kaKao}/>
-              카카오 로그인
-            </KaKaBtn>
-          </StartKakaDiv> */}
         </Form>
       </UpperDiv>
     </Wrap>
