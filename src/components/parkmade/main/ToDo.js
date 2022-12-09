@@ -104,7 +104,7 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
                 </ImgDiv>
                 <TextDiv>
                   <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
-                    {getDetailData.title}
+                    {(getDetailData?.users?.length === 1) ? getDetailData.title : `${getDetailData.title} (그룹이름 : ${getDetailData.groupName})` }
                   </SumContent>
                   <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
                     {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
