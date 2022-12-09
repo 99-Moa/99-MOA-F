@@ -117,6 +117,7 @@ const ChatSection = ({
                     <div>{msg.message}</div>
                   </ChattingMainWrapper>
                   <ChattingTimeWrapper>
+                    {console.log(msg.wideTime)}
                     <span>{msg.time}</span>
                   </ChattingTimeWrapper>
                 </MyChattingBox>
@@ -127,7 +128,7 @@ const ChatSection = ({
                   <ChattingUserImgWrapper>
                     <img src={userImgMatchingFn(msg.sender)} alt="userImage" />
                   </ChattingUserImgWrapper>
-                  <ChattingMainWrapper myMessage={false}>
+                  <ChattingMainWrapper myMessage={false} wideTime={msg.time.length>6}>
                     <span>{msg.sender}</span>
                     {/* 같은 시간에 온 메세지는 이어서 렌더링 해준다. */}
                     {msg.message.map((message, i) => (                      
@@ -254,8 +255,11 @@ const ChattingMainWrapper = styled.div`
               width: fit-content;
               position: absolute;
               white-space: nowrap;
-              right: -4em;
+              right: -4.2em;
               bottom: 0;
+
+              // 시간을 표시해주는 문자열의 길이가 7자 이상일 경우 right값을 더 준다.
+              ${props => props.wideTime && css`right:-5em;`}
             }
           `}
 
