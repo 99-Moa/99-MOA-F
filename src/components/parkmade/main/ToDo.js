@@ -9,7 +9,7 @@ import dot from "../../../img/dot.png"
 import { revisePersonalPlan } from "../../../store/modules/parkmade/toggleModal";
 
 import { ReactComponent as Alone } from "../../../img/svg/alone.svg";
-import { ReactComponent as Test } from "../../../img/svg/mini-group.svg";
+import { ReactComponent as Group } from "../../../img/svg/mini-group.svg";
 import { axiosIns } from "../../../api/api";
 
 const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
@@ -36,7 +36,6 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
     }
   })
 
-  console.log(prop);
   const toChat = () => {
     axiosIns
     .post("/room", {
@@ -98,7 +97,7 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
                   {(getDetailData?.users?.length === 1) ?
                     <Alone fill={!index ? "rgba(255,255,255,1)" : openDetail ? "rgba(255,255,255,1)" : "rgba(255,69,69,1)"} />
                     :
-                    <Test width="65%" fill={!index ? "rgba(255,255,255,1)" : openDetail ? "rgba(255,255,255,1)" : "rgba(0,140,255,1)"} />
+                    <Group width="65%" height="100%" fill={!index ? "rgba(255,255,255,1)" : openDetail ? "rgba(255,255,255,1)" : "rgba(0,140,255,1)"} />
                   }
                 </ImgDiv>
                 <TextDiv>
