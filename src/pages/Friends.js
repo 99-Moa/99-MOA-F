@@ -63,7 +63,7 @@ const Wrap = styled(motion.div)`
 
 const GroupContainer = styled(motion.div)`
   height: 70%;
-  width: 90%;
+  width: 93.3%;
   display: flex;
   flex-direction: column;
 `;

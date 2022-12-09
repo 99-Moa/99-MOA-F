@@ -12,11 +12,16 @@ const ToLogIn = () => {
   const { register, handleSubmit, setValue } = useForm();
   const { mutate:toLogIn } = useMutation(postLogin, {
     onSuccess: (res) => {
-      localStorage.setItem("access_token", res.headers.access_token);
-      localStorage.setItem("refresh_token", res.headers.refresh_token);
-      navigate("/main");
-      setValue("LogInId", "");
-      setValue("LogInPassword", "");
+      if (res.data.error) {
+        alert("비밀번호가 일치하지 않습니다.")
+        return;
+      } else {
+        localStorage.setItem("access_token", res.headers.access_token);
+        localStorage.setItem("refresh_token", res.headers.refresh_token);
+        navigate("/main");
+        setValue("LogInId", "");
+        setValue("LogInPassword", "");
+      }
     },
     onError: (err) => {
       alert("로그인 실패!")
