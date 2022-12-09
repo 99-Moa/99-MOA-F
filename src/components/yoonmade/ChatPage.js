@@ -21,7 +21,7 @@ import InviteGroup from "../parkmade/common/modal/InviteGroup";
   const hour = this.getHours();
   min = this.getMinutes();
 
-  if(this.getMinutes() <= 10) {
+  if(this.getMinutes() < 10) {
     min = `0${this.getMinutes()}`
   } 
   if (this.getHours() < 12) {
