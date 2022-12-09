@@ -40,7 +40,7 @@ const ChatPage = () => {
   const { groupId } = useParams();
   const { chatRoomId, infoData } = location.state;
 
-  const [userBoxView, setUserBoxView] = useState(false);
+  const [userBoxView, setUserBoxView] = useState(true);
   const [planBoxView, setPlanBoxView] = useState(true);
   const [allMessage, setAllMessage] = useState([]);
   const [onlineUser, setOnlineUser] = useState([]);

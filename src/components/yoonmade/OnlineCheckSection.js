@@ -8,13 +8,14 @@ const OnlineCheckSection = ({ onlineUser, userInfoList }) => {
   const openInviteFriends = () => {
     dispatch(inviteNewFriendToGroup(true));
   }
+
   return (
     <>
       <UserBoxHeader>활동 중인 사람 ({onlineUser.length - 1}명)</UserBoxHeader>
       <UserBoxBody>
         <UserList>
-          {userInfoList?.map((user) => (
-            <UserWrapper>
+          {userInfoList?.map((user ,i) => (
+            <UserWrapper key={i}>
               <ImgWrapper>
                 <img src={user.imgUrl} alt="user" />
                 <OnlineCheckDot online={onlineUser.includes(user.userName)} />
