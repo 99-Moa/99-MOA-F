@@ -11,7 +11,18 @@ import { useState } from "react";
 const GroupList = ({ friendGroup, friendList, infoData }) => {
   const [showFriend, setShowFriend] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [filterGroupList, setFilterGroupList] = useState([]);
 
+  const onChangeGroupInput = (e) => {
+    const value = e.target.value;
+    const filterList = friendGroup.filter(({ groupName }) => {
+      return groupName.includes(value);
+    });
+
+    setFilterGroupList(filterList);
+    setGroupName(value);
+  };
   const showSearchCom = () => {
     setShowSearch(prev => !prev);
     setShowFriend(false);
@@ -41,7 +52,7 @@ const GroupList = ({ friendGroup, friendList, infoData }) => {
             </Container>
           }
         </UpperFriendDiv>
-        <InputComponent width={"25%"} placeholder="그룹 검색" />
+        <InputComponent width={"25%"} onChange={onChangeGroupInput} value={groupName} placeholder="그룹 검색" />
       </Header>
       {!friendGroup?.length ?
         <NotGroup>
@@ -50,9 +61,15 @@ const GroupList = ({ friendGroup, friendList, infoData }) => {
         </NotGroup>
         : 
         <HaveGroup>
-          {friendGroup.map((group) => (
-            <GroupInfo group={group} key={group.groupId} infoData={infoData} />
-          ))}
+          {filterGroupList.length >= 1 || groupName ? 
+            filterGroupList.map((group) => (
+              <GroupInfo group={group} key={group.groupId} />
+            ))
+            : 
+            friendGroup.map((group) => (
+              <GroupInfo group={group} key={group.groupId} />
+            ))
+          }
         </HaveGroup>
       }
     </>

@@ -137,7 +137,7 @@ const SignTitleDiv = styled.div`
   align-items: center;
 `;
 const SignTitle = styled.div`
-  height: 63%;
+  height: 64%;
   width: 95%;
   display: flex;
   justify-content: center;
