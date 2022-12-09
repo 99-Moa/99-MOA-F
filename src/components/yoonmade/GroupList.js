@@ -41,7 +41,7 @@ const GroupList = ({ friendGroup, friendList, infoData }) => {
             </Container>
           }
         </UpperFriendDiv>
-        <InputComponent width={"35%"} placeholder="그룹 검색" />
+        <InputComponent width={"25%"} placeholder="그룹 검색" />
       </Header>
       {!friendGroup?.length ?
         <NotGroup>
@@ -71,7 +71,7 @@ const Header = styled.div`
 `;
 const UpperFriendDiv = styled.div`
   height: 100%;
-  width: 15%;
+  width: 10%;
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -133,7 +133,7 @@ const HaveGroup = styled.div`
   height: 94%;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, auto));
+  grid-template-columns: repeat(auto-fill, minmax(30%, auto));
   grid-auto-rows: 180px;
   gap: 1em;
   position: relative;

@@ -152,6 +152,7 @@ const AlarmWrap = styled(motion.div)`
   height: 550%;
   width: 750%;
   top: 90%;
+  right: -275%;
   position: absolute;
   transform-origin: top;
 `;
