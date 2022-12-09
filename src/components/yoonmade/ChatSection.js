@@ -117,7 +117,6 @@ const ChatSection = ({
                     <div>{msg.message}</div>
                   </ChattingMainWrapper>
                   <ChattingTimeWrapper>
-                    {console.log(msg.wideTime)}
                     <span>{msg.time}</span>
                   </ChattingTimeWrapper>
                 </MyChattingBox>

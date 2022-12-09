@@ -36,7 +36,6 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
     }
   })
 
-  console.log(prop);
   const toChat = () => {
     axiosIns
     .post("/room", {
