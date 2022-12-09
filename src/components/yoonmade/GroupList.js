@@ -59,15 +59,15 @@ const GroupList = ({ friendGroup, friendList, infoData }) => {
           <img src={emoji} alt="emoji" />
           <span>새로운 그룹을 등록해주세요.</span>
         </NotGroup>
-        : 
+        :
         <HaveGroup>
-          {filterGroupList.length >= 1 || groupName ? 
+          {filterGroupList.length >= 1 || groupName ?
             filterGroupList.map((group) => (
-              <GroupInfo group={group} key={group.groupId} />
+              <GroupInfo group={group} key={group.groupId} infoData={infoData} />
             ))
-            : 
+            :
             friendGroup.map((group) => (
-              <GroupInfo group={group} key={group.groupId} />
+              <GroupInfo group={group} key={group.groupId} infoData={infoData} />
             ))
           }
         </HaveGroup>

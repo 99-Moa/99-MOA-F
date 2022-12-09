@@ -153,7 +153,7 @@ const SignSubTitle = styled.div`
   justify-content: center;
   align-items: flex-start;
   color:gray;
-  font-size:80%;
+  font-size: 80%;
 `;
 const UpperLoginDiv = styled.div`
   width: 95%;
