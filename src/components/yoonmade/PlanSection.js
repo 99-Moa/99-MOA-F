@@ -255,15 +255,17 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
                 <MemoDiv>{data?.content || ""}</MemoDiv>
               </MemoWrapper>
             </InfoArea>
+            <ButtonWrapper>
             <Button onClick={() => setIsEdit((prev) => !prev)}>
               {isEdit ? "적용하기" : "수정하기"}
             </Button>
+            </ButtonWrapper>
           </Body>
         </DefaultBox>
       ) : (
         <Form>
           <EditHeader>
-            <TitleInput placeholder="일정제목" {...register("title")} />
+            <TitleInput placeholder="일정제목*" {...register("title")} />
           </EditHeader>
           <EditBody>
             <FormArea>
@@ -390,9 +392,12 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
                 />
               </EditMemoWrapper>
             </FormArea>
-            <Button onClick={handleSubmit(submitPlan)}>
+            <ButtonWrapper>
+            <Button className="cancel-btn" onClick={() => setIsEdit(prev => !prev)}>취소</Button>
+            <Button onClick={handleSubmit(submitPlan)} className="submit-btn">
               {isEdit ? "적용하기" : "수정하기"}
             </Button>
+            </ButtonWrapper>
           </EditBody>
         </Form>
       )}
@@ -472,8 +477,23 @@ const MemoWrapper = styled.div`
   height: 40%;
 `;
 
+const ButtonWrapper = styled.div`
+display: flex;
+gap: 1em;
+height: 7%;
+
+.cancel-btn {
+  width: 20%;
+  background-color: ${defaultColor.darkGrey};
+}
+
+.submit-btn {
+  width: 80%;
+}
+`
+
 const Button = styled.div`
-  height: 7%;
+  width: 100%;
   padding: 0.5em 1em;
   border-radius: 0.3em;
   display: flex;
@@ -551,6 +571,7 @@ const TextDiv = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: 700;
+  white-space: nowrap;
 `;
 const StarSpan = styled.span`
   height: 100%;
