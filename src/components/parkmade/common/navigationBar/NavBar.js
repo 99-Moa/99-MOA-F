@@ -40,7 +40,7 @@ const NavBar = ({infoData}) => {
         </LogoUpperDiv>
         <NavUpperDiv>
           <EleImgDiv>
-            <MiniGroup width="50%" height="50%" onClick={toMyFriends}/>
+            <MiniGroup width="50%" height="50%" fill="rgba(39,41,45,1)" onClick={toMyFriends}/>
           </EleImgDiv>
           <EleImgDiv>
             <AlarmImg onClick={showAlarm}/>
