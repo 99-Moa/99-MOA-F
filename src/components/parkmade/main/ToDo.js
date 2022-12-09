@@ -215,27 +215,28 @@ const SummaryDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-left: 3%;
+  padding: 0 3%;
   align-items: center;
 `;
 const OptionDiv = styled.div`
-  margin-right: 2%;
+  width: 20%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   position: relative;
   z-index: 1;
 `;
 const OptionImg = styled(motion.img)`
-  height: 50%;
-  width: 70%;
+  max-height: 50%;
+  width: 33%;
 `;
 const Delete = styled(motion.div)`
-  height: 300%;
-  width: 200%;
-  top: -100%;
-  right: 100%;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 20%;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -267,7 +268,7 @@ const ImgDiv = styled.div`
   height: 100%;
   width: 15%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `;
 const TextDiv = styled.div`
@@ -283,6 +284,7 @@ const Date = styled(motion.div)`
   display: flex;
   align-items: flex-start;
   font-size: 110%;
+  font-weight: 700;
   color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"};
   transition-property: color;
   transition-delay: 0.7s;
@@ -293,7 +295,8 @@ const SumContent = styled(motion.div)`
   margin-bottom: 2%;
   display: flex;
   align-items: flex-end;
-  font-size: 85%;
+  font-size: 80%;
+  font-weight: 400;
   color: ${prop => (prop.index === 0) ? "white" : prop.$openDetail ? "white" : "black"}; //
   transition-property: color;
   transition-delay: 0.7s;
