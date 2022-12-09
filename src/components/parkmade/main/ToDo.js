@@ -13,6 +13,7 @@ import { ReactComponent as Group } from "../../../img/svg/mini-group.svg";
 import { axiosIns } from "../../../api/api";
 
 const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
+  
   const { kakao } = window;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,10 +40,10 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
   const toChat = () => {
     axiosIns
     .post("/room", {
-      chatRoomId: prop.id,
+      chatRoomId: getDetailData.groupId,
     })
     .then((res) => {
-      navigate(`/chatroom/${prop.id}`, {
+      navigate(`/chatroom/${getDetailData.groupId}`, {
         state: {
           chatRoomId: res.data.data.chatRoomId,
           infoData
@@ -93,6 +94,7 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
           <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
+                {console.log(getDetailData)}
                 <ImgDiv>
                   {(getDetailData?.users?.length === 1) ?
                     <Alone fill={!index ? "rgba(255,255,255,1)" : openDetail ? "rgba(255,255,255,1)" : "rgba(255,69,69,1)"} />

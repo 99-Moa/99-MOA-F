@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getMyFriends, getMyInfo } from "../api/memberManage";
+import { getFriendGroup, getMyFriends, getMyInfo } from "../api/memberManage";
 import { getSchedules } from "../api/schedulesManage";
 import Loading from "../components/parkmade/common/loading/Loading";
 import ChoicePlan from "../components/parkmade/common/modal/ChoicePlan";
