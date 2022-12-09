@@ -99,15 +99,15 @@ const LogoUpperDiv = styled.div`
 `;
 const LogoImg = styled(motion.img)`
   max-width: 100%;
-  max-height: 80%;
-  margin-left: 6.875%;
+  max-height: 60%;
+  margin-left: 1%;
   cursor: pointer;
 `;
 const NavUpperDiv = styled.div`
   width: 25%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 `;
 const EleImgDiv = styled.div`

@@ -154,21 +154,21 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
               <>
                 <ThirdDetailDiv>
                   <BigSpan>
-                    세부 내용
+                    메모
                   </BigSpan>
                   <Content>
                     {getDetailData.content}
                   </Content>
                 </ThirdDetailDiv>
                 <EachEventBtn onClick={revisePlan}>
-                  수정하기
+                  일정 수정
                 </EachEventBtn>
               </>
               :
               <>
                 <ThirdDetailDiv>
                   <BigSpan>
-                    세부 내용
+                    메모
                   </BigSpan>
                   <Content>
                     {getDetailData.content}
@@ -245,7 +245,6 @@ const Delete = styled(motion.div)`
 const Choice = styled(motion.div)`
   height: 50%;
   width: 80%;
-  border: 1px solid #AAAFB5;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -413,7 +412,7 @@ const EachEventBtn = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2d3436;
+  background-color: #27292D;
   color: white;
   font-weight: 700;
   font-size: 110%;

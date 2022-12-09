@@ -50,7 +50,7 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
     body {
-        font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+        font-family: 'Spoqa Han Sans Neo';
     }
     a {
         text-decoration:none;

@@ -35,15 +35,15 @@ const Calendar = ({ schedulesData }) => {
     let todayElm, dateBox
 
     if(date.date.year === year && date.date.month +1 === month){
-      todayElm = React.createElement("div",{key:2},`${today}`)
+      // todayElm = React.createElement("div",{key:2},`${today}`)
       dateBox = React.createElement("div",null,[yearMonth,todayElm])
       return dateBox
     } else {
-      todayElm = React.createElement("div",{key:2},1)
+      // todayElm = React.createElement("div",{key:2},1)
       dateBox = React.createElement("div",null,[yearMonth,todayElm])
       return dateBox
     }
-}
+  }
   return (
     <Wrap>
       <UpperDiv>
@@ -117,6 +117,7 @@ const UpperDiv = styled.div`
         width: 10%;
         border: 0.5px solid #AAAFB5;
         padding: 0;
+        margin-left: 4%;
         background-color: white;
         font-size: 90%;
         color: #27292D;
@@ -191,7 +192,7 @@ const UpperDiv = styled.div`
             justify-content: center;
             align-items: center;
             color: #27292D;
-            font-weight: 700;
+            font-weight: 400;
           }
         }
       }
@@ -223,4 +224,9 @@ const UpperDiv = styled.div`
       color: rgba(255, 119, 119);
     }
   }
-  `;
+
+  .fc .fc-daygrid-day-top {
+    display: flex;
+    flex-direction: row;
+  }
+`;
