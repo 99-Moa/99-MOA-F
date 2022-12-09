@@ -25,7 +25,7 @@ const MakePlan = () => {
   const [roadName, setRoadName] = useState(""); 
   const previousData = useSelector(state => state.toggleModal.revisePersonalPlan);
   
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, getValues } = useForm();
   const { mutate:saveMyPlan } = useMutation(postSchedule, {
     onSuccess: () => {
       alert("계획 작성 완료");
@@ -192,16 +192,17 @@ const MakePlan = () => {
             }
           </SearchDiv>
         </SearchPlaceDiv>
+        <UpperMapDiv>
+          <MapDiv className="plan-kakao"></MapDiv>
+        </UpperMapDiv>
         {roadName ? 
           <RoadNameDiv>
+            <PlaceName>{getValues("place")}</PlaceName>
             <RoadName>{roadName}</RoadName>
           </RoadNameDiv>
           :
           null
         }
-        <UpperMapDiv>
-          <MapDiv className="plan-kakao"></MapDiv>
-        </UpperMapDiv>
         <UpperMemoDiv>
           <TextDiv>
             메모
@@ -316,18 +317,29 @@ const SearchPlaceDiv = styled.div`
 `;
 const RoadNameDiv = styled.div`
   width: 90%;
-  height: 2%;
+  height: 4%;
   margin: 0.5% 0;
   display: flex;
   align-items: center;
+  flex-direction: column;
 `;
-const RoadName = styled.div`
+const PlaceName = styled.div`
   width: 90%;
-  height: 100%;
+  height: 60%;
   margin-left: 10%;
   display: flex;
   align-items: center;
-  font-size: 90%;
+  font-size: 100%;
+  padding-left: 1%;
+`;
+const RoadName = styled.div`
+  width: 90%;
+  height: 40%;
+  margin-left: 10%;
+  display: flex;
+  align-items: center;
+  font-size: 80%;
+  font-weight: 300;
   padding-left: 1%;
 `;
 const PlacesDiv = styled.div`
