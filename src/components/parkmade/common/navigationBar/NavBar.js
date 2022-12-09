@@ -145,6 +145,7 @@ const ProfileWrap = styled(motion.div)`
   height: 350%;
   width: 650%;
   top: 90%;
+  right: -90%;
   position: absolute;
   transform-origin: top center;
 `;
@@ -152,7 +153,7 @@ const AlarmWrap = styled(motion.div)`
   height: 550%;
   width: 750%;
   top: 90%;
-  right: -275%;
+  left: -565%;
   position: absolute;
   transform-origin: top;
 `;
