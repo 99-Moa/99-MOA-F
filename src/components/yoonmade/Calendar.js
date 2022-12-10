@@ -65,7 +65,7 @@ const Calendar = ({ schedulesData }) => {
             },
           }}
           titleFormat={setTitleFormat}
-          height="90%"
+          height="100%"
           locale="en"
           dayMaxEvents={true}
           events={
@@ -80,6 +80,24 @@ const Calendar = ({ schedulesData }) => {
           dateClick={onDateClick}
         />
       </UpperDiv>
+      <MadeBy>
+        <SpanDiv>
+          FE 
+          <ToGitHub href="https://github.com/ParkBig">박종원</ToGitHub>
+          <ToGitHub href="https://github.com/nimgnas">윤상민</ToGitHub>
+          <ToGitHub href="https://github.com/Jino0403">이진호</ToGitHub>
+        </SpanDiv>
+        <SpanDiv>
+          BE 
+          <ToGitHub href="https://github.com/yuns8708">윤시원</ToGitHub>
+          <ToGitHub href="https://github.com/tmpanmitw">신현재</ToGitHub>
+          <ToGitHub href="https://github.com/acutecritic">이동진</ToGitHub>
+        </SpanDiv>
+        <SpanDiv>
+          UI/UX 
+          <ToGitHub>최가희</ToGitHub>
+        </SpanDiv>
+      </MadeBy>
     </Wrap>
   );
 };
@@ -87,15 +105,15 @@ const Calendar = ({ schedulesData }) => {
 export default React.memo(Calendar);
 
 const Wrap = styled.div`
-  height: 95%;
+  height: 100%;
   width: 70%;
-  margin-top: 2%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
   align-items: flex-end;
 `;
 const UpperDiv = styled.div`
-  height: 90%;
+  height: 83%;
   width: 100%;
 
   .fc-header-toolbar {
@@ -229,4 +247,29 @@ const UpperDiv = styled.div`
     display: flex;
     flex-direction: row;
   }
+`;
+const MadeBy = styled.div`
+  width: 100%;
+  height: 5%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+const SpanDiv = styled.div`
+  height: 100%;
+  width: 15%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 70%;
+  color: #AAAFB5;
+`;
+const ToGitHub = styled.a`
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 70%;
+  font-weight: 400;
+  color: #AAAFB5;
 `;
