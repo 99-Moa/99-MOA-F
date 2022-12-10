@@ -1,14 +1,11 @@
-import dayjs from "dayjs";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { useQuery } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { getFriendGroup, getMyFriends, getMyInfo } from "../api/memberManage";
+import { getMyFriends, getMyInfo } from "../api/memberManage";
 import { getSchedules } from "../api/schedulesManage";
 import Loading from "../components/parkmade/common/loading/Loading";
 import ChoicePlan from "../components/parkmade/common/modal/ChoicePlan";
-import MakePlan from "../components/parkmade/common/modal/MakePlan";
 import Portal from "../components/parkmade/common/modal/Portal";
 import RevisePlan from "../components/parkmade/common/modal/RevisePlan";
 import EditMyProfile from "../components/parkmade/common/navigationBar/EditMyProfile";

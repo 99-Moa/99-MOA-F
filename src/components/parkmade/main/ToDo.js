@@ -94,7 +94,6 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
           <UpperSummaryDiv variants={clickVariants} animate={openDetail ? "sumSec" : "sumFir"} custom={isPersonalPlan}>
             <SummaryDiv>
               <WrapSummary  onClick={open}>
-                {console.log(getDetailData)}
                 <ImgDiv>
                   {(getDetailData?.users?.length === 1) ?
                     <Alone fill={!index ? "rgba(255,255,255,1)" : openDetail ? "rgba(255,255,255,1)" : "rgba(255,69,69,1)"} />
