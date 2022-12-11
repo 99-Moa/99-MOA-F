@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import alertText from "./modules/parkmade/alertText";
-import toggleModal from "./modules/parkmade/toggleModal";
+import alertText from "./modules/alertText";
+import toggleModal from "./modules/toggleModal";
 
 const store = configureStore({
   reducer: {

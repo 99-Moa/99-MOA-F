@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+
 import { getFriendGroup, getMyFriends, getMyInfo } from "../api/memberManage";
-import Loading from "../components/parkmade/common/loading/Loading";
-import Portal from "../components/parkmade/common/modal/Portal";
-import EditMyProfile from "../components/parkmade/common/navigationBar/EditMyProfile";
-import NavBar from "../components/parkmade/common/navigationBar/NavBar";
-import GroupList from "../components/yoonmade/GroupList";
+
+import Loading from "../components/loadingPage/Loading";
+import Portal from "../components/modal/Portal";
+import NavBar from "../components/navbar/NavBar";
+import EditMyProfile from "../components/navbar/EditMyProfile";
+import GroupList from "../components/friendsPage/GroupList";
 
 const Friends = () => {
   const isEditProfile = useSelector(state => state.toggleModal.editProfile);

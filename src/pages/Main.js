@@ -2,16 +2,18 @@ import { motion } from "framer-motion";
 import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+
 import { getMyFriends, getMyInfo } from "../api/memberManage";
 import { getSchedules } from "../api/schedulesManage";
-import Loading from "../components/parkmade/common/loading/Loading";
-import ChoicePlan from "../components/parkmade/common/modal/ChoicePlan";
-import Portal from "../components/parkmade/common/modal/Portal";
-import RevisePlan from "../components/parkmade/common/modal/RevisePlan";
-import EditMyProfile from "../components/parkmade/common/navigationBar/EditMyProfile";
-import NavBar from "../components/parkmade/common/navigationBar/NavBar";
-import ToDos from "../components/parkmade/main/ToDos";
-import Calendar from "../components/yoonmade/Calendar";
+
+import Loading from "../components/loadingPage/Loading";
+import ChoicePlan from "../components/modal/ChoicePlan";
+import Portal from "../components/modal/Portal";
+import RevisePlan from "../components/modal/RevisePlan";
+import EditMyProfile from "../components/navbar/EditMyProfile";
+import NavBar from "../components/navbar/NavBar";
+import ToDos from "../components/mainPage/ToDos";
+import Calendar from "../components/mainPage/Calendar";
 
 // 이곳에서 main페이지에 나타나는 모든 데이터 관련(모달창 제외) 서버통신이 이루어집니다.
 const Main = () => {
