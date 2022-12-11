@@ -1,5 +1,4 @@
-import { useLocation } from "react-router-dom";
-import ToLogIn from "../components/parkmade/logInSignUp/ToLogIn";
+import ToLogIn from "../components/loginSignupPage/ToLogIn";
 
 const LogIn = () => {
   if (localStorage.getItem("access_token")) {

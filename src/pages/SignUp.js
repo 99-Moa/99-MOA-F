@@ -1,4 +1,4 @@
-import ToSignUp from "../components/parkmade/logInSignUp/ToSignUp";
+import ToSignUp from "../components/loginSignupPage/ToSignUp";
 
 const SignUp = () => {
   if (localStorage.getItem("access_token")) {

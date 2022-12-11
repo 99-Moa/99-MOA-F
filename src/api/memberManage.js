@@ -13,7 +13,7 @@ export const postLogOut = async () => {
   const {data} = await axiosIns.post("/signout"); 
   return data;
 };
-export const kakaoLogin = async (code) => {
+export const kaKaoLogin = async (code) => {
   const data = await axiosIns.get(`/kakao?code=${code}`)
   return data
   }

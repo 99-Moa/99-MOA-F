@@ -2,6 +2,7 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+
 import store from "./store/configureStore";
 
 const GlobalStyle = createGlobalStyle`
