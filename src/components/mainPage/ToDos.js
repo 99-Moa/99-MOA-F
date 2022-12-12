@@ -20,7 +20,7 @@ const ToDos = ({schedulesData, infoData}) => {
                 <CountDay firstDate={sortPlan[0]?.startDate} firstTime={sortPlan[0]?.startTime} setUpToDatePlan={setUpToDatePlan} />
               </DDayDiv>
               <ToDoDiv ref={traceScroll}>
-                {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} traceScroll={traceScroll} index={index} infoData={infoData} />)}
+                {sortPlan.map((prop, index) => <ToDo key={prop.id} prop={prop} setExtend={setExtend} extend={extend} traceScroll={traceScroll} index={index} infoData={infoData} />)}
                 {extend && <Extend />}
               </ToDoDiv>
             </UpperDiv>

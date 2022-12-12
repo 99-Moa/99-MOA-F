@@ -13,7 +13,7 @@ import { ReactComponent as Alone } from "../../img/svg/alone.svg";
 import { ReactComponent as Group } from "../../img/svg/mini-group.svg";
 import dot from "../../img/icons/dot.png"
 
-const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
+const ToDo = ({prop, traceScroll, index, setExtend, extend, infoData}) => {
   
   const { kakao } = window;
   const navigate = useNavigate();
@@ -23,6 +23,8 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
   const [getDetailData, setGetDetailData] = useState({});
   const [isDelete, setIsDelete] = useState(false);
   const [isPersonalPlan, setIsPersonalPlan] = useState(false); 
+
+  const map = useRef(null)
 
   const { mutate:detailPlan } = useMutation(getDetailSchedule, {
     onSuccess: (res) => {
@@ -70,20 +72,34 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
   };
 
   useEffect(() => {
+    if(map.current) {
+      setTimeout(() => {
+        map.current.relayout()
+        const coords = new kakao.maps.LatLng(y, x);
+        map.current.setCenter(coords);
+      },2000)
+    }
+  },[extend])
+  const [y, setY] = useState("")
+  const [x, setX] = useState("")
+
+  useEffect(() => {
     detailPlan(prop.id);
     const container = document.querySelector(`.kakao-map${prop.id}`); 
     if (container && Object.keys(getDetailData).length) {
       const options = { center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), level: 5 };
-      const map = new kakao.maps.Map(container, options);
+       map.current = new kakao.maps.Map(container, options);
       const geocoder = new kakao.maps.services.Geocoder();
       geocoder.addressSearch(getDetailData.locationRoadName, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
+          setX(result[0].x)
+          setY(result[0].y)
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
           const marker = new kakao.maps.Marker({
-            map: map,
+            map: map.current,
             position: coords
           });
-          map.setCenter(coords);
+          map.current.setCenter(coords);
         }
       });  
     }
