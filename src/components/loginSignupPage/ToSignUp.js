@@ -91,7 +91,7 @@ const ToSignUp = () => {
           </SignUserTitle>
           <InputField>
             <InputDiv>
-              <Input {...register("signId", {required: true})} placeholder="아이디(4~16자 숫자가능)" />
+              <Input {...register("signId", {required: true})} placeholder="아이디(4~16자 영어,숫자 가능)" />
               <OverlapCheck whileHover={{scale:1.03}} onClick={checkId}>
                 중복확인
               </OverlapCheck>
@@ -107,7 +107,7 @@ const ToSignUp = () => {
           </InputField>
           <InputField>
             <InputDiv>
-              <Input type="password" wd="100%" {...register("signPassword1", {required: true})} placeholder="비밀번호(8~16자, 대문자, 특수문자 필수)" />
+              <Input type="password" wd="100%" {...register("signPassword1", {required: true})} placeholder="비밀번호(8~16자, 대문자, 특수문자(@$!%*#?&) 필수)" />
             </InputDiv>
           </InputField>
           <InputField>

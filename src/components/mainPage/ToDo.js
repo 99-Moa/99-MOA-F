@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
-import { useMutation } from "react-query";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ import { ReactComponent as Group } from "../../img/svg/mini-group.svg";
 import dot from "../../img/icons/dot.png"
 
 const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
-  
+  const queryClient =  useQueryClient();
   const { kakao } = window;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,6 +34,7 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
   });
   const { mutate:deletePlan } = useMutation(deleteSchedule, {
     onSuccess: (res) => {
+      queryClient.invalidateQueries({queryKey:["schedules"]}, {cancelRefetch: "true"});
       alert("삭제완료");
     }
   })
@@ -56,7 +57,9 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
     setIsDelete(prev=>!prev);
   };
   const deleteThis = () => {
-    deletePlan(prop.id)
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      deletePlan(prop.id)
+    };
   };
   const revisePlan = () => {
     dispatch(revisePersonalPlan([true, getDetailData, prop.id]))
@@ -104,7 +107,7 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
                 </ImgDiv>
                 <TextDiv>
                   <SumContent variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
-                    {(getDetailData?.users?.length === 1) ? getDetailData.title : `${getDetailData.title} (그룹이름 : ${getDetailData.groupName})` }
+                    {(getDetailData?.users?.length === 1) ? getDetailData.title : `${getDetailData.title} (${getDetailData.groupName})` }
                   </SumContent>
                   <Date variants={clickVariants} animate={openDetail ? "colorSec" : "colorFir"} index={index} $openDetail={openDetail}>
                     {`${getDetailData.startDate?.slice(5, 7)}월 ${getDetailData.startDate?.slice(8, 10)}일 ${getDetailData.startTime?.slice(0, 5)}시`}
