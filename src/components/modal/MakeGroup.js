@@ -13,6 +13,7 @@ import FriendDiv from "./FriendDiv";
 
 import logoImg from "../../img/icons/Logo_Main.png"
 import cancel from "../../img/icons/Icon_Group_cancel.png"
+import { motion } from "framer-motion";
 
 const MakeGroup = ({myFriendsList}) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const MakeGroup = ({myFriendsList}) => {
   const [resultF, setResultF] = useState({});
   const [inviteList, setInviteList] = useState([]);
   const [groupN, setGroupN] = useState("");
+
   const { mutate } = useMutation(postMakeGroup, {
     onSuccess: (res) => {
       alert("그룹생성 완료!");
@@ -29,6 +31,9 @@ const MakeGroup = ({myFriendsList}) => {
       navigate("/myFriends");
     }
   });
+  const toMakeFriend = () => {
+    navigate("/myFriends");
+  }
   const onChange = (ev) => {
     setGroupN(ev.target.value)
   }
@@ -53,12 +58,15 @@ const MakeGroup = ({myFriendsList}) => {
     if (!groupN.length) {
       return alert("그룹이름을 적어주세요!")
     }
+    if (groupN.length > 8) {
+      return alert("그룹이름은 8글자 제한입니다.")
+    }
     mutate({"groupName":groupN, "users":inviteList});
     
   };
   return (
     <Wrap>
-      <MakeGroupNameInput placeholder="그룹이름을 적어주세요" onChange={onChange}/>
+      <MakeGroupNameInput placeholder="*그룹이름을 적어주세요*(8글자 제한)" onChange={onChange}/>
       <FindFriendDiv>
         <SearchPlaceForm onSubmit={searchHandle(SearchFriends)}>
           <PlaceInput {...searchRegister("friendsNick")} placeholder="친구 닉네임 검색"/>
@@ -69,33 +77,40 @@ const MakeGroup = ({myFriendsList}) => {
             </Svg>
           </SearchBtn>
         </SearchPlaceForm>
-        <BackToList>
+        {/* <BackToList>
           <BackBtnImg src={cancel} onClick={backToFriendsList}/>
-        </BackToList>
+        </BackToList> */}
       </FindFriendDiv>
       <ResultFriendDiv>
         {!isTargetSearch ?
           myFriendsList.length ?
             <>
               <FriendsDiv>
-                내 친구 
-                <FriendsCount>
-                  {myFriendsList.length}
-                </FriendsCount>
+                <MyFriends>
+                  내친구
+                  <FriendsCount>
+                    {myFriendsList.length}
+                  </FriendsCount>
+                </MyFriends>
               </FriendsDiv>
               {myFriendsList.map((prop) => <FriendDiv key={prop.id} img={prop.imgUrl} name={prop.friendUsername} inviteList={inviteList} setInviteList={setInviteList} setIsTargetSearch={setIsTargetSearch} />) }
             </>
             :
             <ZeroFRdiv>
-              <LogoImg src={logoImg}/>
-              <SaltyDiv>
-                아직 친구가 없군요~
+              <LogoImg src={logoImg} onClick={toMakeFriend}/>
+              <SaltyDiv onClick={toMakeFriend}>
+                친구를 추가하고 그룹을 만들어보세요!
               </SaltyDiv>
             </ZeroFRdiv>
           :
           <>
             <FriendsDiv>
-              검색결과
+              <SearchResult>
+                검색결과
+              </SearchResult>
+              <BackToList onClick={backToFriendsList}>
+                뒤로
+              </BackToList>
             </FriendsDiv>
             <FriendDiv img={resultF.imgUrl} name={resultF.friendUsername} inviteList={inviteList} setInviteList={setInviteList} setIsTargetSearch={setIsTargetSearch} />
           </>
@@ -173,14 +188,13 @@ const Svg = styled.svg`
   width: 80%;
   height: 80%;
 `;
-const BackToList = styled.div`
+const SearchResult = styled.span`
   height: 100%;
-  width: 5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
-const BackBtnImg = styled.img`
+const BackToList = styled.span`
+  height: 100%;
+  margin-right: 3%;
+  font-weight: 400;
   cursor: pointer;
 `;
 const ResultFriendDiv = styled.div`
@@ -200,6 +214,7 @@ const FriendsDiv = styled.div`
   margin-top: 3%;
   margin-bottom: 1%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   font-weight: 800;
 `;
@@ -219,12 +234,19 @@ const LogoImg = styled.img`
   justify-content: center;
   align-items: center;
 `;
-const SaltyDiv = styled.div`
+const SaltyDiv = styled(motion.div)`
   width: 100%;
   height: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+`;
+const MyFriends = styled.div`
+  height: 100%;
+  width: 100%;
+  font-weight: 800;
+  display: flex;
 `;
 const FriendsCount = styled.span`
   margin-left: 1%;
@@ -251,6 +273,12 @@ const InviteListDiv = styled.div`
   overflow-x: auto;
   gap:2%;
 `;
+
+const TitleInputDiv = styled.div`
+  width: 100%;
+  height: 7%;
+  display: flex;
+`;
 const MakeGroupNameInput = styled.input`
   width: 100%;
   height: 7%;
@@ -259,8 +287,34 @@ const MakeGroupNameInput = styled.input`
   margin-bottom: 4%;
   padding-left: 3%;
   font-size: 100%;
-  outline: none;
+  /* outline: none; */
 `;
+const TextDiv = styled.div`
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+`;
+const StarSpan = styled.span`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  color: #FF4545;
+`;
+const TitleInput = styled.input`
+  width: 90%;
+  height: 100%;
+  border: 1px solid #AAAFB5;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  text-indent: 1%;
+  font-size: 130%;
+`;
+
 const MakeGroupBtn = styled.button`
   width: 100%;
   height: 7%;

@@ -4,7 +4,11 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 
 
-const CountDay = ({firstDate, firstTime, setUpToDatePlan}) => {
+const CountDay = ({ setUpToDatePlan, schedulesData}) => {
+  const sortPlan = (schedulesData.sort((a,b) => (new Date(`${a.startDate} ${a.startTime}`) - new Date(`${b.startDate} ${b.startTime}`)))).filter(prop=> new Date(`${prop.startDate} ${prop.startTime}`) > new Date());
+  const firstDate = sortPlan[0]?.startDate;
+  const firstTime = sortPlan[0]?.startTime;
+
   const [day, setDay] = useState();
   const [hour, setHour] = useState();
   const [minute, setMinute] = useState();
@@ -22,9 +26,9 @@ const CountDay = ({firstDate, firstTime, setUpToDatePlan}) => {
     setSec(Math.floor(diff / 1000 % 60));
   };
   useEffect(()=>{
-    setInterval(()=>getDDay(), 1000);
-    return () => clearInterval(getDDay);
-  }, []);
+    let DDayCount = setInterval(()=>getDDay(), 1000);
+    return () => clearInterval(DDayCount);
+  }, [sortPlan]);
   return (
     <Wrap>
       {(day !== undefined) && 
