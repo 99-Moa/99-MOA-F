@@ -8,7 +8,7 @@ const FriendDiv = ({img, name, inviteList, setInviteList, setIsTargetSearch, par
     if (inviteList.length) {
       for (let prop of inviteList) {
         if (prop === name) {
-          alert("이미 목록에 추가 있습니다.");
+          alert("이미 목록에 추가되어 있습니다.");
           return;
         }
       }

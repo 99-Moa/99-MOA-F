@@ -25,7 +25,7 @@ const SearchFriend = ({setShowSearch}) => {
   const { mutate: addMutate } = useMutation(postPlusFriend, {
     onSuccess: ({ success, error }) => {
       if (success) {
-        alert("친구추가 완료!");
+        alert("친구추가가 완료되었습니다.");
         setShowSearch(false)
       } else {
         alert(error.detail);
@@ -40,7 +40,7 @@ const SearchFriend = ({setShowSearch}) => {
   const onSearchFriend = (e) => {
     if (e.key === "Enter" || e.type === "click") {
       if (!userName.trim()) {
-        alert("친구이름을 입력해주세요!");
+        alert("찾고자하는 친구의 닉네임을 입력해주세요!");
         return;
       }
       searchMutate(userName);

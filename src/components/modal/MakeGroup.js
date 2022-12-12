@@ -26,7 +26,7 @@ const MakeGroup = ({myFriendsList}) => {
 
   const { mutate } = useMutation(postMakeGroup, {
     onSuccess: (res) => {
-      alert("그룹생성 완료!");
+      alert("그룹이 생성되었습니다.");
       dispatch(toggleChoiceGroup(false));
       navigate("/myFriends");
     }
@@ -53,10 +53,10 @@ const MakeGroup = ({myFriendsList}) => {
 
   const makeGroup = () => {
     if (!inviteList.length) {
-      return alert("친구를 초대해주세요!")
+      return alert("그룹 생성을 위해 친구초대 및 그룹이름을 작성해주세요.")
     }
     if (!groupN.length) {
-      return alert("그룹이름을 적어주세요!")
+      return alert("그룹이름을 작성해주세요.")
     }
     if (groupN.length > 8) {
       return alert("그룹이름은 8글자 제한입니다.")

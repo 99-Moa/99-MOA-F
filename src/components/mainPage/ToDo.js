@@ -36,8 +36,8 @@ const ToDo = ({prop, traceScroll, index, setExtend, extend, infoData}) => {
   });
   const { mutate:deletePlan } = useMutation(deleteSchedule, {
     onSuccess: (res) => {
+      alert("일정이 삭제되었습니다.");
       queryClient.invalidateQueries({queryKey:["schedules"]}, {cancelRefetch: "true"});
-      alert("삭제완료");
     }
   })
 

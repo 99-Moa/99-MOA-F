@@ -26,7 +26,7 @@ const ToLogIn = () => {
       }
     },
     onError: (err) => {
-      alert("로그인 실패!")
+      alert("로그인에 실패하였습니다!")
     }
   });
   const submitLogin = (data) => {
@@ -59,7 +59,7 @@ const ToLogIn = () => {
           <UpperLoginDiv>
             <InputDiv>
               <Input {...register("LogInId", { required: true })} placeholder="아이디" />
-              <Input type="password" {...register("LogInPassword", { required: true })} placeholder="비밀번호 (8~16자 영문자+숫자+특수기호)" />
+              <Input type="password" {...register("LogInPassword", { required: true })} placeholder="비밀번호(8~16자 특수문자 필수)" />
             </InputDiv>
             <LoginBtnDiv>
               <LoginBtn whileHover={{scale:1.02}}>

@@ -25,7 +25,7 @@ const InviteGroup = ({myFriendsList, groupData}) => {
 
   const { mutate:invite } = useMutation(postGroupInvite, {
     onSuccess: (res) => {
-      alert("초대완료!")
+      alert("친구초대가 완료되었습니다.")
       dispatch(inviteNewFriendToGroup(false));
     }
   })

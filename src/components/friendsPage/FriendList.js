@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { notifyManager, useMutation } from "react-query";
 import styled from "styled-components";
 
 import { deleteFriend } from "../../api/memberManage";
@@ -13,7 +13,7 @@ const FriendList = ({ friendList }) => {
 
   const { mutate } = useMutation(deleteFriend, {
     onSuccess: () => {
-      alert("친구삭제 완료!");
+      alert("친구가 삭제되었습니다.");
     },
   });
 
@@ -27,7 +27,7 @@ const FriendList = ({ friendList }) => {
     setFriendName(value);
   };
   const onDeleteFriend = (id) => {
-    const rst = window.confirm("삭제하시겠습니까?");
+    const rst = window.confirm("친구를 삭제하시겠습니까?");
     if (rst) mutate(id);
     setFilterFriendList(
       filterFriendList.filter((friendInfo) => friendInfo.id !== id)
@@ -98,6 +98,10 @@ const SearchInputDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  svg {
+      display: none;
+    }
 `;
 const Body = styled.div`
   width:100%;
