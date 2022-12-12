@@ -43,13 +43,13 @@ const ChatSection = ({
   };
 
   const onChatEnter = (e) => {
-    if (!chatInput.trim()) return;
     if (
       e.key === "Enter" &&
       !e.shiftKey &&
       e.nativeEvent.isComposing === false
     ) {
       e.preventDefault();
+      if (!chatInput.trim()) return;
       stompSendFn("/app/message", {
         token: MY_TOKEN,
         chatRoomId,
