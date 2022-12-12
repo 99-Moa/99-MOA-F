@@ -770,6 +770,7 @@ const SelectLocationWrapper = styled.div`
   margin-top: 1em;
   display: flex;
   flex-direction: column;
+  gap: 0.2em;
 
   .road-name {
     color: ${defaultColor.darkGrey};
