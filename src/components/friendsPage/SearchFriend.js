@@ -9,7 +9,7 @@ import InputComponent from "./InputComponent";
 
 import emoji from "../../img/icons/Sunglasses_emoji.png";
 
-const SearchFriend = () => {
+const SearchFriend = ({setShowSearch}) => {
   const [userName, setUserName] = useState("");
   const [userInfo, setUserInfo] = useState();
 
@@ -26,6 +26,7 @@ const SearchFriend = () => {
     onSuccess: ({ success, error }) => {
       if (success) {
         alert("친구추가 완료!");
+        setShowSearch(false)
       } else {
         alert(error.detail);
       }
