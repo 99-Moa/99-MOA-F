@@ -50,7 +50,7 @@ const GroupList = ({ friendGroup, friendList, infoData }) => {
           }
           {showSearch &&
             <Container left="55%" initial={{ opacity: 1, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 0 }} >
-              <SearchFriend/>
+              <SearchFriend setShowSearch={setShowSearch}/>
             </Container>
           }
         </UpperFriendDiv>
