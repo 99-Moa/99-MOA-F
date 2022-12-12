@@ -22,10 +22,10 @@ const EditMyProfile = ({info}) => {
 
   const { mutate:changeInfo } = useMutation(putInfoChange, {
     onSuccess: (res) => {
-      alert("성공!");
+      alert("프로필 수정이 완료되었습니다.");
     },
     onError: (err) => {
-      alert("지쟈스");
+      alert("프로필 수정에 실패하였습니다.");
     }
   });
   const { mutate:checkNickname} = useMutation(postNickDupChecker, {
@@ -34,12 +34,12 @@ const EditMyProfile = ({info}) => {
         alert(res.data)
         return;
       }
-      alert("사용가능합니다.");
+      alert("사용 가능한 닉네임입니다.");
       setDoneDupCheck(true);
       setMyNick(getValues("nickname"));
     },
     onError: (err) => {
-      alert("사용불가능합니다.");
+      alert("형식에 맞게 닉네임을 작성해주세요.");
       setValue("nickname", "");
     }
   });
@@ -78,7 +78,7 @@ const EditMyProfile = ({info}) => {
         formData.append("file", data.img[0]);
       };
     };
-    if (window.confirm("수정하시겠습니까?")) {
+    if (window.confirm("프로필을 수정하시겠습니까?")) {
       changeInfo(formData);
     };
   };

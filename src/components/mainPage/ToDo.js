@@ -34,7 +34,7 @@ const ToDo = ({prop, traceScroll, index, setExtend, infoData}) => {
   });
   const { mutate:deletePlan } = useMutation(deleteSchedule, {
     onSuccess: (res) => {
-      alert("삭제완료");
+      alert("일정이 삭제되었습니다.");
     }
   })
 

@@ -3,9 +3,9 @@ import { defaultColor } from "../styles/styles";
 
 const InputComponent = ({ placeholder, iconClick, width, ...rest }) => {
   return (
-    <InputWrapper width={width}>
+    <InputWrapper width={width} >
       <Input placeholder={placeholder} {...rest} />
-      <div onClick={iconClick}>
+      <InputIcon onClick={iconClick}>
         <svg aria-label="검색" role="img" viewBox="0 0 24 24">
           <path
             d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z"
@@ -27,7 +27,7 @@ const InputComponent = ({ placeholder, iconClick, width, ...rest }) => {
             y2="22"
           ></line>
         </svg>
-      </div>
+      </InputIcon>
     </InputWrapper>
   );
 };
@@ -42,18 +42,11 @@ const InputWrapper = styled.div`
   background-color: ${defaultColor.lightGrey};
   overflow: hidden;
 
-  div {
-    margin-right: 0.8em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg {
-      height: 1em;
-      width: 1em;
-      right: 0;
-      cursor: pointer;
-    }
+  svg {
+    height: 1em;
+    width: 1em;
+    right: 0;
+    cursor: pointer;
   }
 `;
 
@@ -66,4 +59,11 @@ const Input = styled.input`
   font-size: 0.8em;
   color: ${defaultColor.black};
   outline-style: none;
+`;
+
+const InputIcon = styled.div`
+  margin-right: 0.8em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

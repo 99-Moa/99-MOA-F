@@ -39,7 +39,7 @@ const ToSignUp = () => {
     },
     onError: () => {
       setIdCheckDone(false);
-      alert("조건을 확인해 주세요");
+      alert("조건을 다시한번 확인해 주세요");
       setValue("signId", "");
     }
   });
@@ -55,7 +55,7 @@ const ToSignUp = () => {
     },
     onError: () => {
       setNickCheckDone(false);
-      alert("조건을 확인해 주세요");
+      alert("조건을 다시한번 확인해 주세요");
       setValue("signNickname", "");
     }
   });
@@ -64,10 +64,10 @@ const ToSignUp = () => {
       toSign({"userId":data.signId, "userName":data.signNickname, "password":data.signPassword1, "passwordCheck":data.signPassword2});
     }
     if (!idCheckDone) {
-      alert("아이디 중복확인 해주세요")
+      alert("아이디 중복확인을 해주세요")
     }
     if (!nickCheckDone) {
-      alert("닉네임 중복확인 해주세요")
+      alert("닉네임 중복확인을 해주세요")
     }
   };
   const checkId = () => {
@@ -91,7 +91,7 @@ const ToSignUp = () => {
           </SignUserTitle>
           <InputField>
             <InputDiv>
-              <Input {...register("signId", {required: true})} placeholder="아이디(4~16자 숫자가능)" />
+              <Input {...register("signId", {required: true})} placeholder="아이디(4~16자 문자 및 숫자가능)" />
               <OverlapCheck whileHover={{scale:1.03}} onClick={checkId}>
                 중복확인
               </OverlapCheck>
@@ -99,7 +99,7 @@ const ToSignUp = () => {
           </InputField>
           <InputField>
             <InputDiv>
-              <Input type="text" {...register("signNickname", {required: true})} placeholder="닉네임(2~8자 한글가능)" />
+              <Input type="text" {...register("signNickname", {required: true})} placeholder="닉네임(2~8자 문자 및 숫자가능)" />
               <OverlapCheck whileHover={{scale:1.03}} onClick={checkNick}>
                 중복확인
               </OverlapCheck>
@@ -107,7 +107,7 @@ const ToSignUp = () => {
           </InputField>
           <InputField>
             <InputDiv>
-              <Input type="password" wd="100%" {...register("signPassword1", {required: true})} placeholder="비밀번호(8~16자, 대문자, 특수문자 필수)" />
+              <Input type="password" wd="100%" {...register("signPassword1", {required: true})} placeholder="비밀번호(8~16자 특수문자 필수)" />
             </InputDiv>
           </InputField>
           <InputField>

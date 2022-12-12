@@ -25,7 +25,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
 
   const { mutate: saveMyPlan } = useMutation(postScheduleGroup, {
     onSuccess: () => {
-      alert("계획 작성 완료");
+      alert("일정이 작성되었습니다.");
       setIsEdit(false);
       stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
@@ -33,7 +33,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
 
   const { mutate: reviseMyPlan } = useMutation(reviseGroupSchedule, {
     onSuccess: () => {
-      alert("계획 수정 완료");
+      alert("일정이 수정되었습니다.");
       setIsEdit(false);
       stompSendFn(`/topic/${chatRoomId}/update`, {message:"업데이트완료"})
     },
@@ -178,7 +178,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
       startTime === "시작시간" ||
       endTime === "끝나는시간"
     ) {
-      alert("필수항목을 입력해주세요");
+      alert("필수항목(*)을 확인하고 다시 작성해주세요.");
       return;
     }
 
@@ -186,7 +186,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
       dayjs(startDate).format("YYYY-MM-DD") >
       dayjs(endDate).format("YYYY-MM-DD")
     ) {
-      alert("시작일은 종요일보다 늦을 수 없습니다.");
+      alert("시작일은 종료일보다 늦을 수 없습니다.");
       return;
     }
     if (

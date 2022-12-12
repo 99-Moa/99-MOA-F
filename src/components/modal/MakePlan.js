@@ -30,13 +30,13 @@ const MakePlan = () => {
   const { register, handleSubmit, setValue, getValues } = useForm();
   const { mutate:saveMyPlan } = useMutation(postSchedule, {
     onSuccess: () => {
-      alert("계획 작성 완료");
+      alert("일정이 생성되었습니다.");
       dispatch(toggleChoiceGroup(false));
     }
   });
   const { mutate:revisePlan } = useMutation(reviseSchedule, {
     onSuccess: () => {
-      alert("수정완료!");
+      alert("일정이 수정되었습니다.");
       dispatch(revisePersonalPlan([false, {}, null]))
     }
   })
@@ -61,7 +61,7 @@ const MakePlan = () => {
     if (!isWriting) {
       if (data.title && data.place && startDate && endDate && (data.startTime !== "시작시간") && (data.endTime !== "끝나는시간")) {
         if (dayjs(startDate).format("YYYY-MM-DD") > dayjs(endDate).format("YYYY-MM-DD")) {
-          alert("시작일은 종요일보다 늦을 수 없습니다.");
+          alert("시작일은 종료일보다 늦을 수 없습니다.");
           return;
         }
         if (dayjs(startDate).format("YYYY-MM-DD") === dayjs(endDate).format("YYYY-MM-DD") && data.startTime > data.endTime) {
@@ -78,7 +78,7 @@ const MakePlan = () => {
         }
         saveMyPlan({"title": data.title, "startDate": dayjs(startDate).format("YYYY-MM-DD"), "endDate": dayjs(endDate).format("YYYY-MM-DD"), "startTime": data.startTime, "endTime": data.endTime, "location": data.place, "locationRoadName":roadName ,"content": data.textArea})
       } else {
-        alert("필수 항목(*)을 작성해 주세요.")
+        alert("필수 항목(*)을 확인하고 다시 작성해주세요.")
       }
     }
   }

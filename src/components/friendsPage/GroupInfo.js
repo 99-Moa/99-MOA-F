@@ -14,7 +14,7 @@ const GroupInfo = ({ group, infoData }) => {
 
   const { mutate:groupOut } = useMutation(postGroupOut, {
     onSuccess: (res) => {
-      alert("그룹삭제 완료!")
+      alert("그룹이 삭제되었습니다.")
     }
   })
 
