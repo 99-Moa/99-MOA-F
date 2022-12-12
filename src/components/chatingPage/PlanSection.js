@@ -13,7 +13,7 @@ import Time from "../modal/Time";
 import { ReactComponent as MapSvg } from "../../img/svg/map.svg";
 
 const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
-  const [isEdit, setIsEdit] = useState(data?.plan ? false:true);
+  const [isEdit, setIsEdit] = useState(false);
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadname] = useState("");
   const [placeName, setPlaceName] = useState("");
@@ -47,6 +47,10 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
 // dd
     return `${replaceSD}, ${sliceST} - ${replaceSE}, ${sliceET}`
   }
+
+  useEffect(() => {
+    setIsEdit(data.plan ? false:true)
+  },[data?.plan])
 
   // 초기 plan 섹션
   useEffect(() => {
