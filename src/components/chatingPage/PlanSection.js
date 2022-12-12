@@ -631,7 +631,7 @@ const TimeOption = styled.option`
 `;
 
 const EditLocationBox = styled.div`
-  height: 60%;
+  height: 45%;
   margin-top: 0.5em;
   display: flex;
   align-items: flex-start;
@@ -749,7 +749,7 @@ const PlacePageWrapper = styled.div`
 `;
 
 const EditMemoWrapper = styled.div`
-  height: 20%;
+  height: 35%;
   width: 100%;
   display: flex;
 `;
