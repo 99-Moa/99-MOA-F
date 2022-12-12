@@ -26,8 +26,19 @@ const MakePlan = () => {
   const [place, setPlace] = useState("");
   const [roadName, setRoadName] = useState(""); 
   const previousData = useSelector(state => state.toggleModal.revisePersonalPlan);
-  
-  const { register, handleSubmit, setValue, getValues } = useForm();
+
+  const { register, handleSubmit, setValue, getValues, formState: {errors } } = useForm();
+  // if (Object.keys(previousData[1]).length) {
+  //   setValue("title", previousData[1].title);
+  //   setValue("startTime",previousData[1].startTime);
+  //   setValue("endTime",previousData[1].endTime);
+  //   setValue("place",previousData[1].location);
+  //   setValue("textArea",previousData[1].content);
+  //   // setStartDate(previousData[1].startDate);
+  //   // setEndDate(previousData[1].endDate);
+  //   // setRoadName(previousData[1].locationRoadName);
+  // }
+
   const { mutate:saveMyPlan } = useMutation(postSchedule, {
     onSuccess: () => {
       alert("일정이 생성되었습니다.");
@@ -82,7 +93,6 @@ const MakePlan = () => {
       }
     }
   }
-  
   useEffect(() => {
     const infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     const container = document.querySelector('.plan-kakao');
@@ -133,12 +143,17 @@ const MakePlan = () => {
           setPlaces(data);
         }
       });
-    }
+    };
   }, [place]);
   return (
     <UpperDiv>
       <Form onSubmit={handleSubmit(submitPlan)}>
-        <TitleInput {...register("title")} placeholder="일정 제목*" />
+        <TitleInputDiv>
+          <TextDiv>
+            제목<StarSpan>*</StarSpan>
+          </TextDiv>
+          <TitleInput {...register("title", { required: true, maxLength:10 })} placeholder="일정 제목 (10글자제한)" />
+        </TitleInputDiv>
         <DateDiv>
           <TextDiv>
             날짜<StarSpan>*</StarSpan>
@@ -215,7 +230,7 @@ const MakePlan = () => {
         </UpperMemoDiv>
         <DoneDiv>
           <DoneBtn>
-            {pathname.includes("chatroom") ? "저장" : "생성"}
+            {pathname.includes("chatroom") ? "저장" : Object.keys(previousData[1]).length ? "수정" : "생성"}
           </DoneBtn>
         </DoneDiv>
       </Form>
@@ -239,17 +254,21 @@ const Form = styled.form`
   justify-content: center;
   align-items: center;
 `;
-const TitleInput = styled.input`
+const TitleInputDiv = styled.div`
   width: 90%;
   height: 5%;
-  border: none;
-  border-bottom: 1px solid;
-  margin: 2% 0px;
-  padding-top: 1%;
+  margin-top: 1%;
+  display: flex;
+`;
+const TitleInput = styled.input`
+  width: 90%;
+  height: 100%;
+  border: 1px solid #AAAFB5;
+  border-radius: 5px;
   display: flex;
   align-items: center;
-  outline: none;
-  font-size: 150%;
+  text-indent: 1%;
+  font-size: 130%;
 `;
 const DateDiv = styled.div`
   width: 90%;

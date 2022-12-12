@@ -45,6 +45,7 @@ const FriendList = ({ friendList }) => {
           placeholder="닉네임"
           onChange={onChangeFriendInput}
           value={friendName}
+          isIcon={false}
         />
       </SearchInputDiv>
       <Body>

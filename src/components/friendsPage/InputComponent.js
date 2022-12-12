@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { defaultColor } from "../styles/styles";
 
-const InputComponent = ({ placeholder, iconClick, width, ...rest }) => {
+const InputComponent = ({ placeholder, iconClick, width, isIcon = true, ...rest }) => {
   return (
     <InputWrapper width={width} >
       <Input placeholder={placeholder} {...rest} />

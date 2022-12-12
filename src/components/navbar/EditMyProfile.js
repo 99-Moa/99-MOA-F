@@ -23,6 +23,7 @@ const EditMyProfile = ({info}) => {
   const { mutate:changeInfo } = useMutation(putInfoChange, {
     onSuccess: (res) => {
       alert("프로필 수정이 완료되었습니다.");
+      dispatch(toggleEditProfile(false))
     },
     onError: (err) => {
       alert("프로필 수정에 실패하였습니다.");

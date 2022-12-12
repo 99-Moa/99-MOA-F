@@ -13,7 +13,7 @@ import Time from "../modal/Time";
 import { ReactComponent as MapSvg } from "../../img/svg/map.svg";
 
 const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
-  const [isEdit, setIsEdit] = useState(data?.plan ? false:true);
+  const [isEdit, setIsEdit] = useState(false);
   const [places, setPlaces] = useState([]);
   const [roadName, setRoadname] = useState("");
   const [placeName, setPlaceName] = useState("");
@@ -47,6 +47,10 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
 // dd
     return `${replaceSD}, ${sliceST} - ${replaceSE}, ${sliceET}`
   }
+
+  useEffect(() => {
+    setIsEdit(data.plan ? false:true)
+  },[data?.plan])
 
   // 초기 plan 섹션
   useEffect(() => {
@@ -627,7 +631,7 @@ const TimeOption = styled.option`
 `;
 
 const EditLocationBox = styled.div`
-  height: 60%;
+  height: 45%;
   margin-top: 0.5em;
   display: flex;
   align-items: flex-start;
@@ -745,7 +749,7 @@ const PlacePageWrapper = styled.div`
 `;
 
 const EditMemoWrapper = styled.div`
-  height: 20%;
+  height: 35%;
   width: 100%;
   display: flex;
 `;
@@ -766,6 +770,7 @@ const SelectLocationWrapper = styled.div`
   margin-top: 1em;
   display: flex;
   flex-direction: column;
+  gap: 0.2em;
 
   .road-name {
     color: ${defaultColor.darkGrey};

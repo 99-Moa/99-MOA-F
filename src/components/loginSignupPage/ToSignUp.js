@@ -107,7 +107,7 @@ const ToSignUp = () => {
           </InputField>
           <InputField>
             <InputDiv>
-              <Input type="password" wd="100%" {...register("signPassword1", {required: true})} placeholder="비밀번호(8~16자 특수문자 필수)" />
+              <Input type="password" wd="100%" {...register("signPassword1", {required: true})} placeholder="비밀번호(8~16자 특수문자(@$!%*#?&) 필수)" />
             </InputDiv>
           </InputField>
           <InputField>

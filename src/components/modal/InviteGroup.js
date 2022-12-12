@@ -26,6 +26,7 @@ const InviteGroup = ({myFriendsList, groupData}) => {
   const { mutate:invite } = useMutation(postGroupInvite, {
     onSuccess: (res) => {
       alert("친구초대가 완료되었습니다.")
+      dispatch(inviteNewFriendToGroup(false));
     }
   })
 
@@ -41,6 +42,7 @@ const InviteGroup = ({myFriendsList, groupData}) => {
     setIsTargetSearch(false);
     setResultF({});
     searchSetValue("friendsNick", "");
+    dispatch(dispatch(inviteNewFriendToGroup(false)))
   }
   const inviteFriends = () => {
     invite([groupData.groupId, {"users" : inviteList}])
