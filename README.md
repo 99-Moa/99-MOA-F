@@ -11,7 +11,8 @@
 ----
 ## ⚙️Youtube 시연영상
 
-<iframe width="560" height="315" src="https://youtu.be/-QllO5r3_t4" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/kTcRRaXV-fg?ecver=1"  
+ frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>  
 
 ----
 ## ⚙️서비스아키텍처
