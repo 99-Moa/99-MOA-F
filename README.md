@@ -11,9 +11,7 @@
 ----
 ## ⚙️Youtube 시연영상
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/kTcRRaXV-fg?ecver=1"  
- frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>  
-
+#### [바로가기!](https://youtu.be/-QllO5r3_t4)
 ----
 ## ⚙️서비스아키텍처
 ![](https://velog.velcdn.com/images/whdnjs10/post/16f107d4-c436-474b-92d3-980719178a53/image.png)
