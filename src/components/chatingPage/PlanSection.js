@@ -271,7 +271,7 @@ const PlanSection = ({ data ,groupId, stompSendFn, chatRoomId }) => {
       ) : (
         <Form>
           <EditHeader>
-            <TitleInput placeholder="일정제목*" {...register("title")} />
+            <TitleInput placeholder="*****일정 제목을 입력해주세요*****" {...register("title")} />
           </EditHeader>
           <EditBody>
             <FormArea>
